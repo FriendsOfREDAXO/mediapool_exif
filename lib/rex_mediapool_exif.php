@@ -4,11 +4,11 @@ class rex_mediapool_exif
 {
     protected static $fields = [
         'author' => ['Artist', 'AuthorByLine', 'CaptionWriter'],
-        'copyright' => ['Copyright'],
+        'copyright' => ['Copyright', 'Artist', 'AuthorByLine', 'CaptionWriter'],
         'orientation' => 'Orientation',
         'createdate' => ['FileDateTime', 'DateTime', 'CreationDate'],
         'keywords' => 'Keywords',
-        'title' => ['Headline', 'DocumentTitle'],
+        'title' => ['DocumentTitle', 'Headline'],
         'description' => 'Caption',
         'categories' => 'Subcategories'
     ];
@@ -69,6 +69,7 @@ class rex_mediapool_exif
                 if(!empty($update))
                 {
                     $qry = "UPDATE `" . rex::getTablePrefix() . "media` SET " . join(", ", array_values($update)) . " WHERE `filename` = '" . $ep->getParam('filename') . "'";
+
                     if($sql->setQuery($qry))
                     {
                         $names = '<code>' . join('</code>, <code>', array_keys($update)) . '</code>';
@@ -133,6 +134,7 @@ class rex_mediapool_exif
             }
             unset($word);
         }
+
         unset($DATA, $field, $lookin);
 
         if(empty($return['title']))
