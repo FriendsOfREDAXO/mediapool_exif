@@ -1,0 +1,9 @@
+package: mediapool_exif
+version: '1.0.0'
+author: 'FriendsOfREDAXO'
+supportpage: https://github.com/FriendsOfREDAXO/mediapool_exif
+
+requires:
+    packages:
+        mediapool: '>=2.3.0'
+    redaxo: ^5.2.0
