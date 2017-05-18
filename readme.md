@@ -18,4 +18,4 @@ Diese werden dann als Titel, bzw. Metainfos hinterlegt (sofern beim Upload keine
 Auch das der EXIF-Wert ```Subcategories``` wird verwendet, um das Bild ggf. in eine vorhandene Medienkategorie gleichen
 Namens einzufügen (sofern beim Upload keine Kategorie definiert wurde).
 
-![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/mediapool_exif/assets/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/mediapool_exif/master/assets/screenshot.png)
