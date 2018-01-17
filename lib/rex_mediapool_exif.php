@@ -10,7 +10,8 @@ class rex_mediapool_exif
         'keywords' => 'Keywords',
         'title' => ['DocumentTitle', 'Headline'],
         'description' => 'Caption',
-        'categories' => 'Subcategories'
+        'categories' => 'Subcategories',		
+		'gps'         => 'GPSCoordinates',
     ];
 
     public static function processUploadedMedia(rex_extension_point $ep)
@@ -180,6 +181,10 @@ class rex_mediapool_exif
             $path = rex_path::media($media->getFileName());
             if($exif = exif_read_data($path, 'ANY_TAG'))
             {
+				if($exif['GPSLatitude'] && $exif['GPSLatitudeRef'] && $exif['GPSLongitude'] && $exif['GPSLongitudeRef']) {
+					$exif['GPSCoordinates'] = static::convertGPSCoordinates($exif['GPSLatitude'], $exif['GPSLatitudeRef'], $exif['GPSLongitude'], $exif['GPSLongitudeRef']);
+				}
+				
                 return $exif;
             }
         }
@@ -241,4 +246,32 @@ class rex_mediapool_exif
 
         return $return;
     }
+	protected static function convertGPSCoordinates($GPSLatitude, $GPSLatitude_Ref, $GPSLongitude, $GPSLongitude_Ref)
+	{		
+		$GPSLatfaktor  = 1;
+		$GPSLongfaktor = 1;
+		
+		if($GPSLatitude_Ref == 'S') $GPSLatfaktor = -1;
+		if($GPSLongitude_Ref == 'W') $GPSLongfaktor = -1;
+		
+		$GPSLatitude_h = explode("/", $GPSLatitude[0]);
+		$GPSLatitude_m = explode("/", $GPSLatitude[1]);
+		$GPSLatitude_s = explode("/", $GPSLatitude[2]);
+		
+		$GPSLat_h = $GPSLatitude_h[0] / $GPSLatitude_h[1];
+		$GPSLat_m = $GPSLatitude_m[0] / $GPSLatitude_m[1];
+		$GPSLat_s = $GPSLatitude_s[0] / $GPSLatitude_s[1];
+		
+		$GPSLatGrad = $GPSLatfaktor * ($GPSLat_h + ($GPSLat_m + ($GPSLat_s / 60)) / 60);
+		
+		$GPSLongitude_h = explode("/", $GPSLongitude[0]);
+		$GPSLongitude_m = explode("/", $GPSLongitude[1]);
+		$GPSLongitude_s = explode("/", $GPSLongitude[2]);
+		$GPSLong_h      = $GPSLongitude_h[0] / $GPSLongitude_h[1];
+		$GPSLong_m      = $GPSLongitude_m[0] / $GPSLongitude_m[1];
+		$GPSLong_s      = $GPSLongitude_s[0] / $GPSLongitude_s[1];
+		$GPSLongGrad    = $GPSLongfaktor * ($GPSLong_h + ($GPSLong_m + ($GPSLong_s / 60)) / 60);
+		
+		return number_format($GPSLatGrad, 6,'.','') . ',' . number_format($GPSLongGrad, 6,'.','');
+	}
 }
