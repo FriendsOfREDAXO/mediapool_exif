@@ -3,7 +3,7 @@ mediapool_exif
 
 Das AddOn verwendet den EP ```MEDIA_ADDED```: Wird eine Datei ohne einen Titel hochgeladen, versucht das AddOn, diesen aus dem (Original-)Dateinamen zu extrahieren.
 
-Handelt es sich bei der Datei um ein Bild, so werden die im Bild hinterlegten EXIF-Daten und/oder IPCT-Daten ausgelesen.
+Handelt es sich bei der Datei um ein Bild, so werden die im Bild hinterlegten EXIF-Daten und/oder IPTC-Daten ausgelesen.
 
 Diese werden dann als Titel, bzw. Metainfos hinterlegt (sofern beim Upload keine Daten angegeben wurden). Berücksichtigt werden:
 
