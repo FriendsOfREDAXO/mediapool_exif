@@ -7,3 +7,5 @@ requires:
     packages:
         mediapool: '>=2.3.0'
     redaxo: ^5.2.0
+    php:
+        extensions: [exif]
