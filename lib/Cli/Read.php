@@ -1,18 +1,13 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Cli;
-
 /**
  * Datei für ...
  *
  * @version       1.0 / 2020-06-08
  * @author        akrys
  */
+namespace FriendsOfRedaxo\addon\MediapoolExif\Cli;
+
 use rex_console_command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
