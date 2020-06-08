@@ -1,4 +1,10 @@
 <?php
+
+rex_sql_table::get(rex::getTable('media'))
+    ->ensurePrimaryIdColumn()
+    ->ensureColumn(new rex_sql_column('exif', 'longtext', true))
+    ->ensure();
+
 rex_metainfo_add_field('Beschreibung', 'med_description', '1', '', '2', '', '', '', '');
 rex_metainfo_add_field('Schlagworte', 'med_keywords', '2', '', '1', '', '', '', '');
 rex_metainfo_add_field('Copyright', 'med_copyright', '3', '', '1', '', '', '', '');

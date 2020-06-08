@@ -61,7 +61,7 @@ class rex_mediapool_exif
 
                         if(empty($result[$key]) && !empty($value))
                         {
-                            $update[$field] = "`$key` = '$value'";
+                            $update[$field] = "`$key` = ".$sql->escape($value);
                         }
                     }
                 }
@@ -136,6 +136,7 @@ class rex_mediapool_exif
             unset($word);
         }
 
+        $return['exif'] = json_encode($DATA);
         unset($DATA, $field, $lookin);
 
         if(empty($return['title']))
@@ -246,6 +247,52 @@ class rex_mediapool_exif
 
         return $return;
     }
+
+    public static function mediapoolDetailOutput (rex_extension_point $ep)/*: string*/
+    {
+        $subject = $ep->getSubject();
+
+        $exif = json_decode($ep->getParam('media')->getValue('exif'), 1);
+        if ($exif) {
+            $lines = '';
+            //rekursiver Aufruf einer anonymen Funktion
+            $lines .= self::mediapoolDetailOutputLine($exif);
+
+            $fragment = new \rex_fragment([
+                'collapsed' => true,
+                'title' => 'EXIF',
+                'lines' => $lines,
+            ]);
+            $subject .= $fragment->parse('fragments/mediapool_sidebar.php');
+        }
+        return $subject;
+    }
+
+    protected static function mediapoolDetailOutputLine(/*array*/ $exif)/*: string*/
+    {
+        $lines = [];
+        foreach ($exif as $key => $value) {
+            if (is_array($value)) {
+                $lines[] = [
+                    'key' => $key,
+                    'value' => self::mediapoolDetailOutputLine($value),
+                ];
+            } else {
+                $lines[] = [
+                    'key' => $key,
+                    'value' => $value,
+                ];
+            }
+        }
+
+        $fragment = new \rex_fragment([
+            'exif' => $lines,
+        ]);
+        $return = $fragment->parse('fragments/mediapool_sidebar_line.php');
+
+        return $return;
+    }
+
 	protected static function convertGPSCoordinates($GPSLatitude, $GPSLatitude_Ref, $GPSLongitude, $GPSLongitude_Ref)
 	{		
 		$GPSLatfaktor  = 1;
