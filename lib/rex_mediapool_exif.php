@@ -182,7 +182,7 @@ class rex_mediapool_exif
             $path = rex_path::media($media->getFileName());
             if($exif = exif_read_data($path, 'ANY_TAG'))
             {
-				if($exif['GPSLatitude'] && $exif['GPSLatitudeRef'] && $exif['GPSLongitude'] && $exif['GPSLongitudeRef']) {
+				if(isset($exif['GPSLatitude']) && isset($exif['GPSLatitudeRef']) && isset($exif['GPSLongitude']) && isset($exif['GPSLongitudeRef'])) {
 					$exif['GPSCoordinates'] = static::convertGPSCoordinates($exif['GPSLatitude'], $exif['GPSLatitudeRef'], $exif['GPSLongitude'], $exif['GPSLongitudeRef']);
 				}
 
