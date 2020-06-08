@@ -135,7 +135,7 @@ class rex_mediapool_exif
             unset($word);
         }
 
-        $return['exif_json'] = json_encode($DATA);
+        $return['exif'] = json_encode($DATA);
         unset($DATA, $field, $lookin);
 
         if(empty($return['title']))
@@ -247,7 +247,7 @@ class rex_mediapool_exif
     {
         $subject = $ep->getSubject();
 
-        $exif = json_decode($ep->getParam('media')->getValue('exif_json'), 1);
+        $exif = json_decode($ep->getParam('media')->getValue('exif'), 1);
         if ($exif) {
             $lines = '';
             //rekursiver Aufruf einer anonymen Funktion
