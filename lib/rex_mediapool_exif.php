@@ -10,7 +10,7 @@ class rex_mediapool_exif
         'keywords' => 'Keywords',
         'title' => ['DocumentTitle', 'Headline'],
         'description' => 'Caption',
-        'categories' => 'Subcategories',		
+        'categories' => 'Subcategories',
 		'gps'         => 'GPSCoordinates',
     ];
 
@@ -182,10 +182,10 @@ class rex_mediapool_exif
             $path = rex_path::media($media->getFileName());
             if($exif = exif_read_data($path, 'ANY_TAG'))
             {
-				if($exif['GPSLatitude'] && $exif['GPSLatitudeRef'] && $exif['GPSLongitude'] && $exif['GPSLongitudeRef']) {
+				if(isset($exif['GPSLatitude']) && isset($exif['GPSLatitudeRef']) && isset($exif['GPSLongitude']) && isset($exif['GPSLongitudeRef'])) {
 					$exif['GPSCoordinates'] = static::convertGPSCoordinates($exif['GPSLatitude'], $exif['GPSLatitudeRef'], $exif['GPSLongitude'], $exif['GPSLongitudeRef']);
 				}
-				
+
                 return $exif;
             }
         }
@@ -248,7 +248,7 @@ class rex_mediapool_exif
         return $return;
     }
 
-    public static function mediapoolDetailOutput (rex_extension_point $ep)/*: string*/
+    public static function mediapoolDetailOutput (rex_extension_point $ep): string
     {
         $subject = $ep->getSubject();
 
@@ -258,7 +258,7 @@ class rex_mediapool_exif
             //rekursiver Aufruf einer anonymen Funktion
             $lines .= self::mediapoolDetailOutputLine($exif);
 
-            $fragment = new \rex_fragment([
+            $fragment = new rex_fragment([
                 'collapsed' => true,
                 'title' => 'EXIF',
                 'lines' => $lines,
@@ -268,7 +268,7 @@ class rex_mediapool_exif
         return $subject;
     }
 
-    protected static function mediapoolDetailOutputLine(/*array*/ $exif)/*: string*/
+    protected static function mediapoolDetailOutputLine(array $exif): string
     {
         $lines = [];
         foreach ($exif as $key => $value) {
@@ -285,7 +285,7 @@ class rex_mediapool_exif
             }
         }
 
-        $fragment = new \rex_fragment([
+        $fragment = new rex_fragment([
             'exif' => $lines,
         ]);
         $return = $fragment->parse('fragments/mediapool_sidebar_line.php');
@@ -294,23 +294,23 @@ class rex_mediapool_exif
     }
 
 	protected static function convertGPSCoordinates($GPSLatitude, $GPSLatitude_Ref, $GPSLongitude, $GPSLongitude_Ref)
-	{		
+	{
 		$GPSLatfaktor  = 1;
 		$GPSLongfaktor = 1;
-		
+
 		if($GPSLatitude_Ref == 'S') $GPSLatfaktor = -1;
 		if($GPSLongitude_Ref == 'W') $GPSLongfaktor = -1;
-		
+
 		$GPSLatitude_h = explode("/", $GPSLatitude[0]);
 		$GPSLatitude_m = explode("/", $GPSLatitude[1]);
 		$GPSLatitude_s = explode("/", $GPSLatitude[2]);
-		
+
 		$GPSLat_h = $GPSLatitude_h[0] / $GPSLatitude_h[1];
 		$GPSLat_m = $GPSLatitude_m[0] / $GPSLatitude_m[1];
 		$GPSLat_s = $GPSLatitude_s[0] / $GPSLatitude_s[1];
-		
+
 		$GPSLatGrad = $GPSLatfaktor * ($GPSLat_h + ($GPSLat_m + ($GPSLat_s / 60)) / 60);
-		
+
 		$GPSLongitude_h = explode("/", $GPSLongitude[0]);
 		$GPSLongitude_m = explode("/", $GPSLongitude[1]);
 		$GPSLongitude_s = explode("/", $GPSLongitude[2]);
@@ -318,7 +318,17 @@ class rex_mediapool_exif
 		$GPSLong_m      = $GPSLongitude_m[0] / $GPSLongitude_m[1];
 		$GPSLong_s      = $GPSLongitude_s[0] / $GPSLongitude_s[1];
 		$GPSLongGrad    = $GPSLongfaktor * ($GPSLong_h + ($GPSLong_m + ($GPSLong_s / 60)) / 60);
-		
+
 		return number_format($GPSLatGrad, 6,'.','') . ',' . number_format($GPSLongGrad, 6,'.','');
 	}
+
+    public function readExifFromFile($filename): void
+    {
+        $subject = null;
+        $params = [
+            'filename' =>$filename,
+        ];
+        $ep = new rex_extension_point('dummy', $subject, $params, false);
+        rex_mediapool_exif::processUploadedMedia($ep);
+    }
 }
