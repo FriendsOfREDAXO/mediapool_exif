@@ -298,11 +298,15 @@ class rex_mediapool_exif
 
 	protected static function convertGPSCoordinates($GPSLatitude, $GPSLatitude_Ref, $GPSLongitude, $GPSLongitude_Ref)
 	{
-		$GPSLatfaktor  = 1;
-		$GPSLongfaktor = 1;
+		$GPSLatfaktor = 1; //N
+		if ($GPSLatitude_Ref == 'S') {
+			$GPSLatfaktor = -1;
+		}
 
-		if($GPSLatitude_Ref == 'S') $GPSLatfaktor = -1;
-		if($GPSLongitude_Ref == 'W') $GPSLongfaktor = -1;
+		$GPSLongfaktor = 1; //E
+		if ($GPSLongitude_Ref == 'W') {
+			$GPSLongfaktor = -1;
+		}
 
 		$GPSLatitude_h = explode("/", $GPSLatitude[0]);
 		$GPSLatitude_m = explode("/", $GPSLatitude[1]);
