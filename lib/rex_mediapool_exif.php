@@ -11,8 +11,9 @@ class rex_mediapool_exif
         'title' => ['DocumentTitle', 'Headline'],
         'description' => 'Caption',
         'categories' => 'Subcategories',
-		'gps'         => 'GPSCoordinates',
-    ];
+		'gps_lat' => 'GPSCoordinatesLat',
+		'gps_long' => 'GPSCoordinatesLong',
+	];
 
     public static function processUploadedMedia(rex_extension_point $ep)
     {
@@ -183,7 +184,9 @@ class rex_mediapool_exif
             if($exif = exif_read_data($path, 'ANY_TAG'))
             {
 				if(isset($exif['GPSLatitude']) && isset($exif['GPSLatitudeRef']) && isset($exif['GPSLongitude']) && isset($exif['GPSLongitudeRef'])) {
-					$exif['GPSCoordinates'] = static::convertGPSCoordinates($exif['GPSLatitude'], $exif['GPSLatitudeRef'], $exif['GPSLongitude'], $exif['GPSLongitudeRef']);
+					$coordinates = static::convertGPSCoordinates($exif['GPSLatitude'], $exif['GPSLatitudeRef'], $exif['GPSLongitude'], $exif['GPSLongitudeRef']);
+					$exif['GPSCoordinatesLat'] = $coordinates['lat'];
+					$exif['GPSCoordinatesLong'] = $coordinates['long'];
 				}
 
                 return $exif;
@@ -319,7 +322,10 @@ class rex_mediapool_exif
 		$GPSLong_s      = $GPSLongitude_s[0] / $GPSLongitude_s[1];
 		$GPSLongGrad    = $GPSLongfaktor * ($GPSLong_h + ($GPSLong_m + ($GPSLong_s / 60)) / 60);
 
-		return number_format($GPSLatGrad, 6,'.','') . ',' . number_format($GPSLongGrad, 6,'.','');
+		return [
+			'lat' => number_format($GPSLatGrad, 6, '.', ''),
+			'long' => number_format($GPSLongGrad, 6, '.', ''),
+		];
 	}
 
     public function readExifFromFile($filename): void
