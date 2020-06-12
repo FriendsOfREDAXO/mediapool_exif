@@ -1,21 +1,15 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-namespace FriendsOfRedaxo\addon\MediapoolExif;
-
-use FriendsOfRedaxo\addon\MediapoolExif\Exception\NotFoundException;
-use rex_media;
-
 /**
  * Datei für ...
  *
  * @version       1.0 / 2020-06-08
  * @author        akrys
  */
+namespace FriendsOfRedaxo\addon\MediapoolExif;
+
+use FriendsOfRedaxo\addon\MediapoolExif\Exception\NotFoundException;
+use rex_media;
 
 /**
  * Description of ExifData
@@ -31,6 +25,14 @@ class ExifData
 	 * @var rex_media
 	 */
 	private /* rex_media */ $media;
+
+	/**
+	 * Exif-Daten-Array
+	 *
+	 * @todo activate type hint if min PHP-Version > 7.4
+	 * @var rex_media
+	 */
+	private /* array */ $exif;
 
 	/**
 	 * Modus
@@ -65,7 +67,7 @@ class ExifData
 	public function __construct(rex_media $media, int $mode = null)
 	{
 		$this->media = $media;
-
+		$this->exif = json_decode($this->media->getValue('exif'), true);
 		if ($mode === null) {
 			$mode = Exif::MODE_THROW_EXCEPTION;
 		}
@@ -83,16 +85,29 @@ class ExifData
 	 */
 	public function get(string $index = null)
 	{
-		$data = json_decode($this->media->getValue('exif'), true);
-
 		if ($index !== null) {
-			if (!array_key_exists($index, $data)) {
-				return $this->handleNotFound($index);
+			if (!array_key_exists($index, $this->exif)) {
+				return $this->handleExcption(new NotFoundException($index, 'Index not found: '.$index));
 			}
-			return $data[$index];
+			return $this->exif[$index];
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Formatierungsalgorithmus anstoßen
+	 * @param string $type
+	 * @param string $format
+	 * @return mixed
+	 */
+	public function format(string $type, string $format = null)
+	{
+		try {
+			return Format\FormatInterface::get($this->exif, $type, $format)->format();
+		} catch (\Exception $e) {
+			return $this->handleExcption($e);
+		}
 	}
 
 	/**
@@ -100,11 +115,11 @@ class ExifData
 	 *
 	 * Welche Rückgabe hätten's gern?
 	 *
-	 * @param string $index
+	 * @param string $exception
 	 * @return mixed
 	 * @throws NotFoundException
 	 */
-	private function handleNotFound(string $index)
+	private function handleExcption(\Exception $exception)
 	{
 		$return = '';
 
@@ -129,7 +144,7 @@ class ExifData
 				break;
 			case Exif::MODE_THROW_EXCEPTION:
 			default:
-				throw new NotFoundException($index, 'Index not found: '.$index);
+				throw $exception;
 		}
 		return $return;
 	}
