@@ -35,6 +35,9 @@ class InvalidFormatExcption
 	public function __construct(string $format, string $message = "", int $code = 0, \Throwable $previous = NULL)
 	{
 		$this->format = $format;
+		if ($message === '') {
+			$message = 'Invalid Format: '.$format;
+		}
 		parent::__construct($message, $code, $previous);
 	}
 

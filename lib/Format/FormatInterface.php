@@ -24,8 +24,8 @@ abstract class FormatInterface
 	protected /* array */ $data;
 
 	/**
-	 *
-	 * @var type 
+	 * Formatierung
+	 * @var string
 	 */
 	protected /* string */ $format;
 
@@ -70,11 +70,14 @@ abstract class FormatInterface
 	 * @return \FriendsOfRedaxo\addon\MediapoolExif\Format\className
 	 * @throws InvalidFormatExcption
 	 */
-	public static function get($data, $type, $format = null)
+	public static function get($data, $type, $format = null): FormatInterface
 	{
 		$className = __NAMESPACE__.'\\'.ucfirst($type);
 		if (class_exists($className)) {
-			return new $className($data, $format);
+			$object = new $className($data, $format);
+			if (is_a($object, FormatInterface::class)) {
+				return $object;
+			}
 		}
 		throw new InvalidFormatExcption($className);
 	}
