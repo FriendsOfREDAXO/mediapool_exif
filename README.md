@@ -25,7 +25,7 @@ Namens einzufügen, sofern beim Upload keine Kategorie definiert wurde.
 ![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/mediapool_exif/master/assets/screenshot.png)
 
 
-##Beta-Features (Version 1.1)
+## Beta-Features (Version 1.1)
 
 Es werden alle EXIF-Daten in der Spalte ```rex_media.exif``` gespeichert, so dass man leichten Zugriff erhält.
 
@@ -58,7 +58,7 @@ Lässt man den Paramter bei ```$exif->get()``` weg, so bekommt man das ganze Arr
 Im "Medium bearbeiten" Fenster ist unterhalb des Vorschau-Bildes eine aufklappbare Box angebracht, wo alle EXIF-Daten zum Nachlesen stehen. (Natürlich nur, sofern es für das Bild Daten gibt, sonst wird die Box ausgeblendet.) Dort kann man in der *linken Spalte* die möglichen Parameterwerte für ```$exif->get()``` nachschlagen.
 
 
-###ohne Exceptions
+### ohne Exceptions
 Der Vollstädigkeit halber sei gesagt, dass man die Funktion ```$exif->get()``` auch so einstellen kann, dass sie keine *Exceptions* wirft. Das ist für den Fall gedacht, dass jemand im Template oder Modul-Ausgabe nicht so gerne mit try/catch-Blöcken arbeitet.
 
 ```php
@@ -77,7 +77,7 @@ if(!$vendor) {
 Das hier ist nicht das Standard-Vorgehen, da es u.U. schwierig werden kann, wenn man die Unterscheidung zwischen ```false``` und ```false``` machen muss. In speziellen Fällen kann man es noch mit ```null``` (```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_NULL```) statt ```false```(```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_FALSE```) zu versuchen.
 Am Besten aber, man bleibt einfach bei Exceptions. Es ist und bleibt das Eindeutigste.
 
-###JSON-Spielerei in der Datenbank
+### JSON-Spielerei in der Datenbank
 
 In MySQL ab Version 5.7.8 und MariaDB ab Version 10.2.3 kann man die JSON-Daten in der ```exif```-Spalte auch zur Filterung verwenden. Leider unterschiedlich je Datenbank, daher "nur" eine Spielerei.
 
@@ -114,7 +114,7 @@ from rex_media
 ;
 ```
 
-##Nachträgliches Einlesen
+## Nachträgliches Einlesen
 
 Über die Konsole kann man die Daten für die Bilder, wo noch keine EXIF-Daten in der Datenbank eingelesen wurden,  nachträglich einlesen. Das ist z.B. sinnvoll, wenn man das Addon gerade installiert hat und alte Bestandsdaten aktualisieren will.
 
