@@ -1,5 +1,7 @@
 <?php
 
+use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+
 class rex_mediapool_exif
 {
 	protected static $fields = [
@@ -156,11 +158,14 @@ class rex_mediapool_exif
 	{
 		if (static::isExifFile($media)) {
 			$path = rex_path::media($media->getFileName());
-			if ($exif = exif_read_data($path, 'ANY_TAG')) {
-				if (isset($exif['GPSLatitude']) && isset($exif['GPSLatitudeRef']) && isset($exif['GPSLongitude']) && isset($exif['GPSLongitudeRef'])) {
-					$coordinates = static::convertGPSCoordinates($exif['GPSLatitude'], $exif['GPSLatitudeRef'], $exif['GPSLongitude'], $exif['GPSLongitudeRef']);
+			$exif = exif_read_data($path, 'ANY_TAG');
+			if ($exif) {
+				try {
+					$coordinates = FormatInterface::get($exif, 'Geo')->format();
 					$exif['GPSCoordinatesLat'] = $coordinates['lat'];
 					$exif['GPSCoordinatesLong'] = $coordinates['long'];
+				} catch (Exception $e) {
+					//no GPS Data, nothing to to
 				}
 
 				return $exif;
@@ -262,42 +267,6 @@ class rex_mediapool_exif
 		$return = $fragment->parse('fragments/mediapool_sidebar_line.php');
 
 		return $return;
-	}
-
-	protected static function convertGPSCoordinates($GPSLatitude, $GPSLatitude_Ref, $GPSLongitude, $GPSLongitude_Ref)
-	{
-		$GPSLatfaktor = 1; //N
-		if ($GPSLatitude_Ref == 'S') {
-			$GPSLatfaktor = -1;
-		}
-
-		$GPSLongfaktor = 1; //E
-		if ($GPSLongitude_Ref == 'W') {
-			$GPSLongfaktor = -1;
-		}
-
-		$GPSLatitude_h = explode("/", $GPSLatitude[0]);
-		$GPSLatitude_m = explode("/", $GPSLatitude[1]);
-		$GPSLatitude_s = explode("/", $GPSLatitude[2]);
-
-		$GPSLat_h = $GPSLatitude_h[0] / $GPSLatitude_h[1];
-		$GPSLat_m = $GPSLatitude_m[0] / $GPSLatitude_m[1];
-		$GPSLat_s = $GPSLatitude_s[0] / $GPSLatitude_s[1];
-
-		$GPSLatGrad = $GPSLatfaktor * ($GPSLat_h + ($GPSLat_m + ($GPSLat_s / 60)) / 60);
-
-		$GPSLongitude_h = explode("/", $GPSLongitude[0]);
-		$GPSLongitude_m = explode("/", $GPSLongitude[1]);
-		$GPSLongitude_s = explode("/", $GPSLongitude[2]);
-		$GPSLong_h = $GPSLongitude_h[0] / $GPSLongitude_h[1];
-		$GPSLong_m = $GPSLongitude_m[0] / $GPSLongitude_m[1];
-		$GPSLong_s = $GPSLongitude_s[0] / $GPSLongitude_s[1];
-		$GPSLongGrad = $GPSLongfaktor * ($GPSLong_h + ($GPSLong_m + ($GPSLong_s / 60)) / 60);
-
-		return [
-			'lat' => number_format($GPSLatGrad, 6, '.', ''),
-			'long' => number_format($GPSLongGrad, 6, '.', ''),
-		];
 	}
 
 	public function readExifFromFile($filename): void
