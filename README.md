@@ -108,7 +108,7 @@ try {
 
 #### In Modulen und Templates
 
-In Templates und Modulausgaben kann man analog vorgehen:
+Der Aufruf von ```FormatInterface::get()``` ist zur einfacheren Nutzung in die Funktion ```Exif::format()``` gekapselt. Somit kann man das oben genutzte Beispiel zum Formatieren der Geo-Daten in Templates und Modulausgaben einfacher bzw. kürzer Formulieren: ```$exif->format('Geo');```
 
 ```php
 use FriendsOfRedaxo\addon\MediapoolExif\Exif;
