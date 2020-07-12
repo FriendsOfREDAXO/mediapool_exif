@@ -8,6 +8,8 @@
  */
 namespace FriendsOfRedaxo\addon\MediapoolExif\Cli;
 
+use FriendsOfRedaxo\addon\MediapoolExif\Exif;
+use FriendsOfRedaxo\addon\MediapoolExif\MediapoolExif;
 use rex_console_command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -48,13 +50,13 @@ class Read
 		$updateAll = $input->getOption('all');
 		$updateSilent = $input->getOption('silent');
 
-		$mode = \FriendsOfRedaxo\addon\MediapoolExif\Exif::GETMEDIA_MODE_NULL_ONLY;
+		$mode = Exif::GETMEDIA_MODE_NULL_ONLY;
 		if ($updateAll) {
 			if ($updateSilent || $io->confirm('You are going to update all files. Are you sure?', false)) {
-				$mode = \FriendsOfRedaxo\addon\MediapoolExif\Exif::GETMEDIA_MODE_ALL;
+				$mode = Exif::GETMEDIA_MODE_ALL;
 			}
 		}
-		$files = \FriendsOfRedaxo\addon\MediapoolExif\Exif::getMediaToRead($mode);
+		$files = Exif::getMediaToRead($mode);
 
 		$numEntries = count($files);
 		$io->writeln($numEntries.' entries to read');
@@ -64,7 +66,7 @@ class Read
 			$counter++;
 			$io->writeln('Process file '.$counter.' of '.$numEntries.': '.$file['filename']);
 
-			\rex_mediapool_exif::readExifFromFile($file['filename']);
+			MediapoolExif::readExifFromFile($file['filename']);
 		}
 
 		$io->success('done');

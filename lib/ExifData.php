@@ -9,8 +9,8 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif;
 
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\NotFoundException;
+use FriendsOfRedaxo\addon\MediapoolExif\Exif;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
-use rex_media;
 
 /**
  * Description of ExifData
@@ -106,7 +106,7 @@ class ExifData
 	{
 		try {
 			return FormatInterface::get($this->exif, $type, $format)->format();
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			return $this->handleExcption($e);
 		}
 	}
@@ -120,7 +120,7 @@ class ExifData
 	 * @return mixed
 	 * @throws NotFoundException
 	 */
-	private function handleExcption(\Exception $exception)
+	private function handleExcption(Exception $exception)
 	{
 		$return = '';
 

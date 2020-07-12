@@ -25,7 +25,9 @@ Namens einzufügen, sofern beim Upload keine Kategorie definiert wurde.
 ![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/mediapool_exif/master/assets/screenshot.png)
 
 
-## Beta-Features (Version 1.1)
+## Beta-Features (Version 2.0)
+
+Da nun doch zu viele Änderungen vorgenommen wurden, ist nun eine Major-Version von nöten. Daher keine 1.1 sondern 2.0.
 
 Es werden alle EXIF-Daten in der Spalte ```rex_media.exif``` gespeichert, so dass man leichten Zugriff erhält.
 
@@ -203,7 +205,7 @@ select exif,
 	exif->"$.ExposureTime" exposure,
 	exif->"$.ISOSpeedRatings" iso
 from rex_media;
--- where exif->"$.Make" = 'Apple' 
+-- where exif->"$.Make" = 'Apple'
 ```
 
 Äquivalent in MariaDB:

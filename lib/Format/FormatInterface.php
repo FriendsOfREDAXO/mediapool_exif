@@ -9,6 +9,7 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
 
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
+use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 
 /**
  * Description of FormatBase
