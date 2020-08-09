@@ -25,11 +25,9 @@ Namens einzufügen, sofern beim Upload keine Kategorie definiert wurde.
 ![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/mediapool_exif/master/assets/screenshot.png)
 
 
-## Beta-Features (Version 2.0)
+## Speicherung der Rohdaten
 
-Da nun doch zu viele Änderungen vorgenommen wurden, ist nun eine Major-Version von nöten. Daher keine 1.1 sondern 2.0.
-
-Es werden alle EXIF-Daten in der Spalte ```rex_media.exif``` gespeichert, so dass man leichten Zugriff erhält.
+Ab Version 2.0 werden alle EXIF-Daten in der Spalte ```rex_media.exif``` gespeichert, so dass man leichten Zugriff erhält.
 
 Im Prinzip sind die Daten über folgenden Code erreichbar:
 
@@ -82,7 +80,7 @@ if(!$vendor) {
 }
 ```
 
-Das hier ist nicht das Standard-Vorgehen, da es u.U. schwierig werden kann, wenn man die Unterscheidung zwischen ```false``` und ```false``` machen muss. In speziellen Fällen kann man es noch mit ```null``` (```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_NULL```) statt ```false```(```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_FALSE```) zu versuchen.
+Das hier ist nicht das Standard-Vorgehen, da es u.U. schwierig werden kann, wenn man die Unterscheidung zwischen ```false``` und ```false``` machen muss. In speziellen Fällen kann man es mit ```null``` (```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_NULL```) statt ```false```(```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_FALSE```) versuchen.
 Am Besten aber, man bleibt einfach bei Exceptions. Es ist und bleibt das Eindeutigste.
 
 ### Formatierung
