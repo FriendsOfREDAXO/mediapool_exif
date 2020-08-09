@@ -1,9 +1,26 @@
 <?php
 
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+namespace FriendsOfRedaxo\addon\MediapoolExif;
 
-class rex_mediapool_exif
+use Exception;
+use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+use rex;
+use rex_extension_point;
+use rex_fragment;
+use rex_i18n;
+use rex_logger;
+use rex_media;
+use rex_media_cache;
+use rex_path;
+use rex_sql;
+use function mb_convert_encoding;
+
+class MediapoolExif
 {
+	/**
+	 * Field mapping
+	 * @var array
+	 */
 	protected static $fields = [
 		'author' => ['Artist', 'AuthorByLine', 'CaptionWriter'],
 		'copyright' => ['Copyright', 'Artist', 'AuthorByLine', 'CaptionWriter'],
@@ -17,6 +34,10 @@ class rex_mediapool_exif
 		'gps_long' => 'GPSCoordinatesLong',
 	];
 
+	/**
+	 * Upload processing
+	 * @param rex_extension_point $ep
+	 */
 	public static function processUploadedMedia(rex_extension_point $ep)
 	{
 		if ($data = static::getDataByFilename($ep->getParam('filename'))) {
@@ -25,6 +46,8 @@ class rex_mediapool_exif
 			$sql->setQuery($qry);
 			if ($result = $sql->getArray()) {
 				$result = $result[0];
+
+
 				$update = [];
 
 				// check for category?!
@@ -71,6 +94,8 @@ class rex_mediapool_exif
 						$ep->setParam('msg', $ep->getParam('msg').'<br />'.rex_i18n::msg('exif_data_updated').' '.$names);
 
 						rex_media_cache::delete($ep->getParam('filename'));
+					} else {
+						rex_logger::factory()->alert('SQL-Error ['.$sql->getErrno().'] '.$sql->getError());
 					}
 					unset($qry);
 				}
@@ -81,7 +106,12 @@ class rex_mediapool_exif
 		unset($data);
 	}
 
-	public static function getDataByFilename($filename)
+	/**
+	 * Daten au der Datei holen
+	 * @param string $filename
+	 * @return array|null
+	 */
+	public static function getDataByFilename(string $filename)
 	{
 		if ($media = rex_media::get($filename)) {
 			if ($media->fileExists()) {
@@ -92,7 +122,13 @@ class rex_mediapool_exif
 		return null;
 	}
 
-	public static function getData(rex_media $media, $key = null)
+	/**
+	 * Daten aus der Datei verarbeiten
+	 * @param rex_media $media
+	 * @param string $key
+	 * @return array
+	 */
+	public static function getData(rex_media $media, string $key = null): array
 	{
 		$DATA = array_replace(static::getExifData($media), static::getIptcData($media));
 		$return = [];
@@ -119,6 +155,9 @@ class rex_mediapool_exif
 		}
 
 		$return['exif'] = json_encode($DATA);
+		if (!$return['exif']) {
+			\rex_logger::factory()->alert((string) json_last_error());
+		}
 		unset($DATA, $field, $lookin);
 
 		if (empty($return['title'])) {
@@ -149,16 +188,36 @@ class rex_mediapool_exif
 		return $return;
 	}
 
-	protected static function isExifFile(rex_media $media)
+	/**
+	 * Dateityp-Prüfung.
+	 * Beantwortet die Frage, ob die Datei Datei EXIF-Daten enthalten kann
+	 * @param rex_media $media
+	 * @return bool
+	 */
+	protected static function isExifFile(rex_media $media): bool
 	{
-		return preg_match('/(\/|\.|^)?(jpe?g|tiff?|wave?)$/i', $media->getType());
+		return preg_match('/(\/|\.|^)?(jpe?g|tiff?|wave?)$/i', $media->getType()) > 0;
 	}
 
-	protected static function getExifData(rex_media $media)
+	/**
+	 * EXIF-Daten aus dem rex_media-Objekt holen.
+	 * @param rex_media $media
+	 * @return array
+	 */
+	protected static function getExifData(rex_media $media): array
 	{
 		if (static::isExifFile($media)) {
 			$path = rex_path::media($media->getFileName());
 			$exif = exif_read_data($path, 'ANY_TAG');
+
+			// Bugfix json_encode error 5
+			// 5 = JSON_ERROR_UTF8 => alles als UTF8 markieren.
+			foreach ($exif as $key => $value) {
+				if (is_string($value)) {
+					$exif[$key] = mb_convert_encoding($value, 'UTF-8');
+				}
+			}
+
 			if ($exif) {
 				try {
 					$coordinates = FormatInterface::get($exif, 'Geo')->format();
@@ -174,7 +233,11 @@ class rex_mediapool_exif
 		return [];
 	}
 
-	protected static function getIptcDefinitions()
+	/**
+	 * Liste der IPTC-Defintionen
+	 * @return array
+	 */
+	protected static function getIptcDefinitions(): array
 	{
 		return [
 			'2#005' => 'DocumentTitle',
@@ -199,6 +262,11 @@ class rex_mediapool_exif
 		];
 	}
 
+	/**
+	 * IPTC-Daten holen
+	 * @param rex_media $media
+	 * @return type
+	 */
 	protected static function getIptcData(rex_media $media)
 	{
 		$return = [];
@@ -224,6 +292,11 @@ class rex_mediapool_exif
 		return $return;
 	}
 
+	/**
+	 * Seitenleiste für die Medienpool-Detailseite generieren
+	 * @param rex_extension_point $ep
+	 * @return string
+	 */
 	public static function mediapoolDetailOutput(rex_extension_point $ep): string
 	{
 		$subject = $ep->getSubject();
@@ -244,6 +317,11 @@ class rex_mediapool_exif
 		return $subject;
 	}
 
+	/**
+	 * Einzelzeile der Medienpool-Detail-Ausgabe verarbeiten.
+	 * @param array $exif
+	 * @return string
+	 */
 	protected static function mediapoolDetailOutputLine(array $exif): string
 	{
 		$lines = [];
@@ -269,13 +347,21 @@ class rex_mediapool_exif
 		return $return;
 	}
 
-	public function readExifFromFile($filename): void
+	/**
+	 * EXIF-Daten außerhalb des Upload-Prozesses ermitteln.
+	 *
+	 * Die Funktion wird z.B. im Cron verwendet.
+	 *
+	 * @param string $filename
+	 * @return void
+	 */
+	public function readExifFromFile(string $filename): void
 	{
 		$subject = null;
 		$params = [
 			'filename' => $filename,
 		];
 		$ep = new rex_extension_point('dummy', $subject, $params, false);
-		rex_mediapool_exif::processUploadedMedia($ep);
+		MediapoolExif::processUploadedMedia($ep);
 	}
 }

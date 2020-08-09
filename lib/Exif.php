@@ -8,7 +8,7 @@
  */
 namespace FriendsOfRedaxo\addon\MediapoolExif;
 
-use rex_media;
+use FriendsOfRedaxo\addon\MediapoolExif\ExifData;
 
 /**
  * Description of Exif
@@ -45,7 +45,7 @@ class Exif
 	 */
 	public static function getMediaToRead($mode = self::GETMEDIA_MODE_NULL_ONLY): array
 	{
-		$rexSQL = \rex_sql::factory();
+		$rexSQL = rex_sql::factory();
 
 		switch ($mode) {
 			case self::GETMEDIA_MODE_ALL:
