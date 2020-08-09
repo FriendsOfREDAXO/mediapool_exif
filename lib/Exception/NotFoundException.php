@@ -8,13 +8,16 @@
  */
 namespace FriendsOfRedaxo\addon\MediapoolExif\Exception;
 
+use Exception;
+use Throwable;
+
 /**
  * Description of NotFoundException
  *
  * @author akrys
  */
 class NotFoundException
-	extends \Exception
+	extends Exception
 {
 	/**
 	 *
@@ -28,9 +31,9 @@ class NotFoundException
 	 * @param string $index
 	 * @param string $message
 	 * @param int $code
-	 * @param \Throwable $previous
+	 * @param Throwable $previous
 	 */
-	public function __construct(string $index, string $message = "", int $code = 0, \Throwable $previous = NULL)
+	public function __construct(string $index, string $message = "", int $code = 0, Throwable $previous = NULL)
 	{
 		$this->index = $index;
 		parent::__construct($message, $code, $previous);

@@ -9,6 +9,7 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif\Exception;
 
 use Exception;
+use Throwable;
 
 /**
  * Description of InvalidFormatExcption
@@ -30,9 +31,9 @@ class InvalidFormatExcption
 	 * @param string $format
 	 * @param string $message
 	 * @param int $code
-	 * @param \Throwable $previous
+	 * @param Throwable $previous
 	 */
-	public function __construct(string $format, string $message = "", int $code = 0, \Throwable $previous = NULL)
+	public function __construct(string $format, string $message = "", int $code = 0, Throwable $previous = NULL)
 	{
 		$this->format = $format;
 		if ($message === '') {

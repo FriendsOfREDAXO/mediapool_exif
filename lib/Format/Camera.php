@@ -8,12 +8,12 @@
  */
 namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
 
-use Exception;
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera\Aperture;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera\Exposure;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera\Iso;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera\Length;
+use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 
 /**
  * Description of Camera

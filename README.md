@@ -25,9 +25,9 @@ Namens einzufügen, sofern beim Upload keine Kategorie definiert wurde.
 ![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/mediapool_exif/master/assets/screenshot.png)
 
 
-## Beta-Features (Version 1.1)
+## Speicherung der Rohdaten
 
-Es werden alle EXIF-Daten in der Spalte ```rex_media.exif``` gespeichert, so dass man leichten Zugriff erhält.
+Ab Version 2.0 werden alle EXIF-Daten in der Spalte ```rex_media.exif``` gespeichert, so dass man leichten Zugriff erhält.
 
 Im Prinzip sind die Daten über folgenden Code erreichbar:
 
@@ -80,7 +80,7 @@ if(!$vendor) {
 }
 ```
 
-Das hier ist nicht das Standard-Vorgehen, da es u.U. schwierig werden kann, wenn man die Unterscheidung zwischen ```false``` und ```false``` machen muss. In speziellen Fällen kann man es noch mit ```null``` (```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_NULL```) statt ```false```(```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_FALSE```) zu versuchen.
+Das hier ist nicht das Standard-Vorgehen, da es u.U. schwierig werden kann, wenn man die Unterscheidung zwischen ```false``` und ```false``` machen muss. In speziellen Fällen kann man es mit ```null``` (```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_NULL```) statt ```false```(```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_FALSE```) versuchen.
 Am Besten aber, man bleibt einfach bei Exceptions. Es ist und bleibt das Eindeutigste.
 
 ### Formatierung
@@ -203,7 +203,7 @@ select exif,
 	exif->"$.ExposureTime" exposure,
 	exif->"$.ISOSpeedRatings" iso
 from rex_media;
--- where exif->"$.Make" = 'Apple' 
+-- where exif->"$.Make" = 'Apple'
 ```
 
 Äquivalent in MariaDB:

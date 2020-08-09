@@ -1,18 +1,14 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
-
 /**
- * Datei für ...
+ * Datei für GEO
  *
  * @version       1.0 / 2020-06-12
  * @author        akrys
  */
+namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
+
+use Exception;
 
 /**
  * Description of Geo
@@ -26,7 +22,7 @@ class Geo
 	/**
 	 * Formatierung der Daten
 	 * @return array
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function format()
 	{
@@ -35,7 +31,7 @@ class Geo
 			!isset($this->data['GPSLatitudeRef']) ||
 			!isset($this->data['GPSLongitude']) ||
 			!isset($this->data['GPSLongitudeRef'])) {
-			throw new \Exception('GPS not found');
+			throw new Exception('GPS not found');
 		}
 
 		$GPSLatitude = $this->data['GPSLatitude'];
