@@ -10,6 +10,7 @@ console_commands:
 requires:
     packages:
         mediapool: '>=2.3.0'
+        metainfo: '>=2.7.1'
     redaxo: ^5.2.0
     php:
         version: '>=7.1'
