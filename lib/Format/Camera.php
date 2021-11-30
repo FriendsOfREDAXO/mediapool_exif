@@ -8,6 +8,7 @@
  */
 namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
 
+use Exception;
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera\Aperture;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera\Exposure;

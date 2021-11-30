@@ -9,6 +9,8 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif;
 
 use FriendsOfRedaxo\addon\MediapoolExif\ExifData;
+use rex_media;
+use rex_sql;
 
 /**
  * Description of Exif
