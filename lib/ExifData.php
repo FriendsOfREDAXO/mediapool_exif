@@ -8,9 +8,11 @@
  */
 namespace FriendsOfRedaxo\addon\MediapoolExif;
 
+use Exception;
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\NotFoundException;
 use FriendsOfRedaxo\addon\MediapoolExif\Exif;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+use rex_media;
 
 /**
  * Description of ExifData

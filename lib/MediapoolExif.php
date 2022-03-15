@@ -47,7 +47,6 @@ class MediapoolExif
 			if ($result = $sql->getArray()) {
 				$result = $result[0];
 
-
 				$update = [];
 
 				// check for category?!
@@ -87,7 +86,7 @@ class MediapoolExif
 
 					if ($sql->setQuery($qry)) {
 						$names = '<code>'.join('</code>, <code>', array_keys($update)).'</code>';
-						$names = preg_replace_callback('/\>[a-z]/', function($match) {
+						$names = preg_replace_callback('/\>[a-z]/', function ($match) {
 							return strtoupper($match[0]);
 						}, $names);
 
@@ -210,15 +209,15 @@ class MediapoolExif
 			$path = rex_path::media($media->getFileName());
 			$exif = exif_read_data($path, 'ANY_TAG');
 
-			// Bugfix json_encode error 5
-			// 5 = JSON_ERROR_UTF8 => alles als UTF8 markieren.
-			foreach ($exif as $key => $value) {
-				if (is_string($value)) {
-					$exif[$key] = mb_convert_encoding($value, 'UTF-8');
-				}
-			}
-
 			if ($exif) {
+				// Bugfix json_encode error 5
+				// 5 = JSON_ERROR_UTF8 => alles als UTF8 markieren.
+				foreach ($exif as $key => $value) {
+					if (is_string($value)) {
+						$exif[$key] = mb_convert_encoding($value, 'UTF-8');
+					}
+				}
+
 				try {
 					$coordinates = FormatInterface::get($exif, 'Geo')->format();
 					$exif['GPSCoordinatesLat'] = $coordinates['lat'];
