@@ -71,6 +71,10 @@ class ExifData
 	{
 		$this->media = $media;
 		$this->exif = json_decode($this->media->getValue('exif'), true);
+		if (!$this->exif) {
+			$this->exif = [];
+		}
+
 		if ($mode === null) {
 			$mode = Exif::MODE_THROW_EXCEPTION;
 		}
