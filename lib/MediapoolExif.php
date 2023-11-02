@@ -40,6 +40,7 @@ class MediapoolExif
 	 */
 	public static function processUploadedMedia(rex_extension_point $ep)
 	{
+		$oldMedia = rex_media::get($ep->getParam('filename'));
 		if ($data = static::getDataByFilename($ep->getParam('filename'))) {
 			$qry = "SELECT * FROM `".rex::getTablePrefix()."media` WHERE `filename` = '".$ep->getParam('filename')."'";
 			$sql = rex_sql::factory();
@@ -81,6 +82,10 @@ class MediapoolExif
 				}
 				unset($field, $value, $key);
 
+				if (self::exifHasChanged($data['exif'], $oldMedia->getValue('exif'))) {
+					$update['exif'] = '`exif`='.$sql->escape($data['exif']);
+				}
+
 				if (!empty($update)) {
 					$qry = "UPDATE `".rex::getTablePrefix()."media` SET ".join(", ", array_values($update))." WHERE `filename` = '".$ep->getParam('filename')."'";
 
@@ -103,6 +108,32 @@ class MediapoolExif
 			unset($result, $qry, $sql);
 		}
 		unset($data);
+	}
+
+	/**
+	 * Check ob die EXIF-Daten sich geändert haben.
+	 *
+	 * @param string $new
+	 * @param string|null $old
+	 * @return bool
+	 */
+	private static function exifHasChanged(string $new, ?string $old): bool
+	{
+		$newArray = json_decode($new, true);
+		$oldArray = json_decode($old, true);
+
+		/**
+		 * FileDateTime ändert sich immer.
+		 * Hieße: wir ändern das exif-Feld, obwohl sich nichts relevantes geändert hat.
+		 */
+		unset(
+			$newArray['FileDateTime'], $oldArray['FileDateTime']
+		);
+
+		$newString = json_encode($newArray);
+		$oldString = json_encode($oldArray);
+
+		return $newString !== $oldString;
 	}
 
 	/**
