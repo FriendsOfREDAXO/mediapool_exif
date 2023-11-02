@@ -55,6 +55,6 @@ if(!$vendor) {
 Das hier ist nicht das Standard-Vorgehen, da es u.U. schwierig werden kann, wenn man die Unterscheidung zwischen ```false``` und ```false``` machen muss. In speziellen Fällen kann man es mit ```null``` (```\FriendsOfRedaxo\addon\MediapoolExi\Enum\Mode::RETURN_NULL```) statt ```false```(```\FriendsOfRedaxo\addon\MediapoolExi\Enum\Mode::RETURN_FALSE```) versuchen.
 Am Besten aber, man bleibt einfach bei Exceptions. Es ist und bleibt das Eindeutigste.
 
-[weiter mit Formatierung](exif_daten/formatierung.md)
+[weiter mit Formatierung](formatierung.md)
 
 
