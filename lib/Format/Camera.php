@@ -9,6 +9,7 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
 
 use Exception;
+use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera\Aperture;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera\Exposure;
@@ -21,10 +22,12 @@ use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
  *
  * @author akrys
  */
-class Camera
-	extends FormatInterface
+class Camera extends FormatInterface
 {
+	/** @deprecated use \FriendsOfRedaxo\addon\MediapoolExif\Enum\Format::RAW */
 	const TYPE_NUMERIC = 'numeric';
+
+	/** @deprecated use \FriendsOfRedaxo\addon\MediapoolExif\Enum\Format::READABLE */
 	const TYPE_READABLE = 'readable';
 
 	/**
@@ -41,7 +44,7 @@ class Camera
 
 		$format = $this->format;
 		if ($format === null) {
-			$format = self::TYPE_READABLE;
+			$format = Format::READABLE;
 		}
 
 		if (is_callable([$this, $format])) {

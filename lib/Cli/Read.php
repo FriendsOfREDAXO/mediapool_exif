@@ -8,6 +8,7 @@
  */
 namespace FriendsOfRedaxo\addon\MediapoolExif\Cli;
 
+use FriendsOfRedaxo\addon\MediapoolExif\Enum\MediaFetchMode;
 use FriendsOfRedaxo\addon\MediapoolExif\Exif;
 use FriendsOfRedaxo\addon\MediapoolExif\MediapoolExif;
 use rex_console_command;
@@ -50,10 +51,10 @@ class Read
 		$updateAll = $input->getOption('all');
 		$updateSilent = $input->getOption('silent');
 
-		$mode = Exif::GETMEDIA_MODE_NULL_ONLY;
+		$mode = MediaFetchMode::NULL_ONLY;
 		if ($updateAll) {
 			if ($updateSilent || $io->confirm('You are going to update all files. Are you sure?', false)) {
-				$mode = Exif::GETMEDIA_MODE_ALL;
+				$mode = MediaFetchMode::ALL;
 			}
 		}
 		$files = Exif::getMediaToRead($mode);

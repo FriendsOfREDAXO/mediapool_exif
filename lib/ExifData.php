@@ -9,8 +9,8 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif;
 
 use Exception;
+use FriendsOfRedaxo\addon\MediapoolExif\Enum\ReturnMode;
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\NotFoundException;
-use FriendsOfRedaxo\addon\MediapoolExif\Exif;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 use rex_media;
 
@@ -71,8 +71,12 @@ class ExifData
 	{
 		$this->media = $media;
 		$this->exif = json_decode($this->media->getValue('exif'), true);
+		if (!$this->exif) {
+			$this->exif = [];
+		}
+
 		if ($mode === null) {
-			$mode = Exif::MODE_THROW_EXCEPTION;
+			$mode = ReturnMode::THROW_EXCEPTION;
 		}
 		$this->mode = $mode;
 	}
@@ -127,25 +131,25 @@ class ExifData
 		$return = '';
 
 		switch ($this->mode) {
-			case Exif::MODE_RETURN_NULL:
+			case ReturnMode::RETURN_NULL:
 				$return = null;
 				break;
-			case Exif::MODE_RETURN_FALSE:
+			case ReturnMode::RETURN_FALSE:
 				$return = false;
 				break;
-			case Exif::MODE_RETURN_ZERO:
+			case ReturnMode::RETURN_ZERO:
 				$return = 0;
 				break;
-			case Exif::MODE_RETURN_MINUS:
+			case ReturnMode::RETURN_MINUS:
 				$return = -1;
 				break;
-			case Exif::MODE_RETURN_EMPTY_STRING:
+			case ReturnMode::RETURN_EMPTY_STRING:
 				$return = '';
 				break;
-			case Exif::MODE_RETURN_EMPTY_ARRAY:
+			case ReturnMode::RETURN_EMPTY_ARRAY:
 				$return = [];
 				break;
-			case Exif::MODE_THROW_EXCEPTION:
+			case ReturnMode::THROW_EXCEPTION:
 			default:
 				throw $exception;
 		}
