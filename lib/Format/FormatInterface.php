@@ -35,7 +35,7 @@ abstract class FormatInterface
 	 * @param array $data
 	 * @param string $format
 	 */
-	public function __construct(array $data, string $format = null)
+	public function __construct(array $data, string /*\FriendsOfRedaxo\addon\MediapoolExif\Enum\Format*/ $format = null)
 	{
 		$this->data = $data;
 		$this->format = $format;
@@ -71,7 +71,7 @@ abstract class FormatInterface
 	 * @return \FriendsOfRedaxo\addon\MediapoolExif\Format\className
 	 * @throws InvalidFormatExcption
 	 */
-	public static function get($data, $type, $format = null): FormatInterface
+	public static function get($data, $type, /*\FriendsOfRedaxo\addon\MediapoolExif\Enum\Format*/ $format = null): FormatInterface
 	{
 		$className = __NAMESPACE__.'\\'.ucfirst($type);
 		if (class_exists($className)) {
