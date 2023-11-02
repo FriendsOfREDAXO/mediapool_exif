@@ -7,8 +7,7 @@ Da die Daten nicht immer in einem nutzbaren Format eingetragen sind, gibt es neb
 
 Eigentlich ist es nur ein Interface, wo die Methode ```format()``` implementiert werden muss. Das "Interface" (eigentlich eine abstrakte Klasse) kann in ```FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface``` eingesehen werden.
 
-Da für das Einlesen der Geo-Daten direkt der Ausgabe-Formatter benutzt wird, kann man die konkrete Nutzung in der Methode ```rex_mediapool_exif::getExifData()``` nachvollziehen.
-(```rex_mediapool_exif``` habe ich noch nicht dem Namespace zugeordnet. Kommt frühestens in Version 2.0 Breaking Changes und so…)
+Da für das Einlesen der Geo-Daten direkt der Ausgabe-Formatter benutzt wird, kann man die konkrete Nutzung in der Methode ```\FriendsOfRedaxo\addon\MediapoolExif\MediapoolExif::getExifData()``` nachvollziehen.
 
 ```php
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
