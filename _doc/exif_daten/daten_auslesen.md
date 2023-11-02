@@ -41,7 +41,7 @@ Der Vollstädigkeit halber sei gesagt, dass man die Funktion ```$exif->get()``` 
 use FriendsOfRedaxo\addon\MediapoolExif\Exif;
 
 $media = rex_media::get($filename);
-$exif = Exif::get($media, Exif::MODE_RETURN_FALSE);
+$exif = Exif::get($media, FriendsOfRedaxo\addon\MediapoolExi\Enum\Mode::RETURN_FALSE);
 $index = 'Make';
 
 $vendor = $exif->get($index);
@@ -52,146 +52,9 @@ if(!$vendor) {
 }
 ```
 
-Das hier ist nicht das Standard-Vorgehen, da es u.U. schwierig werden kann, wenn man die Unterscheidung zwischen ```false``` und ```false``` machen muss. In speziellen Fällen kann man es mit ```null``` (```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_NULL```) statt ```false```(```\FriendsOfRedaxo\addon\MediapoolExif\Exif::MODE_RETURN_FALSE```) versuchen.
+Das hier ist nicht das Standard-Vorgehen, da es u.U. schwierig werden kann, wenn man die Unterscheidung zwischen ```false``` und ```false``` machen muss. In speziellen Fällen kann man es mit ```null``` (```\FriendsOfRedaxo\addon\MediapoolExi\Enum\Mode::RETURN_NULL```) statt ```false```(```\FriendsOfRedaxo\addon\MediapoolExi\Enum\Mode::RETURN_FALSE```) versuchen.
 Am Besten aber, man bleibt einfach bei Exceptions. Es ist und bleibt das Eindeutigste.
 
-### Formatierung
+[weiter mit Formatierung](exif_daten/formatierung.md)
 
-Da die Daten nicht immer in einem nutzbaren Format eingetragen sind, gibt es neben ```EXIF::get``` für die Rohdaten auch ```EXIF::format()```, wo man noch eine Aufbereitung dazwischen schalten kann.
 
-#### Exkurs: Was passiert da genau?
-
-Eigentlich ist es nur ein Interface, wo die Methode ```format()``` implementiert werden muss. Das "Interface" (eigentlich eine abstrakte Klasse) kann in ```FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface``` eingesehen werden.
-
-Da für das Einlesen der Geo-Daten direkt der Ausgabe-Formatter benutzt wird, kann man die konkrete Nutzung in der Methode ```rex_mediapool_exif::getExifData()``` nachvollziehen.
-(```rex_mediapool_exif``` habe ich noch nicht dem Namespace zugeordnet. Kommt frühestens in Version 2.0 Breaking Changes und so…)
-
-```php
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
-
-try {
-	$coordinates = FormatInterface::get($exif, 'Geo')->format();
-	$exif['GPSCoordinatesLat'] = $coordinates['lat'];
-	$exif['GPSCoordinatesLong'] = $coordinates['long'];
-} catch (Exception $e) {
-	//no GPS Data, nothing to to
-}
-```
-
-#### In Modulen und Templates
-
-Der Aufruf von ```FormatInterface::get()``` ist zur einfacheren Nutzung in die Funktion ```Exif::format()``` gekapselt. Somit kann man das oben genutzte Beispiel zum Formatieren der Geo-Daten in Templates und Modulausgaben einfacher bzw. kürzer Formulieren: ```$exif->format('Geo');```
-
-```php
-use FriendsOfRedaxo\addon\MediapoolExif\Exif;
-
-$media = rex_media::get($filename);
-$exif = Exif::get($media);
-try {
-	var_dump($exif->format('Geo'))
-} catch (InvalidFormatExcption $e) {
-	echo $e->getFormat().' unbekannt.';
-} catch (Exception $e) {
-	var_dump($e->getMessage());
-}
-
-```
-Ausgabe:
-
-```
-rex:///template/1:39:
-array (size=2)
-  'lat' => string '51.060089' (length=9)
-  'long' => string '7.122339' (length=8)
-```
-
-#### Format-Parameter
-
-Als Beispiel, wie der ```format```-Parameter genutzt werden kann, habe ich mal beispielhaft einen Formatter für die Kamera-Daten geschrieben. Intern macht der Formatter gebrauch von weiteren Formattern, so dass man diese Teilerhebung der Daten auch direkt im Template oder ineiner Modulausgabe verwenden kann.
-
-```php
-use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera;
-
-$media = rex_media::get($filename);
-$exif = Exif::get($media);
-
-try {
-	print 'Camera numeric<br />';
-	var_dump($exif->format('Camera', Camera::TYPE_NUMERIC));
-
-	print 'Camera readable<br />';
-	var_dump($exif->format('Camera', Camera::TYPE_READABLE));
-
-	print 'interner Length Formatter';
-	var_dump($exif->format('Camera\\Length', Camera::TYPE_READABLE));
-} catch (InvalidFormatExcption $e) {
-	echo $e->getFormat().' unbekannt.';
-} catch (Exception $e) {
-	var_dump($e->getMessage());
-}
-
-```
-
-Ausgabe:
-
-```
-Camera numeric
-rex:///template/1:34:
-array (size=6)
-  'make' => string 'Canon' (length=5)
-  'model' => string 'Canon EOS 80D' (length=13)
-  'iso' => int 100
-  'aperture' => string '5.6' (length=3)
-  'exposure' => float 0.016666666666667
-  'length' => float 49
-
-Camera readable
-rex:///template/1:36:
-array (size=6)
-  'make' => string 'Canon' (length=5)
-  'model' => string 'Canon EOS 80D' (length=13)
-  'iso' => int 100
-  'aperture' => string 'f/5.6' (length=5)
-  'exposure' => string '1/60 s' (length=6)
-  'length' => string '49 mm' (length=5)
-
-interner Length Formatter
-rex:///template/1:39:string '49 mm' (length=5)
-```
-
-### JSON-Spielerei in der Datenbank
-
-In MySQL ab Version 5.7.8 und MariaDB ab Version 10.2.3 kann man die JSON-Daten in der ```exif```-Spalte auch zur Filterung verwenden. Leider unterschiedlich je Datenbank, daher "nur" eine Spielerei.
-
-```sql
-select exif,
-	JSON_VALID(exif) valid,
-	/*json_detailed(exif_json) formatted,*/ -- gibt es nicht in MySQL
-	exif->"$.FileName" filename,
-	exif->"$.Make" make,
-	exif->"$.Model" model,
-	exif->"$.Make" = 'Apple' isIPhone, -- z.B im where
-	exif->"$.COMPUTED.ApertureFNumber" aperture,
-	exif->"$.ExposureTime" exposure,
-	exif->"$.ISOSpeedRatings" iso
-from rex_media;
--- where exif->"$.Make" = 'Apple'
-```
-
-Äquivalent in MariaDB:
-
-```sql
-select exif,
-	JSON_VALID(exif) valid,
-	json_detailed(exif) formatted,
-	json_value(exif, '$.FileName') filename,
-	json_value(exif,'$.Make') make,
-	json_value(exif,'$.Model') model,
-	json_value(exif,'$.Make') = 'Apple' isIPhone, -- z.B im where
-	json_value(exif,'$.COMPUTED.ApertureFNumber') aperture,
-	json_value(exif,'$.ExposureTime') exposure,
-	json_value(exif,'$.ISOSpeedRatings') iso
-from rex_media
--- where json_value(exif,'$.Make') = 'Apple'
-;
-```
