@@ -61,13 +61,13 @@ $exif = Exif::get($media);
 
 try {
 	print 'Camera numeric<br />';
-	var_dump($exif->format('Camera', Camera::TYPE_NUMERIC));
+	var_dump($exif->format('Camera', \FriendsOfRedaxo\addon\MediapoolExif\Enum\Format::RAW));
 
 	print 'Camera readable<br />';
-	var_dump($exif->format('Camera', Camera::TYPE_READABLE));
+	var_dump($exif->format('Camera', \FriendsOfRedaxo\addon\MediapoolExif\Enum\Format::READABLE));
 
 	print 'interner Length Formatter';
-	var_dump($exif->format('Camera\\Length', Camera::TYPE_READABLE));
+	var_dump($exif->format('Camera\\Length', \FriendsOfRedaxo\addon\MediapoolExif\Enum\Format::READABLE));
 } catch (InvalidFormatExcption $e) {
 	echo $e->getFormat().' unbekannt.';
 } catch (Exception $e) {
