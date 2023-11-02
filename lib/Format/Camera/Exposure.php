@@ -9,7 +9,7 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\Camera;
+use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 
 /**
@@ -33,10 +33,10 @@ class Exposure
 
 		$data = explode('/', $this->data['ExposureTime']);
 		switch ($this->format) {
-			case Camera::TYPE_READABLE:
+			case Format::READABLE:
 				return $data[0].'/'.$data[1].' s';
 				break;
-			case Camera::TYPE_NUMERIC:
+			case Format::RAW:
 				return (float) $data[0] / (float) $data[1];
 				break;
 		}
