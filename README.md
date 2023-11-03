@@ -24,9 +24,7 @@ Namens einzufügen, sofern beim Upload keine Kategorie definiert wurde.
 
 ![Screenshot](https://raw.githubusercontent.com/FriendsOfREDAXO/mediapool_exif/master/assets/screenshot.png)
 
-Ab Version 2.0 werden alle EXIF-Daten in der Spalte ```rex_media.exif``` gespeichert, so dass man leichten Zugriff erhält.
+Ab Version 2.0 werden alle EXIF-Daten in der Spalte ```rex_media.exif``` als ```JSON```-Array gespeichert, so dass man leichten Zugriff erhält.
 
-- [Daten der Rohdaten holen](_doc/exif_daten/daten_auslesen.md)
-  - [Datenformatierung](_doc/exif_daten/formatierung.md)
-- [Nachträgliches Einlesen](_doc/einlesen_via_console.md)
-- Exkurs: [JSON in der Datenbank](_doc/json_in_der_datenbank.md)
+Damit die Dokumentation hier nicht weiter ausufert, liegen alle weiteren dokumentieren Sachverhalte im [Wiki](https://github.com/FriendsOfREDAXO/mediapool_exif/wiki) bereit:
+[https://github.com/FriendsOfREDAXO/mediapool_exif/wiki](https://github.com/FriendsOfREDAXO/mediapool_exif/wiki)
