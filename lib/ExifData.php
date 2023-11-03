@@ -70,9 +70,14 @@ class ExifData
 	public function __construct(rex_media $media, int $mode = null)
 	{
 		$this->media = $media;
-		$this->exif = json_decode($this->media->getValue('exif'), true);
-		if (!$this->exif) {
-			$this->exif = [];
+		$this->exif = [];
+
+		$exifRaw = $this->media->getValue('exif');
+		if($exifRaw !== null){
+			$this->exif = json_decode($exifRaw, true);
+			if (!$this->exif) {
+				$this->exif = [];
+			}
 		}
 
 		if ($mode === null) {
