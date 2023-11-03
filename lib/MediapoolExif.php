@@ -120,7 +120,10 @@ class MediapoolExif
 	private static function exifHasChanged(string $new, ?string $old): bool
 	{
 		$newArray = json_decode($new, true);
-		$oldArray = json_decode($old, true);
+		$oldArray = [];
+		if($old !== null) {
+			$oldArray = json_decode($old, true);
+		}
 
 		/**
 		 * FileDateTime ändert sich immer.
