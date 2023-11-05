@@ -33,7 +33,7 @@ class Exif
 	const MODE_RETURN_EMPTY_STRING = 1005;
 	/** @deprecated use FriendsOfRedaxo\addon\MediapoolExi\Enum\Mode::RETURN_EMPTY_ARRAY */
 	const MODE_RETURN_EMPTY_ARRAY = 1006;
-	/** @deprecated use FriendsOfRedaxo\addon\MediapoolExi\Enum\MediaFetchMode::NULL_ONL */
+	/** @deprecated use FriendsOfRedaxo\addon\MediapoolExi\Enum\MediaFetchMode::NULL_ONLY */
 	const GETMEDIA_MODE_NULL_ONLY = 1000;
 	/** @deprecated use FriendsOfRedaxo\addon\MediapoolExi\Enum\MediaFetchMode::All */
 	const GETMEDIA_MODE_ALL = 1001;
