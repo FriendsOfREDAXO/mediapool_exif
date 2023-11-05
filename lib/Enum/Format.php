@@ -18,8 +18,8 @@ namespace FriendsOfRedaxo\addon\MediapoolExif\Enum;
  *
  * @author akrys
  */
-class /* enum */ Format /* :string */
+enum Format :string
 {
-	const /*case*/ RAW = 'numeric';
-	const /*case*/ READABLE = 'readable';
+	case RAW = 'numeric';
+	case READABLE = 'readable';
 }

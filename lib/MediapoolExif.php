@@ -21,7 +21,7 @@ class MediapoolExif
 	 * Field mapping
 	 * @var array
 	 */
-	protected static $fields = [
+	protected static array $fields = [
 		'author' => ['Artist', 'AuthorByLine', 'CaptionWriter'],
 		'copyright' => ['Copyright', 'Artist', 'AuthorByLine', 'CaptionWriter'],
 		'orientation' => 'Orientation',
@@ -38,7 +38,7 @@ class MediapoolExif
 	 * Upload processing
 	 * @param rex_extension_point $ep
 	 */
-	public static function processUploadedMedia(rex_extension_point $ep)
+	public static function processUploadedMedia(rex_extension_point $ep): void
 	{
 		$oldMedia = rex_media::get($ep->getParam('filename'));
 		if ($data = static::getDataByFilename($ep->getParam('filename'))) {
@@ -52,7 +52,9 @@ class MediapoolExif
 
 				// check for category?!
 				if (isset($data['categories'])) {
-					$qry = "SELECT `id` FROM `".rex::getTablePrefix()."media_category` WHERE `name` IN ('".join("', '", $data['categories'])."') ORDER BY FIELD (`name`, '".join("', '", $data['categories'])."') LIMIT 1";
+					$qry = "SELECT `id` FROM `".rex::getTablePrefix()."media_category` WHERE `name` IN ('".join(
+							"', '", $data['categories']
+						)."') ORDER BY FIELD (`name`, '".join("', '", $data['categories'])."') LIMIT 1";
 					$sql->setQuery($qry);
 					if ($tmp_result = $sql->getArray()) {
 						$data['category_id'] = $tmp_result[0]['id'];
@@ -121,7 +123,7 @@ class MediapoolExif
 	{
 		$newArray = json_decode($new, true);
 		$oldArray = [];
-		if($old !== null) {
+		if ($old !== null) {
 			$oldArray = json_decode($old, true);
 		}
 
@@ -142,9 +144,9 @@ class MediapoolExif
 	/**
 	 * Daten au der Datei holen
 	 * @param string $filename
-	 * @return array|null
+	 * @return array
 	 */
-	public static function getDataByFilename(string $filename)
+	public static function getDataByFilename(string $filename): array
 	{
 		if ($media = rex_media::get($filename)) {
 			if ($media->fileExists()) {
@@ -152,7 +154,7 @@ class MediapoolExif
 			}
 		}
 
-		return null;
+		return [];
 	}
 
 	/**
@@ -298,9 +300,9 @@ class MediapoolExif
 	/**
 	 * IPTC-Daten holen
 	 * @param rex_media $media
-	 * @return type
+	 * @return array
 	 */
-	protected static function getIptcData(rex_media $media)
+	protected static function getIptcData(rex_media $media): array
 	{
 		$return = [];
 

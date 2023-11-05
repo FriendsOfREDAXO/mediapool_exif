@@ -19,8 +19,8 @@ namespace FriendsOfRedaxo\addon\MediapoolExif\Enum;
  *
  * @author akrys
  */
-class /*enum*/ MediaFetchMode /*:int*/
+enum MediaFetchMode :int
 {
-	const /*case*/ NULL_ONLY = 1000;
-	const /*case*/ ALL = 1001;
+	case NULL_ONLY = 1000;
+	case ALL = 1001;
 }

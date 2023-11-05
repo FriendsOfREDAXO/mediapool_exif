@@ -21,14 +21,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author akrys
  */
-class Read
-	extends rex_console_command
+class Read extends rex_console_command
 {
 
 	/**
 	 * Konsolen-Aufruf konfigurieren.
 	 */
-	protected function configure()
+	protected function configure(): void
 	{
 		$this
 			->setName('mediapool_exif:read')
@@ -43,7 +42,7 @@ class Read
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
+	protected function execute(InputInterface $input, OutputInterface $output): void
 	{
 		$io = $this->getStyle($input, $output);
 		$io->title('Read EXIF data');

@@ -9,6 +9,7 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif;
 
 use Exception;
+use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\addon\MediapoolExif\Enum\ReturnMode;
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\NotFoundException;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
@@ -27,7 +28,7 @@ class ExifData
 	 * @todo activate type hint if min PHP-Version > 7.4
 	 * @var rex_media
 	 */
-	private /* rex_media */ $media;
+	private rex_media $media;
 
 	/**
 	 * Exif-Daten-Array
@@ -35,13 +36,13 @@ class ExifData
 	 * @todo activate type hint if min PHP-Version > 7.4
 	 * @var rex_media
 	 */
-	private /* array */ $exif;
+	private array $exif;
 
 	/**
 	 * Modus
-	 * @var int
+	 * @var ReturnMode
 	 */
-	private /* int */ $mode;
+	private ReturnMode $mode;
 
 	/**
 	 * Konstruktor
@@ -67,13 +68,13 @@ class ExifData
 	 * @param \FriendsOfRedaxo\addon\MediapoolExif\rex_media $media
 	 * @param int $mode
 	 */
-	public function __construct(rex_media $media, int $mode = null)
+	public function __construct(rex_media $media, ReturnMode $mode = null)
 	{
 		$this->media = $media;
 		$this->exif = [];
 
 		$exifRaw = $this->media->getValue('exif');
-		if($exifRaw !== null){
+		if ($exifRaw !== null) {
 			$this->exif = json_decode($exifRaw, true);
 			if (!$this->exif) {
 				$this->exif = [];
@@ -95,7 +96,7 @@ class ExifData
 	 * @return mixed
 	 * @throws NotFoundException
 	 */
-	public function get(string $index = null)
+	public function get(string $index = null): mixed
 	{
 		if ($index !== null) {
 			if (!array_key_exists($index, $this->exif)) {
@@ -104,16 +105,17 @@ class ExifData
 			return $this->exif[$index];
 		}
 
-		return $data;
+		var_dump($this->exif);
+		return $this->exif;
 	}
 
 	/**
 	 * Formatierungsalgorithmus anstoßen
 	 * @param string $type
-	 * @param string $format
+	 * @param Format $format
 	 * @return mixed
 	 */
-	public function format(string $type, string $format = null)
+	public function format(string $type, Format $format = null): mixed
 	{
 		try {
 			return FormatInterface::get($this->exif, $type, $format)->format();
@@ -131,7 +133,7 @@ class ExifData
 	 * @return mixed
 	 * @throws NotFoundException
 	 */
-	private function handleExcption(Exception $exception)
+	private function handleExcption(Exception $exception): mixed
 	{
 		$return = '';
 

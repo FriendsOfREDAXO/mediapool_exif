@@ -31,7 +31,7 @@ class Length extends FormatInterface
 	 * @return string
 	 * @throws Exception
 	 */
-	public function format()
+	public function format(): string
 	{
 		if (!isset($this->data['FocalLength'])) {
 			throw new Exception('No aperture found');
@@ -44,6 +44,7 @@ class Length extends FormatInterface
 				return $value.' mm';
 				break;
 			case Format::RAW:
+			default:
 				return $value;
 				break;
 		}
