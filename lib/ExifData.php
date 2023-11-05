@@ -104,7 +104,7 @@ class ExifData
 			return $this->exif[$index];
 		}
 
-		return $data;
+		return $this->exif;
 	}
 
 	/**
