@@ -105,7 +105,6 @@ class ExifData
 			return $this->exif[$index];
 		}
 
-		var_dump($this->exif);
 		return $this->exif;
 	}
 
