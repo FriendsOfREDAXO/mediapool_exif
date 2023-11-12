@@ -67,13 +67,12 @@ abstract class FormatInterface
 	 * <ul>
 	 *
 	 * @param string $data exif-Daten-Array
-	 * @param string $type KlasseName des Formatters
 	 * @param Format|null $format Format-Parameter
 	 * @param string $className Formatter Namespace
 	 * @return \FriendsOfRedaxo\addon\MediapoolExif\Format\className
 	 * @throws InvalidFormatExcption
 	 */
-	public static function get($data, ?Format $format = null, ?string $className = null): FormatInterface
+	public static function get($data, ?string $className = null, ?Format $format = null): FormatInterface
 	{
 		if (class_exists($className)) {
 			$object = new $className($data, $format);

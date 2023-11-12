@@ -4,6 +4,7 @@ namespace FriendsOfRedaxo\addon\MediapoolExif;
 
 use Exception;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\addon\MediapoolExif\Format\Geo;
 use rex;
 use rex_extension_point;
 use rex_fragment;
@@ -255,7 +256,7 @@ class MediapoolExif
 				}
 
 				try {
-					$coordinates = FormatInterface::get($exif, 'Geo')->format();
+					$coordinates = FormatInterface::get($exif, Geo::class)->format();
 					$exif['GPSCoordinatesLat'] = $coordinates['lat'];
 					$exif['GPSCoordinatesLong'] = $coordinates['long'];
 				} catch (Exception $e) {

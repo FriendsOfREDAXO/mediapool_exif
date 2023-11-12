@@ -112,16 +112,18 @@ class ExifData
 	 * Formatierungsalgorithmus anstoßen
 	 * @param string $type
 	 * @param Format $format
+	 * @param string $className
 	 * @return mixed
 	 */
-	public function format(string $type, Format $format = null, ?string $className=null): mixed
+	public function format(string $className, Format $format = null): mixed
 	{
 		try {
-			if(!$className) {
-				$className = '\\FriendsOfRedaxo\\addon\\MediapoolExif\\Format\\'.ucfirst($type);
+			if (!class_exists($className)) {
+				//fallback, old call
+				$className = '\\FriendsOfRedaxo\\addon\\MediapoolExif\\Format\\'.ucfirst($className);
 			}
 
-			return FormatInterface::get($this->exif, $format, $className)->format();
+			return FormatInterface::get($this->exif, $className, $format)->format();
 		} catch (Exception $e) {
 			return $this->handleExcption($e);
 		}
