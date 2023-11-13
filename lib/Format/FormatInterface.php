@@ -67,8 +67,8 @@ abstract class FormatInterface
 	 * <ul>
 	 *
 	 * @param string $data exif-Daten-Array
-	 * @param Format|null $format Format-Parameter
 	 * @param string $className Formatter Namespace
+	 * @param Format|null $format Format-Parameter
 	 * @return \FriendsOfRedaxo\addon\MediapoolExif\Format\className
 	 * @throws InvalidFormatExcption
 	 */
