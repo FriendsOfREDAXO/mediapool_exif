@@ -9,9 +9,9 @@ console_commands:
 
 requires:
     packages:
-        mediapool: '>=2.13.0'
-        metainfo: '>=2.10.0'
-    redaxo: ^5.15.0
+        mediapool: '>=2.3.0'
+        metainfo: '>=2.7.1'
+    redaxo: ^5.2.0
     php:
         version: '>=8.1'
         extensions: [exif]
