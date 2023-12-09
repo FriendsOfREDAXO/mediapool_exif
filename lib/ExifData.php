@@ -25,7 +25,6 @@ class ExifData
 	/**
 	 * Media-Objekt
 	 *
-	 * @todo activate type hint if min PHP-Version > 7.4
 	 * @var rex_media
 	 */
 	private rex_media $media;
@@ -33,8 +32,7 @@ class ExifData
 	/**
 	 * Exif-Daten-Array
 	 *
-	 * @todo activate type hint if min PHP-Version > 7.4
-	 * @var rex_media
+	 * @var array
 	 */
 	private array $exif;
 

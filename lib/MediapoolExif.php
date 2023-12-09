@@ -3,6 +3,7 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif;
 
 use Exception;
+use FriendsOfRedaxo\addon\MediapoolExif\Enum\IptcDefinitions;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Geo;
 use rex;
@@ -270,35 +271,6 @@ class MediapoolExif
 	}
 
 	/**
-	 * Liste der IPTC-Defintionen
-	 * @return array
-	 */
-	protected static function getIptcDefinitions(): array
-	{
-		return [
-			'2#005' => 'DocumentTitle',
-			'2#010' => 'Urgency',
-			'2#015' => 'Category',
-			'2#020' => 'Subcategories',
-			'2#025' => 'Keywords',
-			'2#040' => 'SpecialInstructions',
-			'2#055' => 'CreationDate',
-			'2#080' => 'AuthorByline',
-			'2#085' => 'AuthorTitle',
-			'2#090' => 'City',
-			'2#095' => 'State',
-			'2#101' => 'Country',
-			'2#103' => 'OTR',
-			'2#105' => 'Headline',
-			'2#110' => 'Source',
-			'2#115' => 'PhotoSource',
-			'2#116' => 'Copyright',
-			'2#120' => 'Caption',
-			'2#122' => 'CaptionWriter'
-		];
-	}
-
-	/**
 	 * IPTC-Daten holen
 	 * @param rex_media $media
 	 * @return array
@@ -307,25 +279,46 @@ class MediapoolExif
 	{
 		$return = [];
 
-		if (static::isExifFile($media)) {
-			$path = rex_path::media($media->getFileName());
-			if ($size = getimagesize($path, $info)) {
-				if (isset($info['APP13'])) {
-					if ($iptc = iptcparse($info['APP13'])) {
-						foreach (static::getIptcDefinitions() as $code => $label) {
-							if (!empty($iptc[$code])) {
-								$return[$label] = count($iptc[$code]) == 1 ? $iptc[$code][0] : $iptc[$code];
-							}
-						}
-						unset($code, $label);
-					}
-					unset($iptc);
+		if (!static::isExifFile($media)) {
+			return $return;
+		}
+
+		try {
+			$iptc = static::parseIptc($media);
+			foreach (IptcDefinitions::cases() as $case) {
+				if (!empty($iptc[$case->getCode()])) {
+					$return[$case->getLabel()] = count($iptc[$case->getCode()]) == 1 ? $iptc[$case->getCode()][0] : $iptc[$case->getCode()];
 				}
 			}
+		} catch (Exception\IptcException $e) {
+			return $return;
 		}
-		unset($path, $size, $info);
-
 		return $return;
+	}
+
+	/**
+	 * IPTC-Daten parsen.
+	 *
+	 * @param rex_media $media
+	 * @return array
+	 * @throws Exception\IptcException
+	 */
+	private static function parseIptc(rex_media $media): array
+	{
+		$path = rex_path::media($media->getFileName());
+		$size = getimagesize($path, $info);
+		if (!$size) {
+			throw new Exception\IptcException('no size');
+		}
+
+		if (isset($info['APP13'])) {
+			$iptc = iptcparse($info['APP13']);
+		}
+
+		if (!$iptc) {
+			throw new Exception\IptcException('no iptc');
+		}
+		return $iptc;
 	}
 
 	/**

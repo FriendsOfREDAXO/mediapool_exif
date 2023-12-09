@@ -19,8 +19,6 @@ use Throwable;
 class NotFoundException extends Exception
 {
 	/**
-	 *
-	 * @todo activate type hint if min PHP-Version > 7.4
 	 * @var string
 	 */
 	public string $index;

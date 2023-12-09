@@ -20,8 +20,6 @@ use Throwable;
 class InvalidFormatExcption extends Exception
 {
 	/**
-	 *
-	 * @todo activate type hint if min PHP-Version > 7.4
 	 * @var Format
 	 */
 	public Format $format;
