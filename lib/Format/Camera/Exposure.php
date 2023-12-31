@@ -17,28 +17,32 @@ use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
  *
  * @author akrys
  */
-class Exposure
-	extends FormatInterface
+class Exposure extends FormatInterface
 {
 
 	/**
 	 * Daten formatieren
 	 * @return string
 	 * @throws Exception
-	 */	public function format()
+	 */
+	public function format(): string
 	{
 		if (!isset($this->data['ExposureTime'])) {
 			throw new Exception('No aperture found');
 		}
 
+		$return = '';
 		$data = explode('/', $this->data['ExposureTime']);
 		switch ($this->format) {
 			case Format::READABLE:
-				return $data[0].'/'.$data[1].' s';
+				$return= $data[0].'/'.$data[1].' s';
 				break;
 			case Format::RAW:
-				return (float) $data[0] / (float) $data[1];
+			default:
+				$tmp = (float) $data[0] / (float) $data[1];
+				$return = (string) $tmp;
 				break;
 		}
+		return $return;
 	}
 }

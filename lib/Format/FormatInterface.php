@@ -8,6 +8,7 @@
  */
 namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
 
+use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 
@@ -22,20 +23,20 @@ abstract class FormatInterface
 	 * Exif-Daten
 	 * @var array
 	 */
-	protected /* array */ $data;
+	protected array $data;
 
 	/**
 	 * Formatierung
-	 * @var string
+	 * @var Format|null
 	 */
-	protected /* string */ $format;
+	protected ?Format $format;
 
 	/**
 	 * Konstruktor
 	 * @param array $data
-	 * @param string $format
+	 * @param Format|null $format
 	 */
-	public function __construct(array $data, string /*\FriendsOfRedaxo\addon\MediapoolExif\Enum\Format*/ $format = null)
+	public function __construct(array $data, ?Format $format = null)
 	{
 		$this->data = $data;
 		$this->format = $format;
@@ -66,14 +67,13 @@ abstract class FormatInterface
 	 * <ul>
 	 *
 	 * @param string $data exif-Daten-Array
-	 * @param string $type KlasseName des Formatters
-	 * @param string $format Format-Parameter
+	 * @param string $className Formatter Namespace
+	 * @param Format|null $format Format-Parameter
 	 * @return \FriendsOfRedaxo\addon\MediapoolExif\Format\className
 	 * @throws InvalidFormatExcption
 	 */
-	public static function get($data, $type, /*\FriendsOfRedaxo\addon\MediapoolExif\Enum\Format*/ $format = null): FormatInterface
+	public static function get($data, ?string $className = null, ?Format $format = null): FormatInterface
 	{
-		$className = __NAMESPACE__.'\\'.ucfirst($type);
 		if (class_exists($className)) {
 			$object = new $className($data, $format);
 			if (is_a($object, FormatInterface::class)) {
@@ -90,7 +90,7 @@ abstract class FormatInterface
 	 *
 	 * Die Rückgabe kann bei einzelwerten ein string, sont ein array sein.
 	 *
-	 * @return mixed
+	 * @return string|array
 	 */
-	abstract public function format();
+	abstract public function format(): string|array;
 }

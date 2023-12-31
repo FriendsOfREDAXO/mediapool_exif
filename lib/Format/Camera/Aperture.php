@@ -17,8 +17,7 @@ use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
  *
  * @author akrys
  */
-class Aperture
-	extends FormatInterface
+class Aperture extends FormatInterface
 {
 
 	/**
@@ -26,7 +25,7 @@ class Aperture
 	 * @return string
 	 * @throws Exception
 	 */
-	public function format()
+	public function format(): string
 	{
 		if (!isset($this->data['FNumber'])) {
 			throw new Exception('No aperture found');

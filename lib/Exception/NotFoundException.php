@@ -16,15 +16,12 @@ use Throwable;
  *
  * @author akrys
  */
-class NotFoundException
-	extends Exception
+class NotFoundException extends Exception
 {
 	/**
-	 *
-	 * @todo activate type hint if min PHP-Version > 7.4
 	 * @var string
 	 */
-	public /* string */ $index;
+	public string $index;
 
 	/**
 	 * Konstruktor

@@ -16,8 +16,7 @@ use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
  *
  * @author akrys
  */
-class Iso
-	extends FormatInterface
+class Iso extends FormatInterface
 {
 
 	/**
@@ -25,7 +24,7 @@ class Iso
 	 * @return string
 	 * @throws Exception
 	 */
-	public function format()
+	public function format(): string
 	{
 		if (!isset($this->data['ISOSpeedRatings'])) {
 			throw new Exception('No aperture found');

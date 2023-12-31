@@ -1,5 +1,5 @@
 package: mediapool_exif
-version: '2.1.2'
+version: '3.0'
 author: 'FriendsOfREDAXO'
 supportpage: https://github.com/FriendsOfREDAXO/mediapool_exif
 
@@ -13,5 +13,5 @@ requires:
         metainfo: '>=2.7.1'
     redaxo: ^5.2.0
     php:
-        version: '>=7.1'
+        version: '>=8.1'
         extensions: [exif]

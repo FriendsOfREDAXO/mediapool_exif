@@ -9,6 +9,7 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif\Exception;
 
 use Exception;
+use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
 use Throwable;
 
 /**
@@ -16,15 +17,12 @@ use Throwable;
  *
  * @author akrys
  */
-class InvalidFormatExcption
-	extends Exception
+class InvalidFormatExcption extends Exception
 {
 	/**
-	 *
-	 * @todo activate type hint if min PHP-Version > 7.4
-	 * @var string
+	 * @var Format
 	 */
-	public /* string */ $format;
+	public Format $format;
 
 	/**
 	 * Konstruktor
@@ -33,20 +31,20 @@ class InvalidFormatExcption
 	 * @param int $code
 	 * @param Throwable $previous
 	 */
-	public function __construct(string $format, string $message = "", int $code = 0, Throwable $previous = NULL)
+	public function __construct(Format $format, string $message = "", int $code = 0, Throwable $previous = NULL)
 	{
 		$this->format = $format;
 		if ($message === '') {
-			$message = 'Invalid Format: '.$format;
+			$message = 'Invalid Format: '.$format->value;
 		}
 		parent::__construct($message, $code, $previous);
 	}
 
 	/**
 	 * Formatname
-	 * @return string
+	 * @return Format
 	 */
-	public function getFormat(): string
+	public function getFormat(): Format
 	{
 		return $this->format;
 	}
