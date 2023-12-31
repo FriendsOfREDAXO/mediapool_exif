@@ -24,22 +24,25 @@ class Exposure extends FormatInterface
 	 * Daten formatieren
 	 * @return string
 	 * @throws Exception
-	 */ public function format(): string
+	 */
+	public function format(): string
 	{
 		if (!isset($this->data['ExposureTime'])) {
 			throw new Exception('No aperture found');
 		}
 
+		$return = '';
 		$data = explode('/', $this->data['ExposureTime']);
 		switch ($this->format) {
 			case Format::READABLE:
-				return $data[0].'/'.$data[1].' s';
+				$return= $data[0].'/'.$data[1].' s';
 				break;
 			case Format::RAW:
 			default:
-				$reutrn = (float) $data[0] / (float) $data[1];
-				return (string) $return;
+				$tmp = (float) $data[0] / (float) $data[1];
+				$return = (string) $tmp;
 				break;
 		}
+		return $return;
 	}
 }
