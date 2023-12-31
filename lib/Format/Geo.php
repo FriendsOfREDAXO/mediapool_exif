@@ -15,8 +15,7 @@ use Exception;
  *
  * @author akrys
  */
-class Geo
-	extends FormatInterface
+class Geo extends FormatInterface
 {
 
 	/**
@@ -24,7 +23,7 @@ class Geo
 	 * @return array
 	 * @throws Exception
 	 */
-	public function format()
+	public function format(): array
 	{
 		if (
 			!isset($this->data['GPSLatitude']) ||

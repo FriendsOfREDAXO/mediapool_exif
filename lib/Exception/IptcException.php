@@ -4,23 +4,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
+namespace FriendsOfRedaxo\addon\MediapoolExif\Exception;
 
-namespace FriendsOfRedaxo\addon\MediapoolExif\Enum;
+use Exception;
 
 /**
  * Datei für ...
  *
- * @version       1.0 / 2023-11-02
+ * @version       1.0 / 2023-12-09
  * @author        akrys
  */
 
 /**
- * Description of MediaFetchMode
+ * Description of IptcException
  *
  * @author akrys
  */
-enum MediaFetchMode :int
+class IptcException extends Exception
 {
-	case NULL_ONLY = 1000;
-	case ALL = 1001;
+
 }

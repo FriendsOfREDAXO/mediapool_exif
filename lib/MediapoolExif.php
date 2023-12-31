@@ -3,7 +3,9 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif;
 
 use Exception;
+use FriendsOfRedaxo\addon\MediapoolExif\Enum\IptcDefinitions;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\addon\MediapoolExif\Format\Geo;
 use rex;
 use rex_extension_point;
 use rex_fragment;
@@ -21,7 +23,7 @@ class MediapoolExif
 	 * Field mapping
 	 * @var array
 	 */
-	protected static $fields = [
+	protected static array $fields = [
 		'author' => ['Artist', 'AuthorByLine', 'CaptionWriter'],
 		'copyright' => ['Copyright', 'Artist', 'AuthorByLine', 'CaptionWriter'],
 		'orientation' => 'Orientation',
@@ -38,7 +40,7 @@ class MediapoolExif
 	 * Upload processing
 	 * @param rex_extension_point $ep
 	 */
-	public static function processUploadedMedia(rex_extension_point $ep)
+	public static function processUploadedMedia(rex_extension_point $ep): void
 	{
 		$oldMedia = rex_media::get($ep->getParam('filename'));
 		if ($data = static::getDataByFilename($ep->getParam('filename'))) {
@@ -52,7 +54,9 @@ class MediapoolExif
 
 				// check for category?!
 				if (isset($data['categories'])) {
-					$qry = "SELECT `id` FROM `".rex::getTablePrefix()."media_category` WHERE `name` IN ('".join("', '", $data['categories'])."') ORDER BY FIELD (`name`, '".join("', '", $data['categories'])."') LIMIT 1";
+					$qry = "SELECT `id` FROM `".rex::getTablePrefix()."media_category` WHERE `name` IN ('".join(
+							"', '", $data['categories']
+						)."') ORDER BY FIELD (`name`, '".join("', '", $data['categories'])."') LIMIT 1";
 					$sql->setQuery($qry);
 					if ($tmp_result = $sql->getArray()) {
 						$data['category_id'] = $tmp_result[0]['id'];
@@ -121,7 +125,7 @@ class MediapoolExif
 	{
 		$newArray = json_decode($new, true);
 		$oldArray = [];
-		if($old !== null) {
+		if ($old !== null) {
 			$oldArray = json_decode($old, true);
 		}
 
@@ -142,9 +146,9 @@ class MediapoolExif
 	/**
 	 * Daten au der Datei holen
 	 * @param string $filename
-	 * @return array|null
+	 * @return array
 	 */
-	public static function getDataByFilename(string $filename)
+	public static function getDataByFilename(string $filename): array
 	{
 		if ($media = rex_media::get($filename)) {
 			if ($media->fileExists()) {
@@ -152,7 +156,7 @@ class MediapoolExif
 			}
 		}
 
-		return null;
+		return [];
 	}
 
 	/**
@@ -253,7 +257,7 @@ class MediapoolExif
 				}
 
 				try {
-					$coordinates = FormatInterface::get($exif, 'Geo')->format();
+					$coordinates = FormatInterface::get($exif, Geo::class)->format();
 					$exif['GPSCoordinatesLat'] = $coordinates['lat'];
 					$exif['GPSCoordinatesLong'] = $coordinates['long'];
 				} catch (Exception $e) {
@@ -267,62 +271,54 @@ class MediapoolExif
 	}
 
 	/**
-	 * Liste der IPTC-Defintionen
-	 * @return array
-	 */
-	protected static function getIptcDefinitions(): array
-	{
-		return [
-			'2#005' => 'DocumentTitle',
-			'2#010' => 'Urgency',
-			'2#015' => 'Category',
-			'2#020' => 'Subcategories',
-			'2#025' => 'Keywords',
-			'2#040' => 'SpecialInstructions',
-			'2#055' => 'CreationDate',
-			'2#080' => 'AuthorByline',
-			'2#085' => 'AuthorTitle',
-			'2#090' => 'City',
-			'2#095' => 'State',
-			'2#101' => 'Country',
-			'2#103' => 'OTR',
-			'2#105' => 'Headline',
-			'2#110' => 'Source',
-			'2#115' => 'PhotoSource',
-			'2#116' => 'Copyright',
-			'2#120' => 'Caption',
-			'2#122' => 'CaptionWriter'
-		];
-	}
-
-	/**
 	 * IPTC-Daten holen
 	 * @param rex_media $media
-	 * @return type
+	 * @return array
 	 */
-	protected static function getIptcData(rex_media $media)
+	protected static function getIptcData(rex_media $media): array
 	{
 		$return = [];
 
-		if (static::isExifFile($media)) {
-			$path = rex_path::media($media->getFileName());
-			if ($size = getimagesize($path, $info)) {
-				if (isset($info['APP13'])) {
-					if ($iptc = iptcparse($info['APP13'])) {
-						foreach (static::getIptcDefinitions() as $code => $label) {
-							if (!empty($iptc[$code])) {
-								$return[$label] = count($iptc[$code]) == 1 ? $iptc[$code][0] : $iptc[$code];
-							}
-						}
-						unset($code, $label);
-					}
-					unset($iptc);
+		if (!static::isExifFile($media)) {
+			return $return;
+		}
+
+		try {
+			$iptc = static::parseIptc($media);
+			foreach (IptcDefinitions::cases() as $case) {
+				if (!empty($iptc[$case->getCode()])) {
+					$return[$case->getLabel()] = count($iptc[$case->getCode()]) == 1 ? $iptc[$case->getCode()][0] : $iptc[$case->getCode()];
 				}
 			}
+		} catch (Exception\IptcException $e) {
+			return $return;
 		}
-		unset($path, $size, $info);
-
 		return $return;
+	}
+
+	/**
+	 * IPTC-Daten parsen.
+	 *
+	 * @param rex_media $media
+	 * @return array
+	 * @throws Exception\IptcException
+	 */
+	private static function parseIptc(rex_media $media): array
+	{
+		$path = rex_path::media($media->getFileName());
+		$size = getimagesize($path, $info);
+		if (!$size) {
+			throw new Exception\IptcException('no size');
+		}
+
+		if (isset($info['APP13'])) {
+			$iptc = iptcparse($info['APP13']);
+		}
+
+		if (!$iptc) {
+			throw new Exception\IptcException('no iptc');
+		}
+		return $iptc;
 	}
 
 	/**

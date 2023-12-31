@@ -24,11 +24,6 @@ use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
  */
 class Camera extends FormatInterface
 {
-	/** @deprecated use \FriendsOfRedaxo\addon\MediapoolExif\Enum\Format::RAW */
-	const TYPE_NUMERIC = 'numeric';
-
-	/** @deprecated use \FriendsOfRedaxo\addon\MediapoolExif\Enum\Format::READABLE */
-	const TYPE_READABLE = 'readable';
 
 	/**
 	 * Daten formatieren
@@ -36,7 +31,7 @@ class Camera extends FormatInterface
 	 * @throws Exception
 	 * @throws InvalidFormatExcption
 	 */
-	public function format()
+	public function format(): array
 	{
 		if (!isset($this->data['Make']) && !isset($this->data['Model'])) {
 			throw new Exception('No camera data found');
@@ -47,8 +42,10 @@ class Camera extends FormatInterface
 			$format = Format::READABLE;
 		}
 
-		if (is_callable([$this, $format])) {
-			return $this->$format();
+		$formatValue = $format->value;
+
+		if (is_callable([$this, $formatValue])) {
+			return $this->$formatValue();
 		}
 		throw new InvalidFormatExcption($format);
 	}
@@ -57,7 +54,7 @@ class Camera extends FormatInterface
 	 * Daten lesbar anzeigen
 	 * @return array
 	 */
-	private function readable()
+	private function readable(): array
 	{
 		return [
 			'make' => $this->data['Make'],
@@ -73,7 +70,7 @@ class Camera extends FormatInterface
 	 * Daten nummerisch anzeigen
 	 * @return array
 	 */
-	private function numeric()
+	private function numeric(): array
 	{
 		return [
 			'make' => $this->data['Make'],
