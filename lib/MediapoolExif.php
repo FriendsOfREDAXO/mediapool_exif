@@ -6,6 +6,7 @@ use Exception;
 use FriendsOfRedaxo\addon\MediapoolExif\Enum\IptcDefinitions;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\Geo;
+use FriendsOfRedaxo\addon\MediapoolExif\Exception\IptcException;
 use rex;
 use rex_extension_point;
 use rex_fragment;
@@ -290,7 +291,7 @@ class MediapoolExif
 					$return[$case->getLabel()] = count($iptc[$case->getCode()]) == 1 ? $iptc[$case->getCode()][0] : $iptc[$case->getCode()];
 				}
 			}
-		} catch (Exception\IptcException $e) {
+		} catch (IptcException $e) {
 			return $return;
 		}
 		return $return;
@@ -301,14 +302,14 @@ class MediapoolExif
 	 *
 	 * @param rex_media $media
 	 * @return array
-	 * @throws Exception\IptcException
+	 * @throws IptcException
 	 */
 	private static function parseIptc(rex_media $media): array
 	{
 		$path = rex_path::media($media->getFileName());
 		$size = getimagesize($path, $info);
 		if (!$size) {
-			throw new Exception\IptcException('no size');
+			throw new IptcException('no size');
 		}
 
 		if (isset($info['APP13'])) {
@@ -316,7 +317,7 @@ class MediapoolExif
 		}
 
 		if (!$iptc) {
-			throw new Exception\IptcException('no iptc');
+			throw new IptcException('no iptc');
 		}
 		return $iptc;
 	}
