@@ -18,7 +18,7 @@ use rex_path;
 use rex_sql;
 use function mb_convert_encoding;
 
-class MediapoolExif
+final class MediapoolExif
 {
 	/**
 	 * Field mapping
@@ -94,6 +94,7 @@ class MediapoolExif
 				if (!empty($update)) {
 					$qry = "UPDATE `".rex::getTablePrefix()."media` SET ".join(", ", array_values($update))." WHERE `filename` = '".$ep->getParam('filename')."'";
 
+					/** @phpstan-ignore-next-line */
 					if ($sql->setQuery($qry)) {
 						$names = '<code>'.join('</code>, <code>', array_keys($update)).'</code>';
 						$names = preg_replace_callback('/\>[a-z]/', function ($match) {
@@ -306,6 +307,7 @@ class MediapoolExif
 	 */
 	private static function parseIptc(rex_media $media): array
 	{
+		$iptc = [];
 		$path = rex_path::media($media->getFileName());
 		$size = getimagesize($path, $info);
 		if (!$size) {
@@ -336,7 +338,7 @@ class MediapoolExif
 			return $subject;
 		}
 
-		$exif = json_decode($exifRaw, 1);
+		$exif = json_decode($exifRaw, true);
 		if ($exif) {
 			$lines = '';
 			//rekursiver Aufruf einer anonymen Funktion
@@ -390,7 +392,7 @@ class MediapoolExif
 	 * @param string $filename
 	 * @return void
 	 */
-	public function readExifFromFile(string $filename): void
+	public static function readExifFromFile(string $filename): void
 	{
 		$subject = null;
 		$params = [

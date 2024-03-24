@@ -10,7 +10,6 @@ namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
 
 use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 
 /**
  * Description of FormatBase
@@ -66,10 +65,10 @@ abstract class FormatInterface
 	 *    <li>degree: 51° 06' 39.32" N / 8° 40' 55.656 E</li>
 	 * <ul>
 	 *
-	 * @param string $data exif-Daten-Array
+	 * @param array $data exif-Daten-Array
 	 * @param string $className Formatter Namespace
 	 * @param Format|null $format Format-Parameter
-	 * @return \FriendsOfRedaxo\addon\MediapoolExif\Format\className
+	 * @return FormatInterface
 	 * @throws InvalidFormatExcption
 	 */
 	public static function get($data, ?string $className = null, ?Format $format = null): FormatInterface
@@ -80,7 +79,7 @@ abstract class FormatInterface
 				return $object;
 			}
 		}
-		throw new InvalidFormatExcption($className);
+		throw new InvalidFormatExcption($format);
 	}
 
 	/**

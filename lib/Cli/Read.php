@@ -42,7 +42,7 @@ class Read extends rex_console_command
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output): void
+	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		$io = $this->getStyle($input, $output);
 		$io->title('Read EXIF data');
@@ -70,5 +70,6 @@ class Read extends rex_console_command
 		}
 
 		$io->success('done');
+		return self::SUCCESS;
 	}
 }

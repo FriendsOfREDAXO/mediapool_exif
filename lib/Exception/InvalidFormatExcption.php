@@ -26,7 +26,7 @@ class InvalidFormatExcption extends Exception
 
 	/**
 	 * Konstruktor
-	 * @param string $format
+	 * @param Format $format
 	 * @param string $message
 	 * @param int $code
 	 * @param Throwable $previous

@@ -44,10 +44,12 @@ class Camera extends FormatInterface
 
 		$formatValue = $format->value;
 
-		if (is_callable([$this, $formatValue])) {
-			return $this->$formatValue();
+		/** @phpstan-ignore-next-line */
+		if (!is_callable([$this, $formatValue])) {
+			throw new InvalidFormatExcption($format);
 		}
-		throw new InvalidFormatExcption($format);
+
+		return $this->$formatValue();
 	}
 
 	/**
