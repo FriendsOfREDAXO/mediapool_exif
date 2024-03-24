@@ -21,6 +21,7 @@ use rex_sql;
  */
 class Exif
 {
+
 	/**
 	 * Alternative Datenerhebung, analog zu rex_media::get()
 	 *
@@ -35,7 +36,7 @@ class Exif
 	/**
 	 *
 	 * @param MediaFetchMode $mode
-	 * @return array
+	 * @return list<array<int|string, scalar|null>>|array<int|string, scalar|null>
 	 */
 	public static function getMediaToRead(MediaFetchMode $mode = MediaFetchMode::NULL_ONLY): array
 	{

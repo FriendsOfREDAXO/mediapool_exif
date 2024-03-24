@@ -22,7 +22,7 @@ final class MediapoolExif
 {
 	/**
 	 * Field mapping
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	protected static array $fields = [
 		'author' => ['Artist', 'AuthorByLine', 'CaptionWriter'],
@@ -39,7 +39,7 @@ final class MediapoolExif
 
 	/**
 	 * Upload processing
-	 * @param rex_extension_point $ep
+	 * @param rex_extension_point<string> $ep
 	 */
 	public static function processUploadedMedia(rex_extension_point $ep): void
 	{
@@ -87,7 +87,7 @@ final class MediapoolExif
 				}
 				unset($field, $value, $key);
 
-				if (self::exifHasChanged($data['exif'], $oldMedia->getValue('exif'))) {
+				if (self::exifHasChanged($data['exif'], $oldMedia?->getValue('exif'))) {
 					$update['exif'] = '`exif`='.$sql->escape($data['exif']);
 				}
 
@@ -98,8 +98,8 @@ final class MediapoolExif
 					if ($sql->setQuery($qry)) {
 						$names = '<code>'.join('</code>, <code>', array_keys($update)).'</code>';
 						$names = preg_replace_callback('/\>[a-z]/', function ($match) {
-							return strtoupper($match[0]);
-						}, $names);
+								return strtoupper($match[0]);
+							}, $names);
 
 						$ep->setParam('msg', $ep->getParam('msg').'<br />'.rex_i18n::msg('exif_data_updated').' '.$names);
 
@@ -120,15 +120,15 @@ final class MediapoolExif
 	 * Check ob die EXIF-Daten sich geändert haben.
 	 *
 	 * @param string $new
-	 * @param string|null $old
+	 * @param string|int|null $old
 	 * @return bool
 	 */
-	private static function exifHasChanged(string $new, ?string $old): bool
+	private static function exifHasChanged(string $new, string|int|null $old): bool
 	{
 		$newArray = json_decode($new, true);
 		$oldArray = [];
 		if ($old !== null) {
-			$oldArray = json_decode($old, true);
+			$oldArray = json_decode((string) $old, true);
 		}
 
 		/**
@@ -148,7 +148,7 @@ final class MediapoolExif
 	/**
 	 * Daten au der Datei holen
 	 * @param string $filename
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	public static function getDataByFilename(string $filename): array
 	{
@@ -165,7 +165,7 @@ final class MediapoolExif
 	 * Daten aus der Datei verarbeiten
 	 * @param rex_media $media
 	 * @param string $key
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	public static function getData(rex_media $media, string $key = null): array
 	{
@@ -206,14 +206,14 @@ final class MediapoolExif
 			$return['title'] = preg_replace('/^(.*)\.[\w]{1,}$/', "$1", $return['title']);
 
 			// Unterstriche zu Leerzeichen umwandeln
-			$return['title'] = preg_replace('/_/', " ", $return['title']);
+			$return['title'] = preg_replace('/_/', " ", (string) $return['title']);
 			// Doppelte Leerzeichen entfernen
-			$return['title'] = trim(preg_replace('/ {2,}/', ' ', $return['title']));
+			$return['title'] = trim((string) preg_replace('/ {2,}/', ' ', (string) $return['title']));
 
 			// Ersten Buchstaben gross schreiben
-			$return['title'] = ucfirst($return['title']);
+			$return['title'] = ucfirst((string) $return['title']);
 
-			$return['title'] = trim($return['title']);
+			$return['title'] = trim((string) $return['title']);
 
 			if (empty($return['title'])) {
 				unset($return['title']);
@@ -241,7 +241,7 @@ final class MediapoolExif
 	/**
 	 * EXIF-Daten aus dem rex_media-Objekt holen.
 	 * @param rex_media $media
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	protected static function getExifData(rex_media $media): array
 	{
@@ -260,8 +260,8 @@ final class MediapoolExif
 
 				try {
 					$coordinates = FormatInterface::get($exif, Geo::class)->format();
-					$exif['GPSCoordinatesLat'] = $coordinates['lat'];
-					$exif['GPSCoordinatesLong'] = $coordinates['long'];
+					$exif['GPSCoordinatesLat'] = $coordinates['lat'] ?? 0;
+					$exif['GPSCoordinatesLong'] = $coordinates['long'] ?? 0;
 				} catch (Exception $e) {
 					//no GPS Data, nothing to to
 				}
@@ -275,7 +275,7 @@ final class MediapoolExif
 	/**
 	 * IPTC-Daten holen
 	 * @param rex_media $media
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	protected static function getIptcData(rex_media $media): array
 	{
@@ -302,7 +302,7 @@ final class MediapoolExif
 	 * IPTC-Daten parsen.
 	 *
 	 * @param rex_media $media
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws IptcException
 	 */
 	private static function parseIptc(rex_media $media): array
@@ -326,7 +326,7 @@ final class MediapoolExif
 
 	/**
 	 * Seitenleiste für die Medienpool-Detailseite generieren
-	 * @param rex_extension_point $ep
+	 * @param rex_extension_point<string> $ep
 	 * @return string
 	 */
 	public static function mediapoolDetailOutput(rex_extension_point $ep): string
@@ -356,7 +356,7 @@ final class MediapoolExif
 
 	/**
 	 * Einzelzeile der Medienpool-Detail-Ausgabe verarbeiten.
-	 * @param array $exif
+	 * @param array<string, mixed> $exif
 	 * @return string
 	 */
 	protected static function mediapoolDetailOutputLine(array $exif): string
@@ -398,6 +398,10 @@ final class MediapoolExif
 		$params = [
 			'filename' => $filename,
 		];
+
+		/**
+		 * @var rex_extension_point<string> $ep
+		 */
 		$ep = new rex_extension_point('dummy', $subject, $params, false);
 		MediapoolExif::processUploadedMedia($ep);
 	}

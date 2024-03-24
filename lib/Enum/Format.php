@@ -22,4 +22,5 @@ enum Format :string
 {
 	case RAW = 'numeric';
 	case READABLE = 'readable';
+	case UNDEFINED = '';
 }

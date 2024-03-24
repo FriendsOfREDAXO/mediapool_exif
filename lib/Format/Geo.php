@@ -20,7 +20,7 @@ class Geo extends FormatInterface
 
 	/**
 	 * Formatierung der Daten
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
 	public function format(): array

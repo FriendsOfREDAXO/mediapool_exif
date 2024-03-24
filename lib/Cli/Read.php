@@ -63,10 +63,14 @@ class Read extends rex_console_command
 
 		$counter = 0;
 		foreach ($files as $file) {
+			if (!isset($file['filename'])) {
+				continue;
+			}
+
 			$counter++;
 			$io->writeln('Process file '.$counter.' of '.$numEntries.': '.$file['filename']);
 
-			MediapoolExif::readExifFromFile($file['filename']);
+			MediapoolExif::readExifFromFile((string) $file['filename']);
 		}
 
 		$io->success('done');

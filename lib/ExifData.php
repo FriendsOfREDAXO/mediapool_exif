@@ -32,7 +32,7 @@ class ExifData
 	/**
 	 * Exif-Daten-Array
 	 *
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	private array $exif;
 
@@ -73,7 +73,7 @@ class ExifData
 
 		$exifRaw = $this->media->getValue('exif');
 		if ($exifRaw !== null) {
-			$this->exif = json_decode($exifRaw, true);
+			$this->exif = json_decode((string) $exifRaw, true);
 			if (!$this->exif) {
 				$this->exif = [];
 			}
