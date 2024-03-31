@@ -37,8 +37,8 @@ class Aperture extends FormatInterface
 			case Format::READABLE:
 				return 'f/'.number_format((float) $data[0] / (float) $data[1], 1);
 			case Format::RAW:
+			default:
 				return number_format((float) $data[0] / (float) $data[1], 1);
 		}
-		throw new InvalidFormatExcption($this->format);
 	}
 }

@@ -37,16 +37,16 @@ class Camera extends FormatInterface
 			throw new Exception('No camera data found');
 		}
 
-		$format = $this->format;
-		if ($format === null) {
-			$format = Format::READABLE;
+		if ($this->format === null) {
+			$this->format = Format::READABLE;
 		}
-
-		$formatValue = $format->value;
+		$formatValue = $this->format->value;
 
 		/** @phpstan-ignore-next-line */
 		if (!is_callable([$this, $formatValue])) {
-			throw new InvalidFormatExcption($format);
+			// @codeCoverageIgnoreStart
+			throw new InvalidFormatExcption($this->format);
+			// @codeCoverageIgnoreEnd
 		}
 
 		return $this->$formatValue();

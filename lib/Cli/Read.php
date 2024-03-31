@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Description of Renew
  *
  * @author akrys
+ * @codeCoverageIgnore
  */
 class Read extends rex_console_command
 {

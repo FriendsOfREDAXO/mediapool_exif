@@ -35,7 +35,7 @@ class Length extends FormatInterface
 	public function format(): string
 	{
 		if (!isset($this->data['FocalLength'])) {
-			throw new Exception('No aperture found');
+			throw new Exception('No focial length found');
 		}
 
 		$data = explode('/', $this->data['FocalLength']);

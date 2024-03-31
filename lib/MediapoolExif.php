@@ -18,6 +18,10 @@ use rex_path;
 use rex_sql;
 use function mb_convert_encoding;
 
+/**
+ * @codeCoverageIgnore
+ * -> Nur Redaxo=Plattform-Integration
+ */
 final class MediapoolExif
 {
 	/**
