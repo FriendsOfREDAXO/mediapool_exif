@@ -9,7 +9,7 @@
 namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
 
 use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
-use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
+use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidClassException;
 
 /**
  * Description of FormatBase
@@ -69,7 +69,7 @@ abstract class FormatInterface
 	 * @param ?string $className Formatter Namespace
 	 * @param Format|null $format Format-Parameter
 	 * @return FormatInterface
-	 * @throws InvalidFormatExcption
+	 * @throws InvalidClassExcption
 	 */
 	public static function get($data, ?string $className = null, ?Format $format = null): FormatInterface
 	{
@@ -82,7 +82,7 @@ abstract class FormatInterface
 				return $object;
 			}
 		}
-		throw new InvalidFormatExcption($format);
+		throw new InvalidClassException($className);
 	}
 
 	/**

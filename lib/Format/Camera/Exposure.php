@@ -28,7 +28,7 @@ class Exposure extends FormatInterface
 	public function format(): string
 	{
 		if (!isset($this->data['ExposureTime'])) {
-			throw new Exception('No aperture found');
+			throw new Exception('No exposure time found');
 		}
 
 		$return = '';

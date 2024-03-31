@@ -19,10 +19,6 @@ use Throwable;
  */
 class InvalidFormatExcption extends Exception
 {
-	/**
-	 * @var Format
-	 */
-	public Format $format;
 
 	/**
 	 * Konstruktor
@@ -31,7 +27,8 @@ class InvalidFormatExcption extends Exception
 	 * @param int $code
 	 * @param Throwable $previous
 	 */
-	public function __construct(?Format $format, string $message = "", int $code = 0, Throwable $previous = NULL)
+	public function __construct(
+		private ?Format $format, string $message = "", int $code = 0, Throwable $previous = NULL)
 	{
 		$this->format = Format::UNDEFINED;
 		if ($format !== null) {
