@@ -28,23 +28,22 @@ class InvalidFormatExcption extends Exception
 	 * @param Throwable $previous
 	 */
 	public function __construct(
-		private ?Format $format, string $message = "", int $code = 0, Throwable $previous = NULL)
-	{
-		$this->format = Format::UNDEFINED;
-		if ($format !== null) {
-			$this->format = $format;
+		private ?Format $format, string $message = "", int $code = 0, Throwable $previous = NULL
+	) {
+		if ($this->format === null) {
+			$this->format = Format::UNDEFINED;
 		}
 		if ($message === '') {
-			$message = 'Invalid Format: '.$format?->value;
+			$message = 'Invalid Format: '.$this->format->value;
 		}
 		parent::__construct($message, $code, $previous);
 	}
 
 	/**
 	 * Formatname
-	 * @return Format
+	 * @return Format|null
 	 */
-	public function getFormat(): Format
+	public function getFormat(): ?Format
 	{
 		return $this->format;
 	}

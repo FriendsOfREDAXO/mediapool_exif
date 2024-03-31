@@ -69,7 +69,7 @@ abstract class FormatInterface
 	 * @param ?string $className Formatter Namespace
 	 * @param Format|null $format Format-Parameter
 	 * @return FormatInterface
-	 * @throws InvalidClassExcption
+	 * @throws InvalidClassException
 	 */
 	public static function get($data, ?string $className = null, ?Format $format = null): FormatInterface
 	{

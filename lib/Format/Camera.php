@@ -45,7 +45,7 @@ class Camera extends FormatInterface
 		/** @phpstan-ignore-next-line */
 		if (!is_callable([$this, $formatValue])) {
 			// @codeCoverageIgnoreStart
-			throw new InvalidFormatExcption($format);
+			throw new InvalidFormatExcption($this->format);
 			// @codeCoverageIgnoreEnd
 		}
 

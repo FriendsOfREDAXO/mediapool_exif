@@ -40,6 +40,5 @@ class Aperture extends FormatInterface
 			default:
 				return number_format((float) $data[0] / (float) $data[1], 1);
 		}
-		throw new InvalidFormatExcption($this->format);
 	}
 }

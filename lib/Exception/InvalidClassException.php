@@ -34,7 +34,6 @@ class InvalidClassException extends Exception
 	public function __construct(
 		private string $class, string $message = "", int $code = 0, Throwable $previous = NULL
 	) {
-		$this->class = $class;
 		if ($message === '') {
 			$message = 'Invalid class: '.$class;
 		}

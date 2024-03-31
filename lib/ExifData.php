@@ -23,24 +23,11 @@ use rex_media;
 class ExifData
 {
 	/**
-	 * Media-Objekt
-	 *
-	 * @var rex_media
-	 */
-	private rex_media $media;
-
-	/**
 	 * Exif-Daten-Array
 	 *
 	 * @var array<string, mixed>
 	 */
 	private array $exif;
-
-	/**
-	 * Modus
-	 * @var ReturnMode
-	 */
-	private ReturnMode $mode;
 
 	/**
 	 * Konstruktor
@@ -66,9 +53,9 @@ class ExifData
 	 * @param rex_media $media
 	 * @param ReturnMode $mode
 	 */
-	public function __construct(rex_media $media, ReturnMode $mode = null)
-	{
-		$this->media = $media;
+	public function __construct(
+		private rex_media $media, private ?ReturnMode $mode = null
+	) {
 		$this->exif = [];
 
 		$exifRaw = $this->media->getValue('exif');
@@ -79,10 +66,9 @@ class ExifData
 			}
 		}
 
-		if ($mode === null) {
-			$mode = ReturnMode::THROW_EXCEPTION;
+		if ($this->mode === null) {
+			$this->mode = ReturnMode::THROW_EXCEPTION;
 		}
-		$this->mode = $mode;
 	}
 
 	/**
