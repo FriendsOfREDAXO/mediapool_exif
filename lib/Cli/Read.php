@@ -42,7 +42,7 @@ class Read extends rex_console_command
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 */
-	protected function execute(InputInterface $input, OutputInterface $output): void
+	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
 		$io = $this->getStyle($input, $output);
 		$io->title('Read EXIF data');
@@ -63,12 +63,17 @@ class Read extends rex_console_command
 
 		$counter = 0;
 		foreach ($files as $file) {
+			if (!isset($file['filename'])) {
+				continue;
+			}
+
 			$counter++;
 			$io->writeln('Process file '.$counter.' of '.$numEntries.': '.$file['filename']);
 
-			MediapoolExif::readExifFromFile($file['filename']);
+			MediapoolExif::readExifFromFile((string) $file['filename']);
 		}
 
 		$io->success('done');
+		return self::SUCCESS;
 	}
 }

@@ -10,7 +10,6 @@ namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
 
 use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 
 /**
  * Description of FormatBase
@@ -21,7 +20,7 @@ abstract class FormatInterface
 {
 	/**
 	 * Exif-Daten
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	protected array $data;
 
@@ -33,8 +32,8 @@ abstract class FormatInterface
 
 	/**
 	 * Konstruktor
-	 * @param array $data
-	 * @param Format|null $format
+	 * @param array<string, mixed> $data
+	 * @param ?Format $format
 	 */
 	public function __construct(array $data, ?Format $format = null)
 	{
@@ -52,8 +51,8 @@ abstract class FormatInterface
 	 * Es kann aber auch sein, dass sie direkt aus der Datei stammen. z.B. für die automatische Koordinaten-Errechnung.
 	 * Im Prinzip spielt es aber keine Rolle, wo die Daten genau her kommen. Wichtig ist nur, dass sie hier ankommen.
 	 *
-	 * $type:
-	 * Bei Type geht es um die Formatter-Klasse, die verwendet werden soll. Wichtig ist, dass siek das FormatInterface
+	 * $className:
+	 * Bei ClassName geht es um die Formatter-Klasse, die verwendet werden soll. Wichtig ist, dass sie das FormatInterface
 	 * implementiert. Damit kann die Funktion format immer aufgerufen werden.
 	 *
 	 * $format:
@@ -66,21 +65,24 @@ abstract class FormatInterface
 	 *    <li>degree: 51° 06' 39.32" N / 8° 40' 55.656 E</li>
 	 * <ul>
 	 *
-	 * @param string $data exif-Daten-Array
-	 * @param string $className Formatter Namespace
+	 * @param array<string, mixed> $data exif-Daten-Array
+	 * @param ?string $className Formatter Namespace
 	 * @param Format|null $format Format-Parameter
-	 * @return \FriendsOfRedaxo\addon\MediapoolExif\Format\className
+	 * @return FormatInterface
 	 * @throws InvalidFormatExcption
 	 */
 	public static function get($data, ?string $className = null, ?Format $format = null): FormatInterface
 	{
+		if ($className === null) {
+			$className = '';
+		}
 		if (class_exists($className)) {
 			$object = new $className($data, $format);
 			if (is_a($object, FormatInterface::class)) {
 				return $object;
 			}
 		}
-		throw new InvalidFormatExcption($className);
+		throw new InvalidFormatExcption($format);
 	}
 
 	/**
@@ -90,7 +92,7 @@ abstract class FormatInterface
 	 *
 	 * Die Rückgabe kann bei einzelwerten ein string, sont ein array sein.
 	 *
-	 * @return string|array
+	 * @return string|array<string, mixed>
 	 */
 	abstract public function format(): string|array;
 }

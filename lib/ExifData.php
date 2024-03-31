@@ -32,7 +32,7 @@ class ExifData
 	/**
 	 * Exif-Daten-Array
 	 *
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	private array $exif;
 
@@ -63,8 +63,8 @@ class ExifData
 	 * <li>[] (MODE_RETURN_EMPTY_ARRAY)</li>
 	 * </ol>
 	 *
-	 * @param \FriendsOfRedaxo\addon\MediapoolExif\rex_media $media
-	 * @param int $mode
+	 * @param rex_media $media
+	 * @param ReturnMode $mode
 	 */
 	public function __construct(rex_media $media, ReturnMode $mode = null)
 	{
@@ -73,7 +73,7 @@ class ExifData
 
 		$exifRaw = $this->media->getValue('exif');
 		if ($exifRaw !== null) {
-			$this->exif = json_decode($exifRaw, true);
+			$this->exif = json_decode((string) $exifRaw, true);
 			if (!$this->exif) {
 				$this->exif = [];
 			}
@@ -108,9 +108,8 @@ class ExifData
 
 	/**
 	 * Formatierungsalgorithmus anstoßen
-	 * @param string $type
-	 * @param Format $format
 	 * @param string $className
+	 * @param Format $format
 	 * @return mixed
 	 */
 	public function format(string $className, Format $format = null): mixed
@@ -132,7 +131,7 @@ class ExifData
 	 *
 	 * Welche Rückgabe hätten's gern?
 	 *
-	 * @param string $exception
+	 * @param Exception $exception
 	 * @return mixed
 	 * @throws NotFoundException
 	 */

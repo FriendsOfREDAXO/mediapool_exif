@@ -27,7 +27,7 @@ class Camera extends FormatInterface
 
 	/**
 	 * Daten formatieren
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 * @throws InvalidFormatExcption
 	 */
@@ -44,15 +44,17 @@ class Camera extends FormatInterface
 
 		$formatValue = $format->value;
 
-		if (is_callable([$this, $formatValue])) {
-			return $this->$formatValue();
+		/** @phpstan-ignore-next-line */
+		if (!is_callable([$this, $formatValue])) {
+			throw new InvalidFormatExcption($format);
 		}
-		throw new InvalidFormatExcption($format);
+
+		return $this->$formatValue();
 	}
 
 	/**
 	 * Daten lesbar anzeigen
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	private function readable(): array
 	{
@@ -68,7 +70,7 @@ class Camera extends FormatInterface
 
 	/**
 	 * Daten nummerisch anzeigen
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	private function numeric(): array
 	{
