@@ -32,7 +32,10 @@ class InvalidClassException extends Exception
 	 * @param Throwable $previous
 	 */
 	public function __construct(
-		private string $class, string $message = "", int $code = 0, Throwable $previous = NULL
+		private string $class,
+		string $message = "",
+		int $code = 0,
+		Throwable $previous = null
 	) {
 		if ($message === '') {
 			$message = 'Invalid class: '.$class;

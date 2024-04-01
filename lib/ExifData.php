@@ -54,7 +54,8 @@ class ExifData
 	 * @param ReturnMode $mode
 	 */
 	public function __construct(
-		private rex_media $media, private ?ReturnMode $mode = null
+		private rex_media $media,
+		private ?ReturnMode $mode = null
 	) {
 		$this->exif = [];
 

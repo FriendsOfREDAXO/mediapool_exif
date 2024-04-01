@@ -55,6 +55,8 @@ class Camera extends FormatInterface
 	/**
 	 * Daten lesbar anzeigen
 	 * @return array<string, mixed>
+	 * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+	 * -> zugriff via $this->$formatValue
 	 */
 	private function readable(): array
 	{
@@ -71,6 +73,8 @@ class Camera extends FormatInterface
 	/**
 	 * Daten nummerisch anzeigen
 	 * @return array<string, mixed>
+	 * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+	 * -> zugriff via $this->$formatValue
 	 */
 	private function numeric(): array
 	{

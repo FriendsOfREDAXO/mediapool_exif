@@ -27,7 +27,10 @@ class NotFoundException extends Exception
 	 * @param Throwable $previous
 	 */
 	public function __construct(
-		private string $index, string $message = "", int $code = 0, Throwable $previous = NULL
+		private string $index,
+		string $message = "",
+		int $code = 0,
+		Throwable $previous = null
 	) {
 		parent::__construct($message, $code, $previous);
 	}
