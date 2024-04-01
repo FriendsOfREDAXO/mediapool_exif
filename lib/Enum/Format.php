@@ -18,7 +18,7 @@ namespace FriendsOfRedaxo\addon\MediapoolExif\Enum;
  *
  * @author akrys
  */
-enum Format :string
+enum Format: string
 {
 	case RAW = 'numeric';
 	case READABLE = 'readable';

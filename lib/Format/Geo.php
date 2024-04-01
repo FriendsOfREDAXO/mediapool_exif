@@ -25,8 +25,7 @@ class Geo extends FormatInterface
 	 */
 	public function format(): array
 	{
-		if (
-			!isset($this->data['GPSLatitude']) ||
+		if (!isset($this->data['GPSLatitude']) ||
 			!isset($this->data['GPSLatitudeRef']) ||
 			!isset($this->data['GPSLongitude']) ||
 			!isset($this->data['GPSLongitudeRef'])) {

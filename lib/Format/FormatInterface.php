@@ -52,8 +52,8 @@ abstract class FormatInterface
 	 * Im Prinzip spielt es aber keine Rolle, wo die Daten genau her kommen. Wichtig ist nur, dass sie hier ankommen.
 	 *
 	 * $className:
-	 * Bei ClassName geht es um die Formatter-Klasse, die verwendet werden soll. Wichtig ist, dass sie das FormatInterface
-	 * implementiert. Damit kann die Funktion format immer aufgerufen werden.
+	 * Bei ClassName geht es um die Formatter-Klasse, die verwendet werden soll. Wichtig ist, dass sie das
+	 * FormatInterface implementiert. Damit kann die Funktion format immer aufgerufen werden.
 	 *
 	 * $format:
 	 * Beim Format-Parameter kann man einen Hinweis liefern, wie die Ausgabe zu formatieren ist.

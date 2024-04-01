@@ -45,22 +45,22 @@ class Read extends rex_console_command
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output): int
 	{
-		$io = $this->getStyle($input, $output);
-		$io->title('Read EXIF data');
+		$command = $this->getStyle($input, $output);
+		$command->title('Read EXIF data');
 
 		$updateAll = $input->getOption('all');
 		$updateSilent = $input->getOption('silent');
 
 		$mode = MediaFetchMode::NULL_ONLY;
 		if ($updateAll) {
-			if ($updateSilent || $io->confirm('You are going to update all files. Are you sure?', false)) {
+			if ($updateSilent || $command->confirm('You are going to update all files. Are you sure?', false)) {
 				$mode = MediaFetchMode::ALL;
 			}
 		}
 		$files = Exif::getMediaToRead($mode);
 
 		$numEntries = count($files);
-		$io->writeln($numEntries.' entries to read');
+		$command->writeln($numEntries.' entries to read');
 
 		$counter = 0;
 		foreach ($files as $file) {
@@ -69,12 +69,12 @@ class Read extends rex_console_command
 			}
 
 			$counter++;
-			$io->writeln('Process file '.$counter.' of '.$numEntries.': '.$file['filename']);
+			$command->writeln('Process file '.$counter.' of '.$numEntries.': '.$file['filename']);
 
 			MediapoolExif::readExifFromFile((string) $file['filename']);
 		}
 
-		$io->success('done');
+		$command->success('done');
 		return self::SUCCESS;
 	}
 }
