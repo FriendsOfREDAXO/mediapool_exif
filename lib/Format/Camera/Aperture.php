@@ -10,6 +10,7 @@ namespace FriendsOfRedaxo\addon\MediapoolExif\Format\Camera;
 
 use Exception;
 use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
+use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 
 /**
@@ -35,10 +36,9 @@ class Aperture extends FormatInterface
 		switch ($this->format) {
 			case Format::READABLE:
 				return 'f/'.number_format((float) $data[0] / (float) $data[1], 1);
-				break;
 			case Format::RAW:
+			default:
 				return number_format((float) $data[0] / (float) $data[1], 1);
-				break;
 		}
 	}
 }

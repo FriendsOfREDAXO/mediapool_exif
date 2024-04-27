@@ -18,10 +18,6 @@ use Throwable;
  */
 class NotFoundException extends Exception
 {
-	/**
-	 * @var string
-	 */
-	public string $index;
 
 	/**
 	 * Konstruktor
@@ -30,9 +26,12 @@ class NotFoundException extends Exception
 	 * @param int $code
 	 * @param Throwable $previous
 	 */
-	public function __construct(string $index, string $message = "", int $code = 0, Throwable $previous = NULL)
-	{
-		$this->index = $index;
+	public function __construct(
+		private string $index,
+		string $message = "",
+		int $code = 0,
+		Throwable $previous = null
+	) {
 		parent::__construct($message, $code, $previous);
 	}
 

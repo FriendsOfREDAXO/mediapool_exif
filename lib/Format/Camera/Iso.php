@@ -27,7 +27,7 @@ class Iso extends FormatInterface
 	public function format(): string
 	{
 		if (!isset($this->data['ISOSpeedRatings'])) {
-			throw new Exception('No aperture found');
+			throw new Exception('No iso setting found');
 		}
 
 		return $this->data['ISOSpeedRatings'];

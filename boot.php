@@ -2,7 +2,11 @@
 
 use FriendsOfRedaxo\addon\MediapoolExif\MediapoolExif;
 
-rex_fragment::addDirectory(realpath(__DIR__));
+$dir = realpath(__DIR__);
+if ($dir !== false) {
+	rex_fragment::addDirectory($dir);
+}
+
 
 $class = MediapoolExif::class;
 rex_extension::register('MEDIA_ADDED', [$class, 'processUploadedMedia'], rex_extension::LATE);
