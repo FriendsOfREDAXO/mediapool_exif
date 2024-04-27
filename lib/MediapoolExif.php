@@ -18,11 +18,18 @@ use rex_path;
 use rex_sql;
 use function mb_convert_encoding;
 
-class MediapoolExif
+/**
+ * @codeCoverageIgnore
+ * -> Nur Redaxo=Plattform-Integration
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * -> man könnte vllt mal was auslagern
+ */
+final class MediapoolExif
 {
 	/**
 	 * Field mapping
-	 * @var array
+	 * @var array<string, mixed>
 	 */
 	protected static array $fields = [
 		'author' => ['Artist', 'AuthorByLine', 'CaptionWriter'],
@@ -39,13 +46,19 @@ class MediapoolExif
 
 	/**
 	 * Upload processing
-	 * @param rex_extension_point $ep
+	 * @param rex_extension_point<string> $exp
+	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 * -> zu tief verschachtelt.... vllt. Funktionsauslagerung?
+	 * @SuppressWarnings(PHPMD.IfStatementAssignment)
+	 * -> bei Datenbankabfragen kaum anders zu machen
+	  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	  * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
-	public static function processUploadedMedia(rex_extension_point $ep): void
+	public static function processUploadedMedia(rex_extension_point $exp): void
 	{
-		$oldMedia = rex_media::get($ep->getParam('filename'));
-		if ($data = static::getDataByFilename($ep->getParam('filename'))) {
-			$qry = "SELECT * FROM `".rex::getTablePrefix()."media` WHERE `filename` = '".$ep->getParam('filename')."'";
+		$oldMedia = rex_media::get($exp->getParam('filename'));
+		if ($data = static::getDataByFilename($exp->getParam('filename'))) {
+			$qry = "SELECT * FROM `".rex::getTablePrefix()."media` WHERE `filename` = '".$exp->getParam('filename')."'";
 			$sql = rex_sql::factory();
 			$sql->setQuery($qry);
 			if ($result = $sql->getArray()) {
@@ -55,9 +68,9 @@ class MediapoolExif
 
 				// check for category?!
 				if (isset($data['categories'])) {
-					$qry = "SELECT `id` FROM `".rex::getTablePrefix()."media_category` WHERE `name` IN ('".join(
-							"', '", $data['categories']
-						)."') ORDER BY FIELD (`name`, '".join("', '", $data['categories'])."') LIMIT 1";
+					$qry = "SELECT `id` FROM `".rex::getTablePrefix()."media_category` WHERE ".
+						"`name` IN ('".join("', '", $data['categories'])."') ".
+						"ORDER BY FIELD (`name`, '".join("', '", $data['categories'])."') LIMIT 1";
 					$sql->setQuery($qry);
 					if ($tmp_result = $sql->getArray()) {
 						$data['category_id'] = $tmp_result[0]['id'];
@@ -76,7 +89,7 @@ class MediapoolExif
 						if (preg_match('/date$/', $key)) {
 							$result[$key] = null;
 							$value = date('Y-m-d H:i:s', $value);
-						} else if (is_array($value)) {
+						} elseif (is_array($value)) {
 							$value = join(', ', $value);
 						}
 
@@ -87,22 +100,26 @@ class MediapoolExif
 				}
 				unset($field, $value, $key);
 
-				if (self::exifHasChanged($data['exif'], $oldMedia->getValue('exif'))) {
+				if (self::exifHasChanged($data['exif'], $oldMedia?->getValue('exif'))) {
 					$update['exif'] = '`exif`='.$sql->escape($data['exif']);
 				}
 
 				if (!empty($update)) {
-					$qry = "UPDATE `".rex::getTablePrefix()."media` SET ".join(", ", array_values($update))." WHERE `filename` = '".$ep->getParam('filename')."'";
+					$qry = "UPDATE `".rex::getTablePrefix()."media` ".
+						"SET ".join(", ", array_values($update))." ".
+						"WHERE `filename` = '".$exp->getParam('filename')."'";
 
+					/** @phpstan-ignore-next-line */
 					if ($sql->setQuery($qry)) {
 						$names = '<code>'.join('</code>, <code>', array_keys($update)).'</code>';
 						$names = preg_replace_callback('/\>[a-z]/', function ($match) {
 							return strtoupper($match[0]);
 						}, $names);
 
-						$ep->setParam('msg', $ep->getParam('msg').'<br />'.rex_i18n::msg('exif_data_updated').' '.$names);
+						$msg = $exp->getParam('msg').'<br />'.rex_i18n::msg('exif_data_updated').' '.$names;
+						$exp->setParam('msg', $msg);
 
-						rex_media_cache::delete($ep->getParam('filename'));
+						rex_media_cache::delete($exp->getParam('filename'));
 					} else {
 						rex_logger::factory()->alert('SQL-Error ['.$sql->getErrno().'] '.$sql->getError());
 					}
@@ -119,24 +136,22 @@ class MediapoolExif
 	 * Check ob die EXIF-Daten sich geändert haben.
 	 *
 	 * @param string $new
-	 * @param string|null $old
+	 * @param string|int|null $old
 	 * @return bool
 	 */
-	private static function exifHasChanged(string $new, ?string $old): bool
+	private static function exifHasChanged(string $new, string|int|null $old): bool
 	{
 		$newArray = json_decode($new, true);
 		$oldArray = [];
 		if ($old !== null) {
-			$oldArray = json_decode($old, true);
+			$oldArray = json_decode((string) $old, true);
 		}
 
 		/**
 		 * FileDateTime ändert sich immer.
 		 * Hieße: wir ändern das exif-Feld, obwohl sich nichts relevantes geändert hat.
 		 */
-		unset(
-			$newArray['FileDateTime'], $oldArray['FileDateTime']
-		);
+		unset($newArray['FileDateTime'], $oldArray['FileDateTime']);
 
 		$newString = json_encode($newArray);
 		$oldString = json_encode($oldArray);
@@ -147,11 +162,12 @@ class MediapoolExif
 	/**
 	 * Daten au der Datei holen
 	 * @param string $filename
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	public static function getDataByFilename(string $filename): array
 	{
-		if ($media = rex_media::get($filename)) {
+		$media = rex_media::get($filename);
+		if ($media) {
 			if ($media->fileExists()) {
 				return static::getData($media);
 			}
@@ -164,7 +180,11 @@ class MediapoolExif
 	 * Daten aus der Datei verarbeiten
 	 * @param rex_media $media
 	 * @param string $key
-	 * @return array
+	 * @return array<string, mixed>
+	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 * -> zu tief verschachtelt.... vllt. Funktionsauslagerung?
+	  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	  * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
 	public static function getData(rex_media $media, string $key = null): array
 	{
@@ -205,14 +225,14 @@ class MediapoolExif
 			$return['title'] = preg_replace('/^(.*)\.[\w]{1,}$/', "$1", $return['title']);
 
 			// Unterstriche zu Leerzeichen umwandeln
-			$return['title'] = preg_replace('/_/', " ", $return['title']);
+			$return['title'] = preg_replace('/_/', " ", (string) $return['title']);
 			// Doppelte Leerzeichen entfernen
-			$return['title'] = trim(preg_replace('/ {2,}/', ' ', $return['title']));
+			$return['title'] = trim((string) preg_replace('/ {2,}/', ' ', (string) $return['title']));
 
 			// Ersten Buchstaben gross schreiben
-			$return['title'] = ucfirst($return['title']);
+			$return['title'] = ucfirst((string) $return['title']);
 
-			$return['title'] = trim($return['title']);
+			$return['title'] = trim((string) $return['title']);
 
 			if (empty($return['title'])) {
 				unset($return['title']);
@@ -240,7 +260,7 @@ class MediapoolExif
 	/**
 	 * EXIF-Daten aus dem rex_media-Objekt holen.
 	 * @param rex_media $media
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	protected static function getExifData(rex_media $media): array
 	{
@@ -259,8 +279,8 @@ class MediapoolExif
 
 				try {
 					$coordinates = FormatInterface::get($exif, Geo::class)->format();
-					$exif['GPSCoordinatesLat'] = $coordinates['lat'];
-					$exif['GPSCoordinatesLong'] = $coordinates['long'];
+					$exif['GPSCoordinatesLat'] = $coordinates['lat'] ?? 0;
+					$exif['GPSCoordinatesLong'] = $coordinates['long'] ?? 0;
 				} catch (Exception $e) {
 					//no GPS Data, nothing to to
 				}
@@ -274,7 +294,7 @@ class MediapoolExif
 	/**
 	 * IPTC-Daten holen
 	 * @param rex_media $media
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	protected static function getIptcData(rex_media $media): array
 	{
@@ -288,7 +308,8 @@ class MediapoolExif
 			$iptc = static::parseIptc($media);
 			foreach (IptcDefinitions::cases() as $case) {
 				if (!empty($iptc[$case->getCode()])) {
-					$return[$case->getLabel()] = count($iptc[$case->getCode()]) == 1 ? $iptc[$case->getCode()][0] : $iptc[$case->getCode()];
+					$count = count($iptc[$case->getCode()]) == 1 ? $iptc[$case->getCode()][0] : $iptc[$case->getCode()];
+					$return[$case->getLabel()] = $count;
 				}
 			}
 		} catch (IptcException $e) {
@@ -301,11 +322,12 @@ class MediapoolExif
 	 * IPTC-Daten parsen.
 	 *
 	 * @param rex_media $media
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws IptcException
 	 */
 	private static function parseIptc(rex_media $media): array
 	{
+		$iptc = [];
 		$path = rex_path::media($media->getFileName());
 		$size = getimagesize($path, $info);
 		if (!$size) {
@@ -324,19 +346,19 @@ class MediapoolExif
 
 	/**
 	 * Seitenleiste für die Medienpool-Detailseite generieren
-	 * @param rex_extension_point $ep
+	 * @param rex_extension_point<string> $exp
 	 * @return string
 	 */
-	public static function mediapoolDetailOutput(rex_extension_point $ep): string
+	public static function mediapoolDetailOutput(rex_extension_point $exp): string
 	{
-		$subject = $ep->getSubject();
+		$subject = $exp->getSubject();
 
-		$exifRaw = $ep->getParam('media')->getValue('exif');
+		$exifRaw = $exp->getParam('media')->getValue('exif');
 		if ($exifRaw === null) {
 			return $subject;
 		}
 
-		$exif = json_decode($exifRaw, 1);
+		$exif = json_decode($exifRaw, true);
 		if ($exif) {
 			$lines = '';
 			//rekursiver Aufruf einer anonymen Funktion
@@ -354,24 +376,24 @@ class MediapoolExif
 
 	/**
 	 * Einzelzeile der Medienpool-Detail-Ausgabe verarbeiten.
-	 * @param array $exif
+	 * @param array<string, mixed> $exif
 	 * @return string
 	 */
 	protected static function mediapoolDetailOutputLine(array $exif): string
 	{
 		$lines = [];
 		foreach ($exif as $key => $value) {
+			$line = [
+				'key' => $key,
+				'value' => $value,
+			];
 			if (is_array($value)) {
-				$lines[] = [
+				$line = [
 					'key' => $key,
 					'value' => self::mediapoolDetailOutputLine($value),
 				];
-			} else {
-				$lines[] = [
-					'key' => $key,
-					'value' => $value,
-				];
 			}
+			$lines[] = $line;
 		}
 
 		$fragment = new rex_fragment([
@@ -390,13 +412,17 @@ class MediapoolExif
 	 * @param string $filename
 	 * @return void
 	 */
-	public function readExifFromFile(string $filename): void
+	public static function readExifFromFile(string $filename): void
 	{
 		$subject = null;
 		$params = [
 			'filename' => $filename,
 		];
-		$ep = new rex_extension_point('dummy', $subject, $params, false);
-		MediapoolExif::processUploadedMedia($ep);
+
+		/**
+		 * @var rex_extension_point<string> $exp
+		 */
+		$exp = new rex_extension_point('dummy', $subject, $params, false);
+		MediapoolExif::processUploadedMedia($exp);
 	}
 }

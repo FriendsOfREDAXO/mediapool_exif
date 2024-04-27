@@ -20,13 +20,12 @@ class Geo extends FormatInterface
 
 	/**
 	 * Formatierung der Daten
-	 * @return array
+	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
 	public function format(): array
 	{
-		if (
-			!isset($this->data['GPSLatitude']) ||
+		if (!isset($this->data['GPSLatitude']) ||
 			!isset($this->data['GPSLatitudeRef']) ||
 			!isset($this->data['GPSLongitude']) ||
 			!isset($this->data['GPSLongitudeRef'])) {
@@ -52,18 +51,18 @@ class Geo extends FormatInterface
 		$GPSLatitude_m = explode("/", $GPSLatitude[1]);
 		$GPSLatitude_s = explode("/", $GPSLatitude[2]);
 
-		$GPSLat_h = $GPSLatitude_h[0] / $GPSLatitude_h[1];
-		$GPSLat_m = $GPSLatitude_m[0] / $GPSLatitude_m[1];
-		$GPSLat_s = $GPSLatitude_s[0] / $GPSLatitude_s[1];
+		$GPSLat_h = (float) $GPSLatitude_h[0] / (float) $GPSLatitude_h[1];
+		$GPSLat_m = (float) $GPSLatitude_m[0] / (float) $GPSLatitude_m[1];
+		$GPSLat_s = (float) $GPSLatitude_s[0] / (float) $GPSLatitude_s[1];
 
 		$GPSLatGrad = $GPSLatfaktor * ($GPSLat_h + ($GPSLat_m + ($GPSLat_s / 60)) / 60);
 
 		$GPSLongitude_h = explode("/", $GPSLongitude[0]);
 		$GPSLongitude_m = explode("/", $GPSLongitude[1]);
 		$GPSLongitude_s = explode("/", $GPSLongitude[2]);
-		$GPSLong_h = $GPSLongitude_h[0] / $GPSLongitude_h[1];
-		$GPSLong_m = $GPSLongitude_m[0] / $GPSLongitude_m[1];
-		$GPSLong_s = $GPSLongitude_s[0] / $GPSLongitude_s[1];
+		$GPSLong_h = (float) $GPSLongitude_h[0] / (float) $GPSLongitude_h[1];
+		$GPSLong_m = (float) $GPSLongitude_m[0] / (float) $GPSLongitude_m[1];
+		$GPSLong_s = (float) $GPSLongitude_s[0] / (float) $GPSLongitude_s[1];
 		$GPSLongGrad = $GPSLongfaktor * ($GPSLong_h + ($GPSLong_m + ($GPSLong_s / 60)) / 60);
 
 		return [

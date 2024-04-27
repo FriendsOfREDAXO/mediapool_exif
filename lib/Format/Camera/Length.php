@@ -9,6 +9,7 @@ namespace FriendsOfRedaxo\addon\MediapoolExif\Format\Camera;
 
 use Exception;
 use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
+use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
 use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
 
 /**
@@ -34,7 +35,7 @@ class Length extends FormatInterface
 	public function format(): string
 	{
 		if (!isset($this->data['FocalLength'])) {
-			throw new Exception('No aperture found');
+			throw new Exception('No focial length found');
 		}
 
 		$data = explode('/', $this->data['FocalLength']);
@@ -42,11 +43,9 @@ class Length extends FormatInterface
 		switch ($this->format) {
 			case Format::READABLE:
 				return $value.' mm';
-				break;
 			case Format::RAW:
 			default:
-				return $value;
-				break;
+				return (string) $value;
 		}
 	}
 }

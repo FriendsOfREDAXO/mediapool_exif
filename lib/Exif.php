@@ -21,10 +21,11 @@ use rex_sql;
  */
 class Exif
 {
+
 	/**
 	 * Alternative Datenerhebung, analog zu rex_media::get()
 	 *
-	 * @param \FriendsOfRedaxo\addon\MediapoolExif\rex_media $media
+	 * @param rex_media $media
 	 * @return ExifData
 	 */
 	public static function get(rex_media $media, ReturnMode $mode = ReturnMode::THROW_EXCEPTION): ExifData
@@ -34,8 +35,8 @@ class Exif
 
 	/**
 	 *
-	 * @param type $mode
-	 * @return array
+	 * @param MediaFetchMode $mode
+	 * @return list<array<int|string, scalar|null>>|array<int|string, scalar|null>
 	 */
 	public static function getMediaToRead(MediaFetchMode $mode = MediaFetchMode::NULL_ONLY): array
 	{

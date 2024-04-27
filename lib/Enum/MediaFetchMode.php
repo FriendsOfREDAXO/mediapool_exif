@@ -4,7 +4,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
  */
-
 namespace FriendsOfRedaxo\addon\MediapoolExif\Enum;
 
 /**
@@ -19,7 +18,7 @@ namespace FriendsOfRedaxo\addon\MediapoolExif\Enum;
  *
  * @author akrys
  */
-enum MediaFetchMode :int
+enum MediaFetchMode: int
 {
 	case NULL_ONLY = 1000;
 	case ALL = 1001;
