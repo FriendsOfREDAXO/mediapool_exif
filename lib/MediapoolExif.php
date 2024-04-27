@@ -112,8 +112,7 @@ final class MediapoolExif
 					/** @phpstan-ignore-next-line */
 					if ($sql->setQuery($qry)) {
 						$names = '<code>'.join('</code>, <code>', array_keys($update)).'</code>';
-						$names = preg_replace_callback('/\>[a-z]/',
-																 function ($match) {
+						$names = preg_replace_callback('/\>[a-z]/', function ($match) {
 							return strtoupper($match[0]);
 						}, $names);
 
