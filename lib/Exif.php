@@ -6,11 +6,11 @@
  * @version       1.0 / 2020-06-08
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif;
+namespace FriendsOfRedaxo\MediapoolExif;
 
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\MediaFetchMode;
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\ReturnMode;
-use FriendsOfRedaxo\addon\MediapoolExif\ExifData;
+use FriendsOfRedaxo\MediapoolExif\Enum\MediaFetchMode;
+use FriendsOfRedaxo\MediapoolExif\Enum\ReturnMode;
+use FriendsOfRedaxo\MediapoolExif\ExifData;
 use rex_media;
 use rex_sql;
 

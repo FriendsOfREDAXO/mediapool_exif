@@ -6,11 +6,11 @@
  * @version       1.0 / 2020-06-08
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Cli;
+namespace FriendsOfRedaxo\MediapoolExif\Cli;
 
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\MediaFetchMode;
-use FriendsOfRedaxo\addon\MediapoolExif\Exif;
-use FriendsOfRedaxo\addon\MediapoolExif\MediapoolExif;
+use FriendsOfRedaxo\MediapoolExif\Enum\MediaFetchMode;
+use FriendsOfRedaxo\MediapoolExif\Exif;
+use FriendsOfRedaxo\MediapoolExif\MediapoolExif;
 use rex_console_command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

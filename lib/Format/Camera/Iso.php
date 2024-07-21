@@ -6,10 +6,10 @@
  * @version       1.0 / 2020-06-13
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Format\Camera;
+namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
 
 /**
  * Description of Iso

@@ -6,10 +6,10 @@
  * @version       1.0 / 2020-06-12
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
+namespace FriendsOfRedaxo\MediapoolExif\Format;
 
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
-use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidClassException;
+use FriendsOfRedaxo\MediapoolExif\Enum\Format;
+use FriendsOfRedaxo\MediapoolExif\Exception\InvalidClassException;
 
 /**
  * Description of FormatBase

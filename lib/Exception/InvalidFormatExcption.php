@@ -6,10 +6,10 @@
  * @version       1.0 / 2020-06-12
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Exception;
+namespace FriendsOfRedaxo\MediapoolExif\Exception;
 
 use Exception;
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
+use FriendsOfRedaxo\MediapoolExif\Enum\Format;
 use Throwable;
 
 /**
@@ -28,10 +28,7 @@ class InvalidFormatExcption extends Exception
 	 * @param Throwable $previous
 	 */
 	public function __construct(
-		private ?Format $format,
-		string $message = "",
-		int $code = 0,
-		Throwable $previous = null
+		private ?Format $format, string $message = "", int $code = 0, Throwable $previous = null
 	) {
 		if ($this->format === null) {
 			$this->format = Format::UNDEFINED;

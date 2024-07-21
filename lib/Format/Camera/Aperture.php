@@ -6,12 +6,12 @@
  * @version       1.0 / 2020-06-13
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Format\Camera;
+namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
-use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Enum\Format;
+use FriendsOfRedaxo\MediapoolExif\Exception\InvalidFormatExcption;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
 
 /**
  * Description of Aperture

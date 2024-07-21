@@ -5,12 +5,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Format\Camera;
+namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
-use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Enum\Format;
+use FriendsOfRedaxo\MediapoolExif\Exception\InvalidFormatExcption;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
 
 /**
  * Datei für ...

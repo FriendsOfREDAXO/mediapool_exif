@@ -6,7 +6,7 @@
  * @version       1.0 / 2020-06-12
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
+namespace FriendsOfRedaxo\MediapoolExif\Format;
 
 use Exception;
 

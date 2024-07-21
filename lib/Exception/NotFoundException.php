@@ -6,7 +6,7 @@
  * @version       1.0 / 2020-06-08
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Exception;
+namespace FriendsOfRedaxo\MediapoolExif\Exception;
 
 use Exception;
 use Throwable;

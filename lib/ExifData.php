@@ -6,13 +6,13 @@
  * @version       1.0 / 2020-06-08
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif;
+namespace FriendsOfRedaxo\MediapoolExif;
 
 use Exception;
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\ReturnMode;
-use FriendsOfRedaxo\addon\MediapoolExif\Exception\NotFoundException;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Enum\Format;
+use FriendsOfRedaxo\MediapoolExif\Enum\ReturnMode;
+use FriendsOfRedaxo\MediapoolExif\Exception\NotFoundException;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
 use rex_media;
 
 /**
