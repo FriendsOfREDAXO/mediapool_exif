@@ -4,7 +4,7 @@ author: 'FriendsOfREDAXO'
 supportpage: https://github.com/FriendsOfREDAXO/mediapool_exif
 
 console_commands:
-    mediapool_exif:read: '\FriendsOfRedaxo\addon\MediapoolExif\Cli\Read'
+    mediapool_exif:read: '\FriendsOfRedaxo\MediapoolExif\Cli\Read'
 
 
 requires:
