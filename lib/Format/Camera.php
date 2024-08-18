@@ -37,7 +37,7 @@ class Camera extends FormatInterface
 		return [
 			'make' => $this->data['Make'],
 			'model' => $this->data['Model'],
-			'iso' => (new Iso($this->datat))->format(),
+			'iso' => (new Iso($this->data))->format(),
 			'aperture' => (new Aperture($this->data))->format(),
 			'exposure' => (new Exposure($this->data))->format(),
 			'length' => (new Length($this->data))->format(),
