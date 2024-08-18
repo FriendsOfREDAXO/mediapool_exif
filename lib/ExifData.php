@@ -104,7 +104,7 @@ class ExifData
 		try {
 			if (!class_exists($className)) {
 				//fallback, old call
-				$className = '\\FriendsOfRedaxo\\addon\\MediapoolExif\\Format\\'.ucfirst($className);
+				$className = '\\FriendsOfRedaxo\\MediapoolExif\\Format\\'.ucfirst($className);
 			}
 
 			return FormatInterface::get($this->exif, $className, $format)->format();
