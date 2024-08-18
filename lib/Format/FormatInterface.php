@@ -22,11 +22,11 @@ abstract class FormatInterface
 	/**
 	 * Konstruktor
 	 * @param array<string, mixed> $data Exif-Daten
-	 * @param Format $format Formatierung
+	 * @param Format $format Formatierung (deprected)
 	 */
 	public function __construct(
 		protected array $data,
-		#[Deprecated]
+		/** @deprecated since version 3.1 */
 		protected Format $format = Format::READABLE
 	) {
 
@@ -58,14 +58,14 @@ abstract class FormatInterface
 	 *
 	 * @param array<string, mixed> $data exif-Daten-Array
 	 * @param string $className Formatter Namespace
-	 * @param Format $format Format-Parameter deprected
+	 * @param Format $format Format-Parameter (deprected)
 	 * @return FormatInterface
 	 * @throws InvalidClassException
 	 */
 	public static function get(
 		$data,
 		string $className = '',
-		#[Deprecated]
+		/** @deprecated since version 3.1 */
 		Format $format = Format::READABLE
 	): FormatInterface
 	{

@@ -101,7 +101,7 @@ class ExifData
 	 */
 	public function format(
 		string $className,
-		#[Deprecated]
+		/** @deprecated since version 3.1 */
 		Format $format = Format::READABLE): mixed
 	{
 		try {
