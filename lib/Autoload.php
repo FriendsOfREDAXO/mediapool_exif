@@ -46,23 +46,36 @@ class Autoload
 			$oldName = $name;
 			$newName = str_replace('FriendsOfRedaxo\\addon\\MediapoolExif', 'FriendsOfRedaxo\\MediapoolExif', $name);
 
-			$msg = 'Deprecated Class Found: '.$name.PHP_EOL.
-				'Use '.$newName.' instead of '.$oldName.PHP_EOL.
-				'Alias support with old Namespace will be removed next major verson.';
+			$backtrace = debug_backtrace();
+			$backtraceText = '';
+			$i = 0;
+			foreach ($backtrace as $key => $item) {
+				if (isset($backtrace[$key]['file']) && isset($backtrace[$key]['line'])) {
+					if(stristr($backtrace[$key]['file'], '/mediapool_exif/')) {
+						continue;
+					}
+
+					$backtraceText = ' in '.$backtrace[$key]['file'].': '.$backtrace[$key]['line'];
+					break;
+				}
+				$i++;
+			}
+
+			$msg = "Deprecated class name found: ".$oldName.$backtraceText.PHP_EOL.'New class: '.$newName;
 
 			class_alias($newName, $oldName);
 
 			user_error($msg, E_USER_DEPRECATED);
-			$name = str_replace('FriendsOfRedaxo\\addon\\MediapoolExif', 'FriendsOfRedaxo\\MediapoolExif', $name);
+			$name = $newName;
 		}
 
 
 		if (!stristr($name, __NAMESPACE__)) {
-			return false; // not a UsageCheck class
+			return false; // not a mediapool_exif class
 		}
 
-		if(class_exists($name)) {
-			return false;
+		if (class_exists($name)) {
+			return true;
 		}
 
 		//namespace parts not in directory structure.
