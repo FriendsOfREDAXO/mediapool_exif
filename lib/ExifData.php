@@ -99,7 +99,10 @@ class ExifData
 	 * @param Format $format
 	 * @return mixed
 	 */
-	public function format(string $className, Format $format = null): mixed
+	public function format(
+		string $className,
+		#[Deprecated]
+		Format $format = Format::READABLE): mixed
 	{
 		try {
 			if (!class_exists($className)) {

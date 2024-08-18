@@ -8,8 +8,6 @@
 namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Enum\Format;
-use FriendsOfRedaxo\MediapoolExif\Exception\InvalidFormatExcption;
 use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
 
 /**
@@ -40,12 +38,7 @@ class Length extends FormatInterface
 
 		$data = explode('/', $this->data['FocalLength']);
 		$value = (float) $data[0] / (float) $data[1];
-		switch ($this->format) {
-			case Format::READABLE:
-				return $value.' mm';
-			case Format::RAW:
-			default:
-				return (string) $value;
-		}
+
+		return $value.' mm';
 	}
 }

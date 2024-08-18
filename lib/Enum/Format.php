@@ -17,6 +17,7 @@ namespace FriendsOfRedaxo\MediapoolExif\Enum;
  * Description of Format
  *
  * @author akrys
+ * @deprecated since version 3.2. Wird ersatzlos gestrichen. Ein Formatter ist für exakt ein Format zuständig, wenn man die Rohdaten braucht, kann man einen Rohdaten Formatter schreiben.
  */
 enum Format: string
 {

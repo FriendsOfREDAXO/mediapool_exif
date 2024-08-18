@@ -9,8 +9,6 @@
 namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Enum\Format;
-use FriendsOfRedaxo\MediapoolExif\Exception\InvalidFormatExcption;
 use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
 
 /**
@@ -33,12 +31,6 @@ class Aperture extends FormatInterface
 		}
 
 		$data = explode('/', $this->data['FNumber']);
-		switch ($this->format) {
-			case Format::READABLE:
-				return 'f/'.number_format((float) $data[0] / (float) $data[1], 1);
-			case Format::RAW:
-			default:
-				return number_format((float) $data[0] / (float) $data[1], 1);
-		}
+		return 'f/'.number_format((float) $data[0] / (float) $data[1], 1);
 	}
 }
