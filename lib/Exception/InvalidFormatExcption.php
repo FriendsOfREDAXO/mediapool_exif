@@ -16,6 +16,7 @@ use Throwable;
  * Description of InvalidFormatExcption
  *
  * @author akrys
+ * @deprecated since version 3.1. Wird ersatzlos gestrichen. Ein Formatter ist für exakt ein Format zuständig, wenn man die Rohdaten braucht, kann man einen Rohdaten Formatter schreiben.
  */
 class InvalidFormatExcption extends Exception
 {
@@ -42,6 +43,7 @@ class InvalidFormatExcption extends Exception
 	/**
 	 * Formatname
 	 * @return Format|null
+	 * @deprecated since version 3.1
 	 */
 	public function getFormat(): ?Format
 	{

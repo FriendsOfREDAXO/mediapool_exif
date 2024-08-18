@@ -18,27 +18,18 @@ use FriendsOfRedaxo\MediapoolExif\Exception\InvalidClassException;
  */
 abstract class FormatInterface
 {
-	/**
-	 * Exif-Daten
-	 * @var array<string, mixed>
-	 */
-	protected array $data;
-
-	/**
-	 * Formatierung
-	 * @var Format|null
-	 */
-	protected ?Format $format;
 
 	/**
 	 * Konstruktor
-	 * @param array<string, mixed> $data
-	 * @param ?Format $format
+	 * @param array<string, mixed> $data Exif-Daten
+	 * @param Format $format Formatierung (deprected)
 	 */
-	public function __construct(array $data, ?Format $format = null)
-	{
-		$this->data = $data;
-		$this->format = $format;
+	public function __construct(
+		protected array $data,
+		/** @deprecated since version 3.1 */
+		protected Format $format = Format::READABLE
+	) {
+
 	}
 
 	/**
@@ -66,16 +57,18 @@ abstract class FormatInterface
 	 * <ul>
 	 *
 	 * @param array<string, mixed> $data exif-Daten-Array
-	 * @param ?string $className Formatter Namespace
-	 * @param Format|null $format Format-Parameter
+	 * @param string $className Formatter Namespace
+	 * @param Format $format Format-Parameter (deprected)
 	 * @return FormatInterface
 	 * @throws InvalidClassException
 	 */
-	public static function get($data, ?string $className = null, ?Format $format = null): FormatInterface
+	public static function get(
+		$data,
+		string $className = '',
+		/** @deprecated since version 3.1 */
+		Format $format = Format::READABLE
+	): FormatInterface
 	{
-		if ($className === null) {
-			$className = '';
-		}
 		if (class_exists($className)) {
 			$object = new $className($data, $format);
 			if (is_a($object, FormatInterface::class)) {

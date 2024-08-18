@@ -9,7 +9,6 @@
 namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
 
 /**
@@ -31,18 +30,7 @@ class Exposure extends FormatInterface
 			throw new Exception('No exposure time found');
 		}
 
-		$return = '';
 		$data = explode('/', $this->data['ExposureTime']);
-		switch ($this->format) {
-			case Format::READABLE:
-				$return= $data[0].'/'.$data[1].' s';
-				break;
-			case Format::RAW:
-			default:
-				$tmp = (float) $data[0] / (float) $data[1];
-				$return = (string) $tmp;
-				break;
-		}
-		return $return;
+		return $data[0].'/'.$data[1].' s';
 	}
 }
