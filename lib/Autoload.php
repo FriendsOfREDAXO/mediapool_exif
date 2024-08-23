@@ -40,7 +40,7 @@ class Autoload
 	 * @deprecated wird nicht mehr benötigt, sobald alte Klassen mit 'addon' im Namespace nicht mehr unterstützt werden
 	 * @codeCoverageIgnore
 	 */
-	public static function autoload($name) // remove in v4
+	public static function autoload($name): void // remove in v4
 	{
 		if (stristr($name, 'FriendsOfRedaxo\\addon\\MediapoolExif')) {
 			$oldName = $name;
@@ -51,7 +51,7 @@ class Autoload
 			$i = 0;
 			foreach ($backtrace as $key => $item) {
 				if (isset($backtrace[$key]['file']) && isset($backtrace[$key]['line'])) {
-					if(stristr($backtrace[$key]['file'], '/mediapool_exif/')) {
+					if (stristr($backtrace[$key]['file'], '/mediapool_exif/')) {
 						continue;
 					}
 
@@ -71,11 +71,11 @@ class Autoload
 
 
 		if (!stristr($name, __NAMESPACE__)) {
-			return false; // not a mediapool_exif class
+			return;
 		}
 
 		if (class_exists($name)) {
-			return true;
+			return;
 		}
 
 		//namespace parts not in directory structure.
@@ -84,9 +84,9 @@ class Autoload
 		$filename = self::getBaseDir().'/'.str_replace('\\', '/', $name).'.php';
 		if (file_exists($filename)) {
 			require $filename;
-			return true;
+			return;
 		}
 //		throw new \Exception($filename.' not found');
-		return false;
+		return;
 	}
 }
