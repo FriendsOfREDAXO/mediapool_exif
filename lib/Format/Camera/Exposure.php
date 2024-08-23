@@ -9,14 +9,14 @@
 namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
 
 /**
  * Description of Exposure
  *
  * @author akrys
  */
-class Exposure extends FormatInterface
+class Exposure extends FormatBase
 {
 
 	/**

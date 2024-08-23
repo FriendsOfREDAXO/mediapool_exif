@@ -13,14 +13,13 @@ use FriendsOfRedaxo\MediapoolExif\Format\Camera\Aperture;
 use FriendsOfRedaxo\MediapoolExif\Format\Camera\Exposure;
 use FriendsOfRedaxo\MediapoolExif\Format\Camera\Iso;
 use FriendsOfRedaxo\MediapoolExif\Format\Camera\Length;
-use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
 
 /**
  * Description of Camera
  *
  * @author akrys
  */
-class Camera extends FormatInterface
+class Camera extends FormatBase
 {
 
 	/**

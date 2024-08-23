@@ -9,14 +9,14 @@
 namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
 
 /**
  * Description of Iso
  *
  * @author akrys
  */
-class Iso extends FormatInterface
+class Iso extends FormatBase
 {
 
 	/**

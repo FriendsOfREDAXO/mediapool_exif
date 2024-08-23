@@ -15,7 +15,7 @@ use Exception;
  *
  * @author akrys
  */
-class Geo extends FormatInterface
+class Geo extends FormatBase
 {
 
 	/**

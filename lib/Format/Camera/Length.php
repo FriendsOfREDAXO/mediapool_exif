@@ -8,7 +8,7 @@
 namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
 
 /**
  * Datei für ...
@@ -22,7 +22,7 @@ use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
  *
  * @author akrys
  */
-class Length extends FormatInterface
+class Length extends FormatBase
 {
 
 	/**
