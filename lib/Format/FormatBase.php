@@ -27,12 +27,9 @@ abstract class FormatBase
 	/**
 	 * Konstruktor
 	 * @param array<string, mixed> $data Exif-Daten
-	 * @param Format $format Formatierung (deprected)
 	 */
 	public function __construct(
-		protected array $data,
-		/** @deprecated since version 3.1 */
-		protected Format $format = Format::READABLE
+		protected array $data
 	) {
 
 	}
@@ -51,32 +48,18 @@ abstract class FormatBase
 	 * Bei ClassName geht es um die Formatter-Klasse, die verwendet werden soll. Wichtig ist, dass sie das
 	 * FormatInterface implementiert. Damit kann die Funktion format immer aufgerufen werden.
 	 *
-	 * $format:
-	 * Beim Format-Parameter kann man einen Hinweis liefern, wie die Ausgabe zu formatieren ist.
-	 *
-	 * Bei Geo-Koordinaten wären z.B. folgende Ansichten denkbar. Egal, bei welchen Werten man bestimmte Formatierungen
-	 * braucht, mit den Format-Parameter könnte man das übertragen
-	 * <ul>
-	 *    <li>decimal: 51.1109221 / 8.6821267</li>
-	 *    <li>degree: 51° 06' 39.32" N / 8° 40' 55.656 E</li>
-	 * <ul>
-	 *
 	 * @param array<string, mixed> $data exif-Daten-Array
 	 * @param string $className Formatter Namespace
-	 * @param Format $format Format-Parameter (deprected)
-	 * @return FormatInterface
 	 * @throws InvalidClassException
 	 */
 	public static function get(
 		$data,
-		string $className = '',
-		/** @deprecated since version 3.1 */
-		Format $format = Format::READABLE
-	): FormatInterface
+		string $className = ''
+	): FormatBase
 	{
 		if (class_exists($className)) {
-			$object = new $className($data, $format);
-			if (is_a($object, FormatInterface::class)) {
+			$object = new $className($data);
+			if (is_a($object, FormatBase::class)) {
 				return $object;
 			}
 		}
