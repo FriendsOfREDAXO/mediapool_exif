@@ -35,7 +35,7 @@ class Autoload
 	/**
 	 * Autoload Funktion
 	 * @param string $name
-	 * @return boolean
+	 * @return void
 	 *
 	 * @deprecated wird nicht mehr benötigt, sobald alte Klassen mit 'addon' im Namespace nicht mehr unterstützt werden
 	 * @codeCoverageIgnore
