@@ -11,8 +11,11 @@ namespace FriendsOfRedaxo\MediapoolExif;
 use Exception;
 use FriendsOfRedaxo\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\MediapoolExif\Enum\ReturnMode;
+use FriendsOfRedaxo\MediapoolExif\Exception\InvalidClassException;
 use FriendsOfRedaxo\MediapoolExif\Exception\NotFoundException;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
 use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Interface\Formatter\FormatterInterface;
 use rex_media;
 
 /**
@@ -54,8 +57,7 @@ class ExifData
 	 * @param ReturnMode $mode
 	 */
 	public function __construct(
-		private rex_media $media,
-		private ?ReturnMode $mode = null
+		private rex_media $media, private ?ReturnMode $mode = null
 	) {
 		$this->exif = [];
 
@@ -95,22 +97,59 @@ class ExifData
 
 	/**
 	 * Formatierungsalgorithmus anstoßen
-	 * @param string $className
+	 * @param string|FormatterInterface $objectParam
 	 * @param Format $format
 	 * @return mixed
 	 */
 	public function format(
-		string $className,
-		/** @deprecated since version 3.1 */
-		Format $format = Format::READABLE): mixed
-	{
+		string|FormatterInterface $objectParam,
+		/** @deprecated since version 3.1 */ Format $format = Format::READABLE
+	): mixed {
 		try {
-			if (!class_exists($className)) {
-				//fallback, old call
-				$className = '\\FriendsOfRedaxo\\MediapoolExif\\Format\\'.ucfirst($className);
+			/** @var FormatterInterface $object */
+			$object = null;
+			/** @var string $className */
+			$className = null;
+
+			if (is_object($objectParam)) {
+				$object = $objectParam;
+				$className = get_class($object);
 			}
 
-			return FormatInterface::get($this->exif, $className, $format)->format();
+			if (is_string($objectParam)) {
+				$className = $objectParam;
+				if (!class_exists($objectParam)) {
+					//fallback, old call internal formatter without namespace
+					$className = '\\FriendsOfRedaxo\\MediapoolExif\\Format\\'.ucfirst($objectParam);
+				}
+			}
+
+//			print $className;
+//			print '<pre>';
+//			var_dump([
+//				'classname' => $className,
+//				'class_parents' => class_parents($className, true),
+//				'class_implements' => class_implements($className, true),
+//			]);
+//			print '</pre>';
+
+
+			if (isset(class_parents($className)[FormatInterface::class])) {
+				return FormatInterface::get($this->exif, $className, $format)->format();
+			}
+
+			if (isset(class_parents($className)[FormatBase::class])) {
+				return FormatBase::get($this->exif, $className)->format();
+			}
+
+			if (isset(class_implements($className)[FormatterInterface::class])) {
+				$object = new $className();
+				if (is_a($object, FormatterInterface::class)) {
+					return $object->format($this->exif);
+				}
+			}
+
+			throw new InvalidClassException($className);
 		} catch (Exception $e) {
 			return $this->handleExcption($e);
 		}
