@@ -13,7 +13,6 @@ use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
 /**
  * Datei für ...
  *
- * @version       1.0 / 2020-06-13
  * @author        akrys
  */
 

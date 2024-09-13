@@ -1,13 +1,11 @@
 <?php
 
-namespace FriendsOfRedaxo\MediapoolExif\Format;
-
 /**
  * Datei für ...
  *
- * @version       1.0 / 2020-06-12
  * @author        akrys
  */
+namespace FriendsOfRedaxo\MediapoolExif\Format;
 
 use FriendsOfRedaxo\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\MediapoolExif\Exception\InvalidClassException;
@@ -53,7 +51,6 @@ abstract class FormatInterface extends FormatBase // remove in v4
 		}
 		user_error($msg, E_USER_DEPRECATED);
 	}
-
 
 	/**
 	 * Daten holen

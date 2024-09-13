@@ -3,7 +3,6 @@
 /**
  * Datei für GEO
  *
- * @version       1.0 / 2020-06-12
  * @author        akrys
  */
 namespace FriendsOfRedaxo\MediapoolExif\Formatter;

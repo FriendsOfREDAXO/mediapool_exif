@@ -1,17 +1,11 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
-namespace FriendsOfRedaxo\MediapoolExif\Format;
-
 /**
  * Datei für ...
  *
- * @version       1.0 / 2024-08-23
  * @author        akrys
  */
+namespace FriendsOfRedaxo\MediapoolExif\Format;
 
 use FriendsOfRedaxo\MediapoolExif\Enum\Format;
 use FriendsOfRedaxo\MediapoolExif\Exception\InvalidClassException;

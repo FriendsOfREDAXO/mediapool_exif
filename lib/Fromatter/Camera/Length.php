@@ -1,21 +1,14 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Datei für ...
+ *
+ * @author        akrys
  */
 namespace FriendsOfRedaxo\MediapoolExif\Formatter\Camera;
 
 use Exception;
 use FriendsOfRedaxo\MediapoolExif\Interface\Formatter\StandardFormtterInterface;
-
-/**
- * Datei für ...
- *
- * @version       1.0 / 2020-06-13
- * @author        akrys
- */
 
 /**
  * Description of Length

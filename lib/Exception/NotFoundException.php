@@ -3,7 +3,6 @@
 /**
  * Datei für ...
  *
- * @version       1.0 / 2020-06-08
  * @author        akrys
  */
 namespace FriendsOfRedaxo\MediapoolExif\Exception;
