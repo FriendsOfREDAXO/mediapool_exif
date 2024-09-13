@@ -8,7 +8,7 @@
 namespace FriendsOfRedaxo\MediapoolExif\Formatter;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Interface\Formatter\ArrayFormatterInterface;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\ArrayFormatterInterface;
 
 /**
  * Description of Geo

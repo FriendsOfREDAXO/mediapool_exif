@@ -8,7 +8,7 @@
 namespace FriendsOfRedaxo\MediapoolExif\Formatter;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Interface\Formatter\ArrayFormatterInterface;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\ArrayFormatterInterface;
 
 /**
  * Description of Geo
@@ -69,8 +69,8 @@ class GeoDegree implements ArrayFormatterInterface
 		$GPSLong_s = (float) $GPSLongitude_s[0] / (float) $GPSLongitude_s[1];
 
 		return [
-			'lat' => $GPSLat_h.'º '.$GPSLat_m."' ".$GPSLat_s.'" '.$latSuffix,
-			'long' => $GPSLong_h.'º '.$GPSLong_m."' ".$GPSLong_s.'" '.$longSuffix,
+			'lat' => $GPSLat_h.'° '.$GPSLat_m."' ".$GPSLat_s.'" '.$latSuffix,
+			'long' => $GPSLong_h.'° '.$GPSLong_m."' ".$GPSLong_s.'" '.$longSuffix,
 		];
 	}
 

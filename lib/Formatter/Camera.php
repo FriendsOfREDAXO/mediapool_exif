@@ -12,7 +12,7 @@ use FriendsOfRedaxo\MediapoolExif\Format\Camera\Aperture;
 use FriendsOfRedaxo\MediapoolExif\Format\Camera\Exposure;
 use FriendsOfRedaxo\MediapoolExif\Format\Camera\Iso;
 use FriendsOfRedaxo\MediapoolExif\Format\Camera\Length;
-use FriendsOfRedaxo\MediapoolExif\Interface\Formatter\ArrayFormatterInterface;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\ArrayFormatterInterface;
 
 /**
  * Description of Camera

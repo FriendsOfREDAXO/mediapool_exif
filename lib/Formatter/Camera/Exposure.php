@@ -8,7 +8,7 @@
 namespace FriendsOfRedaxo\MediapoolExif\Formatter\Camera;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Interface\Formatter\StandardFormtterInterface;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\StandardFormtterInterface;
 
 /**
  * Description of Exposure

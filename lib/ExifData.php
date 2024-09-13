@@ -14,7 +14,7 @@ use FriendsOfRedaxo\MediapoolExif\Exception\InvalidClassException;
 use FriendsOfRedaxo\MediapoolExif\Exception\NotFoundException;
 use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
 use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
-use FriendsOfRedaxo\MediapoolExif\Interface\Formatter\FormatterInterface;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\FormatterInterface;
 use rex_media;
 
 /**
@@ -132,10 +132,17 @@ class ExifData
 //			]);
 //			print '</pre>';
 
+			if(!class_exists($className)) {
+				//phpdoc warnings class_parents() with not existing class names
+				throw new InvalidClassException($className);
+			}
 
+			// @codeCoverageIgnoreStart
+			// deprected
 			if (isset(class_parents($className)[FormatInterface::class])) {
 				return FormatInterface::get($this->exif, $className, $format)->format();
 			}
+			// @codeCoverageIgnoreEnd
 
 			if (isset(class_parents($className)[FormatBase::class])) {
 				return FormatBase::get($this->exif, $className)->format();

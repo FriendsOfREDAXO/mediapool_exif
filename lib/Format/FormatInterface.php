@@ -25,8 +25,7 @@ abstract class FormatInterface extends FormatBase // remove in v4
 	 * @param Format $format Formatierung (deprected)
 	 */
 	public function __construct(
-		array $data,
-		protected /** @deprecated since version 3.1 */ Format $format = Format::READABLE
+		array $data, protected /** @deprecated since version 3.1 */ Format $format = Format::READABLE
 	) {
 		parent::__construct($data);
 
@@ -84,15 +83,12 @@ abstract class FormatInterface extends FormatBase // remove in v4
 	 * @deprecated since version 3.1
 	 */
 	public static function get(
-		$data,
-		string $className = '',
-		/** @deprecated since version 3.1 */
-		Format $format = Format::READABLE
-	): FormatInterface
-	{
+		$data, string $className = '',
+		/** @deprecated since version 3.1 */ Format $format = Format::READABLE
+	): FormatBase {
 		if (class_exists($className)) {
 			$object = new $className($data, $format);
-			if (is_a($object, FormatInterface::class)) {
+			if (is_a($object, FormatBase::class)) {
 				return $object;
 			}
 		}

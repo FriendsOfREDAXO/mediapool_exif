@@ -4,22 +4,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPInterface.php to edit this template
  */
-namespace FriendsOfRedaxo\MediapoolExif\Interface\Formatter;
+namespace FriendsOfRedaxo\MediapoolExif\Formatter\Interface;
 
 /**
  *
  * @author akrys
  */
-interface ArrayFormatterInterface extends FormatterInterface
+interface StandardFormtterInterface extends FormatterInterface
 {
 
 	/**
-	 * Formatter, der ein Array liefert.
-	 *
-	 * z.B. für Geo-Daten
+	 * Standard-Formatter
 	 *
 	 * @param array<string, mixed> $exifData
-	 * @return array<string, mixed>
+	 * @return string
 	 */
-	public function format(array $exifData): array;
+	public function format(array $exifData): string;
 }
