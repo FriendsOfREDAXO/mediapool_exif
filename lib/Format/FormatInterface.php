@@ -3,42 +3,52 @@
 /**
  * Datei für ...
  *
- * @version       1.0 / 2020-06-12
  * @author        akrys
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Format;
+namespace FriendsOfRedaxo\MediapoolExif\Format;
 
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
-use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidClassException;
+use FriendsOfRedaxo\MediapoolExif\Enum\Format;
+use FriendsOfRedaxo\MediapoolExif\Exception\InvalidClassException;
 
 /**
  * Description of FormatBase
  *
  * @author akrys
+ * @deprecated Das hier ist kein Interface, es ist eine abstrakte Basis-Klasse. FormatBase ist der bessere Name
  */
-abstract class FormatInterface
+abstract class FormatInterface extends FormatBase // remove in v4
 {
-	/**
-	 * Exif-Daten
-	 * @var array<string, mixed>
-	 */
-	protected array $data;
-
-	/**
-	 * Formatierung
-	 * @var Format|null
-	 */
-	protected ?Format $format;
 
 	/**
 	 * Konstruktor
-	 * @param array<string, mixed> $data
-	 * @param ?Format $format
+	 * @param array<string, mixed> $data Exif-Daten
+	 * @param Format $format Formatierung (deprected)
 	 */
-	public function __construct(array $data, ?Format $format = null)
-	{
-		$this->data = $data;
-		$this->format = $format;
+	public function __construct(
+		array $data, protected /** @deprecated since version 3.1 */ Format $format = Format::READABLE
+	) {
+		parent::__construct($data);
+
+		$backtrace = debug_backtrace();
+		$backtraceText = '';
+		$i = 0;
+		foreach ($backtrace as $key => $item) {
+			if (isset($backtrace[$key]['file']) && isset($backtrace[$key]['line'])) {
+				if (stristr($backtrace[$key]['file'], '/mediapool_exif/')) {
+					continue;
+				}
+
+				$backtraceText = 'in '.$backtrace[$key]['file'].': '.$backtrace[$key]['line'];
+				break;
+			}
+			$i++;
+		}
+
+		$msg = FormatInterface::class.' is deprected. Use '.FormatBase::class.' for extension.';
+		if ($backtraceText) {
+			$msg .= '('.$backtraceText.')';
+		}
+		user_error($msg, E_USER_DEPRECATED);
 	}
 
 	/**
@@ -66,33 +76,22 @@ abstract class FormatInterface
 	 * <ul>
 	 *
 	 * @param array<string, mixed> $data exif-Daten-Array
-	 * @param ?string $className Formatter Namespace
-	 * @param Format|null $format Format-Parameter
-	 * @return FormatInterface
+	 * @param string $className Formatter Namespace
+	 * @param Format $format Format-Parameter (deprected)
+	 * @return FormatBase
 	 * @throws InvalidClassException
+	 * @deprecated since version 3.1
 	 */
-	public static function get($data, ?string $className = null, ?Format $format = null): FormatInterface
-	{
-		if ($className === null) {
-			$className = '';
-		}
+	public static function get(
+		$data, string $className = '',
+		/** @deprecated since version 3.1 */ Format $format = Format::READABLE
+	): FormatBase {
 		if (class_exists($className)) {
 			$object = new $className($data, $format);
-			if (is_a($object, FormatInterface::class)) {
+			if (is_a($object, FormatBase::class)) {
 				return $object;
 			}
 		}
 		throw new InvalidClassException($className);
 	}
-
-	/**
-	 * Formatierung der Daten.
-	 *
-	 * Hier ist der Algorithmus hinterlegt, nach welchem der bzw. die Werte formatiert werden
-	 *
-	 * Die Rückgabe kann bei einzelwerten ein string, sont ein array sein.
-	 *
-	 * @return string|array<string, mixed>
-	 */
-	abstract public function format(): string|array;
 }

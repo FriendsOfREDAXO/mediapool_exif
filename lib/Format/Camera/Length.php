@@ -5,17 +5,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Format\Camera;
+namespace FriendsOfRedaxo\MediapoolExif\Format\Camera;
 
 use Exception;
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\Format;
-use FriendsOfRedaxo\addon\MediapoolExif\Exception\InvalidFormatExcption;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
 
 /**
  * Datei für ...
  *
- * @version       1.0 / 2020-06-13
  * @author        akrys
  */
 
@@ -24,7 +21,7 @@ use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
  *
  * @author akrys
  */
-class Length extends FormatInterface
+class Length extends FormatBase
 {
 
 	/**
@@ -40,12 +37,7 @@ class Length extends FormatInterface
 
 		$data = explode('/', $this->data['FocalLength']);
 		$value = (float) $data[0] / (float) $data[1];
-		switch ($this->format) {
-			case Format::READABLE:
-				return $value.' mm';
-			case Format::RAW:
-			default:
-				return (string) $value;
-		}
+
+		return $value.' mm';
 	}
 }

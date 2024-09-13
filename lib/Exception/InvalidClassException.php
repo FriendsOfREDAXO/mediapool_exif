@@ -1,20 +1,14 @@
 <?php
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/PHPClass.php to edit this template
- */
-namespace FriendsOfRedaxo\addon\MediapoolExif\Exception;
-
-use Exception;
-use Throwable;
-
 /**
  * Datei für ...
  *
- * @version       1.0 / 2024-03-31
  * @author        akrys
  */
+namespace FriendsOfRedaxo\MediapoolExif\Exception;
+
+use Exception;
+use Throwable;
 
 /**
  * Description of InvalidClassException
@@ -32,10 +26,7 @@ class InvalidClassException extends Exception
 	 * @param Throwable $previous
 	 */
 	public function __construct(
-		private string $class,
-		string $message = "",
-		int $code = 0,
-		Throwable $previous = null
+		private string $class, string $message = "", int $code = 0, Throwable $previous = null
 	) {
 		if ($message === '') {
 			$message = 'Invalid class: '.$class;

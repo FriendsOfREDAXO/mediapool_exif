@@ -1,12 +1,12 @@
 <?php
 
-namespace FriendsOfRedaxo\addon\MediapoolExif;
+namespace FriendsOfRedaxo\MediapoolExif;
 
 use Exception;
-use FriendsOfRedaxo\addon\MediapoolExif\Enum\IptcDefinitions;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\FormatInterface;
-use FriendsOfRedaxo\addon\MediapoolExif\Format\Geo;
-use FriendsOfRedaxo\addon\MediapoolExif\Exception\IptcException;
+use FriendsOfRedaxo\MediapoolExif\Enum\IptcDefinitions;
+use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
+use FriendsOfRedaxo\MediapoolExif\Format\Geo;
+use FriendsOfRedaxo\MediapoolExif\Exception\IptcException;
 use rex;
 use rex_extension_point;
 use rex_fragment;
@@ -51,8 +51,8 @@ final class MediapoolExif
 	 * -> zu tief verschachtelt.... vllt. Funktionsauslagerung?
 	 * @SuppressWarnings(PHPMD.IfStatementAssignment)
 	 * -> bei Datenbankabfragen kaum anders zu machen
-	  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	  * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
 	public static function processUploadedMedia(rex_extension_point $exp): void
 	{
@@ -112,9 +112,11 @@ final class MediapoolExif
 					/** @phpstan-ignore-next-line */
 					if ($sql->setQuery($qry)) {
 						$names = '<code>'.join('</code>, <code>', array_keys($update)).'</code>';
-						$names = preg_replace_callback('/\>[a-z]/', function ($match) {
-							return strtoupper($match[0]);
-						}, $names);
+						$names = preg_replace_callback(
+							'/\>[a-z]/', function ($match) {
+								return strtoupper($match[0]);
+							}, $names
+						);
 
 						$msg = $exp->getParam('msg').'<br />'.rex_i18n::msg('exif_data_updated').' '.$names;
 						$exp->setParam('msg', $msg);
@@ -183,8 +185,8 @@ final class MediapoolExif
 	 * @return array<string, mixed>
 	 * @SuppressWarnings(PHPMD.ElseExpression)
 	 * -> zu tief verschachtelt.... vllt. Funktionsauslagerung?
-	  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	  * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
 	public static function getData(rex_media $media, string $key = null): array
 	{
