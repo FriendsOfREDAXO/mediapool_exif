@@ -10,7 +10,7 @@ namespace FriendsOfRedaxo\MediapoolExif\Formatter\Interface;
  *
  * @author akrys
  */
-interface StandardFormtterInterface extends FormatterInterface
+interface StandardFormatterInterface extends FormatterInterface
 {
 
 	/**

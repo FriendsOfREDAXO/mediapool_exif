@@ -8,14 +8,14 @@
 namespace FriendsOfRedaxo\MediapoolExif\Formatter\Camera;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\StandardFormtterInterface;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\StandardFormatterInterface;
 
 /**
  * Description of Aperture
  *
  * @author akrys
  */
-class Aperture implements StandardFormtterInterface
+class Aperture implements StandardFormatterInterface
 {
 
 	/**
