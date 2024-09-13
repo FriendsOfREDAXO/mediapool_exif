@@ -8,14 +8,14 @@
 namespace FriendsOfRedaxo\MediapoolExif\Formatter\Camera;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\StandardFormtterInterface;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\StandardFormatterInterface;
 
 /**
  * Description of Iso
  *
  * @author akrys
  */
-class Iso implements StandardFormtterInterface
+class Iso implements StandardFormatterInterface
 {
 
 	/**
