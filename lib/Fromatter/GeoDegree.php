@@ -8,6 +8,7 @@
 namespace FriendsOfRedaxo\MediapoolExif\Formatter;
 
 use Exception;
+use FriendsOfRedaxo\MediapoolExif\Interface\Formatter\ArrayFormatterInterface;
 
 /**
  * Description of Geo
@@ -33,19 +34,19 @@ class GeoDegree implements ArrayFormatterInterface
 	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
-	public function format(): array
+	public function format(array $data): array
 	{
-		if (!isset($this->data['GPSLatitude']) ||
-			!isset($this->data['GPSLatitudeRef']) ||
-			!isset($this->data['GPSLongitude']) ||
-			!isset($this->data['GPSLongitudeRef'])) {
+		if (!isset($data['GPSLatitude']) ||
+			!isset($data['GPSLatitudeRef']) ||
+			!isset($data['GPSLongitude']) ||
+			!isset($data['GPSLongitudeRef'])) {
 			throw new Exception('GPS not found');
 		}
 
-		$GPSLatitude = $this->data['GPSLatitude'];
-		$GPSLatitude_Ref = $this->data['GPSLatitudeRef'];
-		$GPSLongitude = $this->data['GPSLongitude'];
-		$GPSLongitude_Ref = $this->data['GPSLongitudeRef'];
+		$GPSLatitude = $data['GPSLatitude'];
+		$GPSLatitude_Ref = $data['GPSLatitudeRef'];
+		$GPSLongitude = $data['GPSLongitude'];
+		$GPSLongitude_Ref = $data['GPSLongitudeRef'];
 
 		$latSuffix = $this->getLatSuffix($GPSLatitude_Ref);
 
@@ -78,13 +79,14 @@ class GeoDegree implements ArrayFormatterInterface
 	 *
 	 * Als eigene Funktion, damit man via Ableitung der Klasse eigene Suffixe (für andere Sprachen) einsetzen kann.
 	 *
-	 * @return type
+	 * @return string
 	 */
-	public function getLatSuffix($GPSLatitude_Ref)
+	public function getLatSuffix(string $GPSLatitude_Ref): string
 	{
 		return match ($GPSLatitude_Ref) {
 			'S' => 'S',
 			'N' => 'N',
+			default => $GPSLatitude_Ref,
 		};
 	}
 
@@ -93,13 +95,14 @@ class GeoDegree implements ArrayFormatterInterface
 	 *
 	 * Als eigene Funktion, damit man via Ableitung der Klasse eigene Suffixe (für andere Sprachen) einsetzen kann.
 	 *
-	 * @return type
+	 * @return string
 	 */
-	public function getLongSuffix($GPSLatitude_Ref)
+	public function getLongSuffix(string $GPSLatitude_Ref): string
 	{
 		return match ($GPSLatitude_Ref) {
 			'W' => 'W',
 			'E' => 'O',
+			default => $GPSLatitude_Ref,
 		};
 	}
 }

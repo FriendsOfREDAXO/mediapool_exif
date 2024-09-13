@@ -31,7 +31,7 @@ class Exposure extends FormatBase
 
 		$data = explode('/', $this->data['ExposureTime']);
 		if ($data[0] !== '1' || ($data[0] === '1' && $data[1] < 3)) {
-			return preg_replace('/,0$/', '', number_format($data[0] / $data[1], 1, ',', '.')).' s';
+			return preg_replace('/,0$/', '', number_format((int)$data[0] / (int)$data[1], 1, ',', '.')).' s';
 		}
 		return $data[0].'/'.$data[1].' s';
 	}

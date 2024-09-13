@@ -2,7 +2,6 @@
 
 use FriendsOfRedaxo\MediapoolExif;
 
-/** @phpstan-ignore-next-line */
 spl_autoload_register(['FriendsOfRedaxo\\MediapoolExif\\Autoload', 'autoload'], true, true); // remove in v4
 
 class_alias(MediapoolExif\Exception\InvalidClassException::class, 'FriendsOfRedaxo\\addon\\MediapoolExif\\Exception\\InvalidClassException');// remove in v4
