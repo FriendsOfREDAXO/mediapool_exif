@@ -68,7 +68,7 @@ class Autoload
 			return;
 		}
 
-		if (class_exists($name)) {
+		if (class_exists($name) || interface_exists($name)) {
 			return;
 		}
 

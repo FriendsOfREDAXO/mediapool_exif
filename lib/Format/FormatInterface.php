@@ -78,7 +78,7 @@ abstract class FormatInterface extends FormatBase // remove in v4
 	 * @param array<string, mixed> $data exif-Daten-Array
 	 * @param string $className Formatter Namespace
 	 * @param Format $format Format-Parameter (deprected)
-	 * @return FormatInterface
+	 * @return FormatBase
 	 * @throws InvalidClassException
 	 * @deprecated since version 3.1
 	 */
