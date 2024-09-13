@@ -5,36 +5,38 @@
  *
  * @author        akrys
  */
-namespace FriendsOfRedaxo\MediapoolExif\Format;
+namespace FriendsOfRedaxo\MediapoolExif\Formatter;
 
 use Exception;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\ArrayFormatterInterface;
 
 /**
  * Description of Geo
  *
  * @author akrys
  */
-class Geo extends FormatBase
+class Geo implements ArrayFormatterInterface
 {
 
 	/**
 	 * Formatierung der Daten
+	 * @param array<string, mixed> $data
 	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
-	public function format(): array
+	public function format(array $data): array
 	{
-		if (!isset($this->data['GPSLatitude']) ||
-			!isset($this->data['GPSLatitudeRef']) ||
-			!isset($this->data['GPSLongitude']) ||
-			!isset($this->data['GPSLongitudeRef'])) {
+		if (!isset($data['GPSLatitude']) ||
+			!isset($data['GPSLatitudeRef']) ||
+			!isset($data['GPSLongitude']) ||
+			!isset($data['GPSLongitudeRef'])) {
 			throw new Exception('GPS not found');
 		}
 
-		$GPSLatitude = $this->data['GPSLatitude'];
-		$GPSLatitude_Ref = $this->data['GPSLatitudeRef'];
-		$GPSLongitude = $this->data['GPSLongitude'];
-		$GPSLongitude_Ref = $this->data['GPSLongitudeRef'];
+		$GPSLatitude = $data['GPSLatitude'];
+		$GPSLatitude_Ref = $data['GPSLatitudeRef'];
+		$GPSLongitude = $data['GPSLongitude'];
+		$GPSLongitude_Ref = $data['GPSLongitudeRef'];
 
 		$GPSLatfaktor = 1; //N
 		if ($GPSLatitude_Ref == 'S') {
