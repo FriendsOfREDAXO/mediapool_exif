@@ -44,7 +44,7 @@ class Exposure implements StandardFormatterInterface
 	 */
 	private function useNumericalSeconds(array $data):bool
 	{
-		if ($data[0] === '1') {
+		if ($data[0] !== '1') {
 			return true;
 		}
 		if ($data[0] === '1' && $data[1] < 3) {
