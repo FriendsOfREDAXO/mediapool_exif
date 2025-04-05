@@ -5,6 +5,7 @@
  *
  * @author        akrys
  */
+
 namespace FriendsOfRedaxo\MediapoolExif\Formatter\Camera;
 
 use Exception;
@@ -31,9 +32,24 @@ class Exposure implements StandardFormatterInterface
 		}
 
 		$data = explode('/', $exifData['ExposureTime']);
-		if ($data[0] !== '1' || ($data[0] === '1' && $data[1] < 3)) {
-			return preg_replace('/,0$/', '', number_format((int)$data[0] / (int)$data[1], 1, ',', '.')).' s';
+		if ($this->useNumericalSeconds($data)) {
+			return preg_replace('/,0$/', '', number_format((int)$data[0] / (int)$data[1], 1, ',', '.')) . ' s';
 		}
-		return $data[0].'/'.$data[1].' s';
+		return $data[0] . '/' . $data[1] . ' s';
+	}
+
+	/**
+	 * @param array<int, string> $data
+	 * @return bool
+	 */
+	private function useNumericalSeconds(array $data):bool
+	{
+		if ($data[0] === '1') {
+			return true;
+		}
+		if ($data[0] === '1' && $data[1] < 3) {
+			return true;
+		}
+		return false;
 	}
 }

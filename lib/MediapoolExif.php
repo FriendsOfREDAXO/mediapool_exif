@@ -20,8 +20,8 @@ use function mb_convert_encoding;
 /**
  * @codeCoverageIgnore
  * -> Nur Redaxo=Plattform-Integration
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings("PHPMD.ExcessiveClassComplexity")
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  * -> man könnte vllt mal was auslagern
  */
 final class MediapoolExif
@@ -46,12 +46,12 @@ final class MediapoolExif
 	/**
 	 * Upload processing
 	 * @param rex_extension_point<string> $exp
-	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 * @SuppressWarnings("PHPMD.ElseExpression")
 	 * -> zu tief verschachtelt.... vllt. Funktionsauslagerung?
-	 * @SuppressWarnings(PHPMD.IfStatementAssignment)
+	 * @SuppressWarnings("PHPMD.IfStatementAssignment")
 	 * -> bei Datenbankabfragen kaum anders zu machen
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @SuppressWarnings("PHPMD.CyclomaticComplexity")
+	 * @SuppressWarnings("PHPMD.NPathComplexity")
 	 */
 	public static function processUploadedMedia(rex_extension_point $exp): void
 	{
@@ -182,10 +182,10 @@ final class MediapoolExif
 	 * @param rex_media $media
 	 * @param string $key
 	 * @return mixed
-	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 * @SuppressWarnings("PHPMD.ElseExpression")
 	 * -> zu tief verschachtelt.... vllt. Funktionsauslagerung?
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @SuppressWarnings("PHPMD.CyclomaticComplexity")
+	 * @SuppressWarnings("PHPMD.NPathComplexity")
 	 */
 	public static function getData(rex_media $media, string $key = null): mixed
 	{
@@ -240,7 +240,7 @@ final class MediapoolExif
 			}
 		}
 
-		if (!empty($key) && is_string($key)) {
+		if (!empty($key)) {
 			return isset($return[$key]) ? $return[$key] : null;
 		}
 
