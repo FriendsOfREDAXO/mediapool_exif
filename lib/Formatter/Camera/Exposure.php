@@ -35,7 +35,7 @@ class Exposure implements StandardFormatterInterface
 		if ($this->useNumericalSeconds($data)) {
 			return preg_replace('/,0$/', '', number_format((int)$data[0] / (int)$data[1], 1, ',', '.')) . ' s';
 		}
-		return $data[0] . '/' . $data[1] . ' s';
+		return $data[0].'/'.$data[1].' s';
 	}
 
 	/**
