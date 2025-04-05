@@ -20,17 +20,17 @@ class Exposure implements StandardFormatterInterface
 
 	/**
 	 * Daten formatieren
-	 * @param array<string, mixed> $exif
+	 * @param array<string, mixed> $exifData
 	 * @return string
 	 * @throws Exception
 	 */
-	public function format(array $exif): string
+	public function format(array $exifData): string
 	{
-		if (!isset($exif['ExposureTime'])) {
+		if (!isset($exifData['ExposureTime'])) {
 			throw new Exception('No exposure time found');
 		}
 
-		$data = explode('/', $exif['ExposureTime']);
+		$data = explode('/', $exifData['ExposureTime']);
 		if ($data[0] !== '1' || ($data[0] === '1' && $data[1] < 3)) {
 			return preg_replace('/,0$/', '', number_format((int)$data[0] / (int)$data[1], 1, ',', '.')).' s';
 		}

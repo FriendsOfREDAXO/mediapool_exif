@@ -144,9 +144,12 @@ class ExifData
 			}
 			// @codeCoverageIgnoreEnd
 
+			// @codeCoverageIgnoreStart
+			// deprected
 			if (isset(class_parents($className)[FormatBase::class])) {
 				return FormatBase::get($this->exif, $className)->format();
 			}
+			// @codeCoverageIgnoreEnd
 
 			if (isset(class_implements($className)[FormatterInterface::class])) {
 				$object = new $className();

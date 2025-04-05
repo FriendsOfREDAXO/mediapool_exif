@@ -34,19 +34,19 @@ class GeoDegree implements ArrayFormatterInterface
 	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
-	public function format(array $data): array
+	public function format(array $exifData): array
 	{
-		if (!isset($data['GPSLatitude']) ||
-			!isset($data['GPSLatitudeRef']) ||
-			!isset($data['GPSLongitude']) ||
-			!isset($data['GPSLongitudeRef'])) {
+		if (!isset($exifData['GPSLatitude']) ||
+			!isset($exifData['GPSLatitudeRef']) ||
+			!isset($exifData['GPSLongitude']) ||
+			!isset($exifData['GPSLongitudeRef'])) {
 			throw new Exception('GPS not found');
 		}
 
-		$GPSLatitude = $data['GPSLatitude'];
-		$GPSLatitude_Ref = $data['GPSLatitudeRef'];
-		$GPSLongitude = $data['GPSLongitude'];
-		$GPSLongitude_Ref = $data['GPSLongitudeRef'];
+		$GPSLatitude = $exifData['GPSLatitude'];
+		$GPSLatitude_Ref = $exifData['GPSLatitudeRef'];
+		$GPSLongitude = $exifData['GPSLongitude'];
+		$GPSLongitude_Ref = $exifData['GPSLongitudeRef'];
 
 		$latSuffix = $this->getLatSuffix($GPSLatitude_Ref);
 

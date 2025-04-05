@@ -14,6 +14,7 @@ use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
  * Description of Iso
  *
  * @author akrys
+ * @deprecated use \FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Iso instead
  */
 class Iso extends FormatBase
 {
@@ -25,10 +26,10 @@ class Iso extends FormatBase
 	 */
 	public function format(): string
 	{
-		if (!isset($this->data['ISOSpeedRatings'])) {
-			throw new Exception('No iso setting found');
-		}
+		$msg = "Deprecated class use \FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Iso instead";
+		user_error($msg, E_USER_DEPRECATED);
 
-		return $this->data['ISOSpeedRatings'];
+		$formatter = new \FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Iso();
+		return $formatter->format($this->data);
 	}
 }

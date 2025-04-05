@@ -17,6 +17,7 @@ use FriendsOfRedaxo\MediapoolExif\Format\Camera\Length;
  * Description of Camera
  *
  * @author akrys
+ * @deprecated use \FriendsOfRedaxo\MediapoolExif\Formatter\Geo instead
  */
 class Camera extends FormatBase
 {
@@ -28,17 +29,10 @@ class Camera extends FormatBase
 	 */
 	public function format(): array
 	{
-		if (!isset($this->data['Make']) && !isset($this->data['Model'])) {
-			throw new Exception('No camera data found');
-		}
+		$msg = "Deprecated class use \FriendsOfRedaxo\MediapoolExif\Formatter\Geo instead";
+		user_error($msg, E_USER_DEPRECATED);
 
-		return [
-			'make' => $this->data['Make'],
-			'model' => $this->data['Model'],
-			'iso' => (new Iso($this->data))->format(),
-			'aperture' => (new Aperture($this->data))->format(),
-			'exposure' => (new Exposure($this->data))->format(),
-			'length' => (new Length($this->data))->format(),
-		];
+		$formatter = new \FriendsOfRedaxo\MediapoolExif\Formatter\Camera();
+		return $formatter->format($this->data);
 	}
 }
