@@ -105,8 +105,6 @@ class ExifData
 		/** @deprecated since version 3.1 */ Format $format = Format::READABLE
 	): mixed {
 		try {
-			/** @var FormatterInterface|null $object */
-			$object = null;
 			/** @var string $className */
 			$className = '';
 

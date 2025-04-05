@@ -39,15 +39,15 @@ class Exposure implements StandardFormatterInterface
 	}
 
 	/**
-	 * @param array<int, string> $data
+	 * @param list<string> $data
 	 * @return bool
 	 */
-	private function useNumericalSeconds(array $data):bool
+	private function useNumericalSeconds(array $data): bool
 	{
 		if ($data[0] !== '1') {
 			return true;
 		}
-		if ($data[0] === '1' && $data[1] < 3) {
+		if ($data[1] < 3) {
 			return true;
 		}
 		return false;
