@@ -11,7 +11,7 @@ abstract class GeoBase implements ArrayFormatterInterface
 	/**
 	 * Geo-Daten vorhanden?
 	 *
-	 * @param array $exifData
+	 * @param array<string, mixed> $exifData
 	 * @return bool
 	 */
 	protected function hasGeoData(array $exifData)
@@ -28,7 +28,7 @@ abstract class GeoBase implements ArrayFormatterInterface
 	/**
 	 * Nord/Süd-Grad-Wert holen
 	 *
-	 * @param array $exifData
+	 * @param array<string, mixed> $exifData
 	 * @return GeoCoordinate
 	 */
 	public function getLat(array $exifData): GeoCoordinate
@@ -39,7 +39,7 @@ abstract class GeoBase implements ArrayFormatterInterface
 	/**
 	 * Ost/West-Grad-Wert holen
 	 *
-	 * @param array $exifData
+	 * @param array<string, mixed> $exifData
 	 * @return GeoCoordinate
 	 */
 
@@ -51,11 +51,11 @@ abstract class GeoBase implements ArrayFormatterInterface
 	/**
 	 * Basis-Berechnung durchführen
 	 *
-	 * @param $value
-	 * @param $ref
+	 * @param array<int, string>$value
+	 * @param string $ref
 	 * @return GeoCoordinate
 	 */
-	private function getDegreeValue($value, $ref): GeoCoordinate
+	private function getDegreeValue(array $value, string $ref): GeoCoordinate
 	{
 		$h = explode("/", $value[0]);
 		$m = explode("/", $value[1]);

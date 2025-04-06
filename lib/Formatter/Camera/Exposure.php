@@ -24,7 +24,7 @@ class Exposure implements StandardFormatterInterface
 	 *
 	 * Kann in einem abgeleiteten Formatter verwendet werden um den Basis-Wert zu bekommen
 	 *
-	 * @param array $exifData
+	 * @param array<string, mixed> $exifData
 	 * @return string
 	 * @throws Exception
 	 */
@@ -37,7 +37,7 @@ class Exposure implements StandardFormatterInterface
 		$data = explode('/', $exifData['ExposureTime']);
 		if ($this->useNumericalSeconds($data)) {
 			$value = number_format((int)$data[0] / (int)$data[1], 1, ',', '.');
-			return preg_replace('/,0$/', '', $value);
+			return preg_replace('/,0$/', '', $value) ?? '';
 		}
 		return $data[0] . '/' . $data[1];
 	}

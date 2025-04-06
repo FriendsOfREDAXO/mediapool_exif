@@ -24,7 +24,7 @@ class Aperture implements StandardFormatterInterface
 	 *
 	 * Kann in einem abgeleiteten Formatter verwendet werden um den Basis-Wert zu bekommen
 	 *
-	 * @param array $exifData
+	 * @param array<string, mixed> $exifData
 	 * @return string
 	 * @throws Exception
 	 */

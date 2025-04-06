@@ -23,7 +23,7 @@ class Length implements StandardFormatterInterface
 	 *
 	 * Kann in einem abgeleiteten Formatter verwendet werden um den Basis-Wert zu bekommen
 	 *
-	 * @param array $exifData
+	 * @param array<string, mixed> $exifData
 	 * @return string
 	 */
 	public function getValue(array $exifData): string
