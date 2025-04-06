@@ -1,6 +1,6 @@
 <?php
 
-namespace mediapool_exif\lib\Formatter;
+namespace FriendsOfRedaxo\MediapoolExif\Formatter;
 
 use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\ArrayFormatterInterface;
 use FriendsOfRedaxo\MediapoolExif\Model\GeoCoordinate;

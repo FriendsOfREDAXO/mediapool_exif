@@ -9,7 +9,6 @@
 namespace FriendsOfRedaxo\MediapoolExif\Formatter;
 
 use Exception;
-use mediapool_exif\lib\Formatter\GeoBase;
 
 
 /**
