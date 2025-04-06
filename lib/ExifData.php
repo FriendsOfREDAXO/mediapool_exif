@@ -97,18 +97,16 @@ class ExifData
 	/**
 	 * Formatierungsalgorithmus anstoßen
 	 * @param string|FormatterInterface $objectParam
-	 * @param Format $format
+	 * @param ?Format $format
 	 * @return mixed
 	 */
 	public function format(
 		string|FormatterInterface $objectParam,
-		/** @deprecated since version 3.1 */ Format $format = Format::READABLE
+		/** @deprecated since version 3.1 */ ?Format $format = null
 	): mixed {
 		try {
-			/** @var FormatterInterface $object */
-			$object = null;
 			/** @var string $className */
-			$className = null;
+			$className = '';
 
 			if (is_object($objectParam)) {
 				$object = $objectParam;
@@ -140,13 +138,19 @@ class ExifData
 			// @codeCoverageIgnoreStart
 			// deprected
 			if (isset(class_parents($className)[FormatInterface::class])) {
+				if ($format === null) {
+					$format = Format::READABLE;
+				}
 				return FormatInterface::get($this->exif, $className, $format)->format();
 			}
 			// @codeCoverageIgnoreEnd
 
+			// @codeCoverageIgnoreStart
+			// deprected
 			if (isset(class_parents($className)[FormatBase::class])) {
 				return FormatBase::get($this->exif, $className)->format();
 			}
+			// @codeCoverageIgnoreEnd
 
 			if (isset(class_implements($className)[FormatterInterface::class])) {
 				$object = new $className();
