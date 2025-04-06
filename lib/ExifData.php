@@ -97,12 +97,12 @@ class ExifData
 	/**
 	 * Formatierungsalgorithmus anstoßen
 	 * @param string|FormatterInterface $objectParam
-	 * @param Format $format
+	 * @param ?Format $format
 	 * @return mixed
 	 */
 	public function format(
 		string|FormatterInterface $objectParam,
-		/** @deprecated since version 3.1 */ Format $format = Format::READABLE
+		/** @deprecated since version 3.1 */ ?Format $format = null
 	): mixed {
 		try {
 			/** @var string $className */
@@ -138,6 +138,9 @@ class ExifData
 			// @codeCoverageIgnoreStart
 			// deprected
 			if (isset(class_parents($className)[FormatInterface::class])) {
+				if ($format === null) {
+					$format = Format::READABLE;
+				}
 				return FormatInterface::get($this->exif, $className, $format)->format();
 			}
 			// @codeCoverageIgnoreEnd
