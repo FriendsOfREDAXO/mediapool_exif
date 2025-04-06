@@ -5,6 +5,7 @@
  *
  * @author        akrys
  */
+
 namespace FriendsOfRedaxo\MediapoolExif\Formatter\Camera;
 
 use Exception;
@@ -19,18 +20,32 @@ class Aperture implements StandardFormatterInterface
 {
 
 	/**
-	 * Daten formatieren
-	 * @param array<string, mixed> $exif
+	 * Basis-Wert ermitteln.
+	 *
+	 * Kann in einem abgeleiteten Formatter verwendet werden um den Basis-Wert zu bekommen
+	 *
+	 * @param array<string, mixed> $exifData
 	 * @return string
 	 * @throws Exception
 	 */
-	public function format(array $exif): string
+	public function getValue(array $exifData): string
 	{
-		if (!isset($exif['FNumber'])) {
+		if (!isset($exifData['FNumber'])) {
 			throw new Exception('No aperture found');
 		}
 
-		$data = explode('/', $exif['FNumber']);
-		return 'f/'.number_format((float) $data[0] / (float) $data[1], 1);
+		$data = explode('/', $exifData['FNumber']);
+		return number_format((float)$data[0] / (float)$data[1], 1);
+	}
+
+	/**
+	 * Daten formatieren
+	 * @param array<string, mixed> $exifData
+	 * @return string
+	 * @throws Exception
+	 */
+	public function format(array $exifData): string
+	{
+		return 'f/' . $this->getValue($exifData);
 	}
 }

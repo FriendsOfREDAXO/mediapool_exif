@@ -19,20 +19,32 @@ class Length implements StandardFormatterInterface
 {
 
 	/**
-	 * Daten formatieren
-	 * @param array<string, mixed> $data
+	 * Basis-Wert ermitteln.
+	 *
+	 * Kann in einem abgeleiteten Formatter verwendet werden um den Basis-Wert zu bekommen
+	 *
+	 * @param array<string, mixed> $exifData
 	 * @return string
-	 * @throws Exception
 	 */
-	public function format(array $data): string
+	public function getValue(array $exifData): string
 	{
-		if (!isset($data['FocalLength'])) {
+		if (!isset($exifData['FocalLength'])) {
 			throw new Exception('No focial length found');
 		}
 
-		$data = explode('/', $data['FocalLength']);
-		$value = (float) $data[0] / (float) $data[1];
+		$exifData = explode('/', $exifData['FocalLength']);
+		$value = (float) $exifData[0] / (float) $exifData[1];
+		return (string) $value;
+	}
 
-		return $value.' mm';
+	/**
+	 * Daten formatieren
+	 * @param array<string, mixed> $exifData
+	 * @return string
+	 * @throws Exception
+	 */
+	public function format(array $exifData): string
+	{
+		return $this->getValue($exifData).' mm';
 	}
 }

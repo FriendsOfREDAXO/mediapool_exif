@@ -4,9 +4,8 @@ namespace FriendsOfRedaxo\MediapoolExif;
 
 use Exception;
 use FriendsOfRedaxo\MediapoolExif\Enum\IptcDefinitions;
-use FriendsOfRedaxo\MediapoolExif\Format\FormatInterface;
-use FriendsOfRedaxo\MediapoolExif\Format\Geo;
 use FriendsOfRedaxo\MediapoolExif\Exception\IptcException;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Geo;
 use rex;
 use rex_extension_point;
 use rex_fragment;
@@ -21,8 +20,8 @@ use function mb_convert_encoding;
 /**
  * @codeCoverageIgnore
  * -> Nur Redaxo=Plattform-Integration
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings("PHPMD.ExcessiveClassComplexity")
+ * @SuppressWarnings("PHPMD.CouplingBetweenObjects")
  * -> man könnte vllt mal was auslagern
  */
 final class MediapoolExif
@@ -47,12 +46,12 @@ final class MediapoolExif
 	/**
 	 * Upload processing
 	 * @param rex_extension_point<string> $exp
-	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 * @SuppressWarnings("PHPMD.ElseExpression")
 	 * -> zu tief verschachtelt.... vllt. Funktionsauslagerung?
-	 * @SuppressWarnings(PHPMD.IfStatementAssignment)
+	 * @SuppressWarnings("PHPMD.IfStatementAssignment")
 	 * -> bei Datenbankabfragen kaum anders zu machen
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @SuppressWarnings("PHPMD.CyclomaticComplexity")
+	 * @SuppressWarnings("PHPMD.NPathComplexity")
 	 */
 	public static function processUploadedMedia(rex_extension_point $exp): void
 	{
@@ -182,13 +181,13 @@ final class MediapoolExif
 	 * Daten aus der Datei verarbeiten
 	 * @param rex_media $media
 	 * @param string $key
-	 * @return array<string, mixed>
-	 * @SuppressWarnings(PHPMD.ElseExpression)
+	 * @return mixed
+	 * @SuppressWarnings("PHPMD.ElseExpression")
 	 * -> zu tief verschachtelt.... vllt. Funktionsauslagerung?
-	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @SuppressWarnings("PHPMD.CyclomaticComplexity")
+	 * @SuppressWarnings("PHPMD.NPathComplexity")
 	 */
-	public static function getData(rex_media $media, string $key = null): array
+	public static function getData(rex_media $media, string $key = null): mixed
 	{
 		$DATA = array_replace(static::getExifData($media), static::getIptcData($media));
 		$return = [];
@@ -241,7 +240,7 @@ final class MediapoolExif
 			}
 		}
 
-		if (!empty($key) && is_string($key)) {
+		if (!empty($key)) {
 			return isset($return[$key]) ? $return[$key] : null;
 		}
 
@@ -280,7 +279,7 @@ final class MediapoolExif
 				}
 
 				try {
-					$coordinates = FormatInterface::get($exif, Geo::class)->format();
+					$coordinates = (new Geo())->format($exif);
 					$exif['GPSCoordinatesLat'] = $coordinates['lat'] ?? 0;
 					$exif['GPSCoordinatesLong'] = $coordinates['long'] ?? 0;
 				} catch (Exception $e) {

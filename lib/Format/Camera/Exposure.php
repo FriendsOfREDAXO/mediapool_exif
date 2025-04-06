@@ -14,6 +14,7 @@ use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
  * Description of Exposure
  *
  * @author akrys
+ * @deprecated use \FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Exposure instead
  */
 class Exposure extends FormatBase
 {
@@ -25,14 +26,10 @@ class Exposure extends FormatBase
 	 */
 	public function format(): string
 	{
-		if (!isset($this->data['ExposureTime'])) {
-			throw new Exception('No exposure time found');
-		}
+		$msg = "Deprecated class use \FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Exposure instead";
+		user_error($msg, E_USER_DEPRECATED);
 
-		$data = explode('/', $this->data['ExposureTime']);
-		if ($data[0] !== '1' || ($data[0] === '1' && $data[1] < 3)) {
-			return preg_replace('/,0$/', '', number_format((int)$data[0] / (int)$data[1], 1, ',', '.')).' s';
-		}
-		return $data[0].'/'.$data[1].' s';
+		$formatter = new \FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Exposure();
+		return $formatter->format($this->data);
 	}
 }

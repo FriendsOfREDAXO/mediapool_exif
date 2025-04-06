@@ -14,6 +14,7 @@ use FriendsOfRedaxo\MediapoolExif\Exception\InvalidClassException;
  * Description of FormatBase
  *
  * @author akrys
+ * @deprecated Statt der Format-Klassen sollten Klassen mit Formatter-Interfaces verwendet werden.
  */
 abstract class FormatBase
 {
@@ -45,6 +46,7 @@ abstract class FormatBase
 	 * @param array<string, mixed> $data exif-Daten-Array
 	 * @param string $className Formatter Namespace
 	 * @throws InvalidClassException
+	 * @deprecated
 	 */
 	public static function get(
 		$data,

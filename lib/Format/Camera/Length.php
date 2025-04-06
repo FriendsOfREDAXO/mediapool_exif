@@ -20,6 +20,7 @@ use FriendsOfRedaxo\MediapoolExif\Format\FormatBase;
  * Description of Length
  *
  * @author akrys
+ * @deprecated use \FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Length instead
  */
 class Length extends FormatBase
 {
@@ -31,13 +32,10 @@ class Length extends FormatBase
 	 */
 	public function format(): string
 	{
-		if (!isset($this->data['FocalLength'])) {
-			throw new Exception('No focial length found');
-		}
+		$msg = "Deprecated class use \FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Length instead";
+		user_error($msg, E_USER_DEPRECATED);
 
-		$data = explode('/', $this->data['FocalLength']);
-		$value = (float) $data[0] / (float) $data[1];
-
-		return $value.' mm';
+		$formatter = new \FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Length();
+		return $formatter->format($this->data);
 	}
 }

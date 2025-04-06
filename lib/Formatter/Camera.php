@@ -8,10 +8,10 @@
 namespace FriendsOfRedaxo\MediapoolExif\Formatter;
 
 use Exception;
-use FriendsOfRedaxo\MediapoolExif\Format\Camera\Aperture;
-use FriendsOfRedaxo\MediapoolExif\Format\Camera\Exposure;
-use FriendsOfRedaxo\MediapoolExif\Format\Camera\Iso;
-use FriendsOfRedaxo\MediapoolExif\Format\Camera\Length;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Aperture;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Exposure;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Iso;
+use FriendsOfRedaxo\MediapoolExif\Formatter\Camera\Length;
 use FriendsOfRedaxo\MediapoolExif\Formatter\Interface\ArrayFormatterInterface;
 
 /**
@@ -24,23 +24,23 @@ class Camera implements ArrayFormatterInterface
 
 	/**
 	 * Daten formatieren
-	 * @param array<string, mixed> $data
+	 * @param array<string, mixed> $exifData
 	 * @return array<string, mixed>
 	 * @throws Exception
 	 */
-	public function format(array $data): array
+	public function format(array $exifData): array
 	{
-		if (!isset($data['Make']) && !isset($data['Model'])) {
+		if (!isset($exifData['Make']) && !isset($exifData['Model'])) {
 			throw new Exception('No camera data found');
 		}
 
 		return [
-			'make' => $data['Make'],
-			'model' => $data['Model'],
-			'iso' => (new Iso($data))->format(),
-			'aperture' => (new Aperture($data))->format(),
-			'exposure' => (new Exposure($data))->format(),
-			'length' => (new Length($data))->format(),
+			'make' => $exifData['Make'],
+			'model' => $exifData['Model'],
+			'iso' => (new Iso())->format($exifData),
+			'aperture' => (new Aperture())->format($exifData),
+			'exposure' => (new Exposure())->format($exifData),
+			'length' => (new Length())->format($exifData),
 		];
 	}
 }

@@ -20,16 +20,16 @@ class Iso implements StandardFormatterInterface
 
 	/**
 	 * Daten formatieren
-	 * @param array<string, mixed> $data
+	 * @param array<string, mixed> $exifData
 	 * @return string
 	 * @throws Exception
 	 */
-	public function format(array $data): string
+	public function format(array $exifData): string
 	{
-		if (!isset($data['ISOSpeedRatings'])) {
+		if (!isset($exifData['ISOSpeedRatings'])) {
 			throw new Exception('No iso setting found');
 		}
 
-		return $data['ISOSpeedRatings'];
+		return $exifData['ISOSpeedRatings'];
 	}
 }
