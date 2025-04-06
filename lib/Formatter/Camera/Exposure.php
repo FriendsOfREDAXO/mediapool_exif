@@ -20,12 +20,15 @@ class Exposure implements StandardFormatterInterface
 {
 
 	/**
-	 * Daten formatieren
+	 * Basis-Wert ermitteln.
+	 *
+	 * Kann in einem abgeleiteten Formatter verwendet werden um den Basis-Wert zu bekommen
+	 *
 	 * @param array<string, mixed> $exifData
 	 * @return string
 	 * @throws Exception
 	 */
-	public function format(array $exifData): string
+	public function getValue(array $exifData): string
 	{
 		if (!isset($exifData['ExposureTime'])) {
 			throw new Exception('No exposure time found');
@@ -33,9 +36,21 @@ class Exposure implements StandardFormatterInterface
 
 		$data = explode('/', $exifData['ExposureTime']);
 		if ($this->useNumericalSeconds($data)) {
-			return preg_replace('/,0$/', '', number_format((int)$data[0] / (int)$data[1], 1, ',', '.')) . ' s';
+			$value = number_format((int)$data[0] / (int)$data[1], 1, ',', '.');
+			return preg_replace('/,0$/', '', $value) ?? '';
 		}
-		return $data[0].'/'.$data[1].' s';
+		return $data[0] . '/' . $data[1];
+	}
+
+	/**
+	 * Daten formatieren
+	 * @param array<string, mixed> $exifData
+	 * @return string
+	 * @throws Exception
+	 */
+	public function format(array $exifData): string
+	{
+		return $this->getValue($exifData) . ' s';
 	}
 
 	/**
